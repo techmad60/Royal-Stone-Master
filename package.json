@@ -1,0 +1,35 @@
+{
+  "name": "royal-pen",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "country-state-city": "^3.2.1",
+    "geist": "^1.3.1",
+    "imagekit": "^6.0.0",
+    "next": "15.0.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-icons": "^5.3.0",
+    "react-phone-input-2": "^2.15.1",
+    "react-toastify": "^11.0.2",
+    "swiper": "^11.1.15",
+    "tailwind-scrollbar-hide": "^1.1.7",
+    "zustand": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "15.0.1",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.15",
+    "typescript": "^5"
+  }
+}
