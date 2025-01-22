@@ -85,5 +85,5 @@ jobs:
             export NVM_DIR="$HOME/.nvm"
             source $NVM_DIR/nvm.sh
             cd ${{ secrets.PROJECT_PATH }}
-            pm2 restart 1
+            pm2 restart 2
             pm2 save
