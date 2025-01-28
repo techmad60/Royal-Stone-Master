@@ -18,10 +18,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "20"
+          node-version: "22"
 
       - name: Install Dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Build Project
         env:
@@ -85,5 +85,5 @@ jobs:
             export NVM_DIR="$HOME/.nvm"
             source $NVM_DIR/nvm.sh
             cd ${{ secrets.PROJECT_PATH }}
-            pm2 restart 1
+            pm2 restart 2
             pm2 save
