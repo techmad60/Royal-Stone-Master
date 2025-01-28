@@ -1,6 +1,6 @@
 "use client";
-import HistoryDesktop from "@/components/Portolio/HistoryDesktop";
-// import HistoryMobile from "@/components/Portolio/HistoryMobile";
+import HistoryDesktop from "@/components/Portolio/History/HistoryDesktop";
+import HistoryMobile from "@/components/Portolio/History/HistoryMobile";
 import ProductDesktop from "@/components/Product/ProductDesktop";
 import ProductMobile from "@/components/Product/ProductMobile";
 import CardComponentFive from "@/components/ui/CardComponentFive";
@@ -87,7 +87,8 @@ export default function Dashboard() {
 
     fetchDashboardData();
     fetchProducts();
-  }, [fetchProducts],);
+  }, [fetchProducts, router]);
+
 
   if (loading) {
     return (
@@ -142,7 +143,7 @@ export default function Dashboard() {
         // Recent Transactions UI
         <>
           <p className="text-lg font-semibold my-4">Recent Transactions</p>
-          {/* <HistoryMobile transactions={recentTransactions} /> */}
+          <HistoryMobile transactions={recentTransactions} />
           <HistoryDesktop transactions={recentTransactions} />
         </>
       )}

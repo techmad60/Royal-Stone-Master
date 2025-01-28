@@ -1,26 +1,14 @@
 import Faqs from "@/components/ui/Faqs";
 import NavigatorTwo from "@/components/ui/NavigatorTwo";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import { Faq } from "@/types/FaqType";
+import { FaqResponse, FaqType } from "@/types/Type";
 import { useEffect, useState } from "react";
 import SettingsParent from "../SettingsParent";
-
-interface FaqResponse {
-    status: boolean;
-    data: {
-      data: {
-        id: string;
-        question: string;
-        answer: string;
-        status?: string;
-      }[];
-    };
-  }
   
 export default function FAQs() {
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const [currentPage, setCurrentPage] = useState("faqsSetting");
-  const [faqs, setFaqs] = useState<Faq[]>([]);
+  const [faqs, setFaqs] = useState<FaqType[]>([]);
 
   // Fetch FAQs data from the API
   useEffect(() => {
@@ -38,7 +26,7 @@ export default function FAQs() {
 
         // Extract FAQ data and ensure `status` is always present
         if (data.status && data.data?.data) {
-          const transformedFaqs: Faq[] = data.data.data.map((faq) => ({
+          const transformedFaqs: FaqType[] = data.data.data.map((faq) => ({
             id: faq.id,
             question: faq.question,
             answer: faq.answer,

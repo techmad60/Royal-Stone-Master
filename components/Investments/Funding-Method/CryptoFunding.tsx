@@ -1,37 +1,39 @@
 import Button from "@/components/ui/Button";
 import Loading from "@/components/ui/Loading";
 import Timer from "@/components/ui/Timer";
-import useInvestmentStore from "@/store/investmentStore";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { FundCryptoWalletDetails } from "@/types/Type";
+// import useInvestmentStore from "@/store/investmentStore";
+// import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import StatRow from "../../ui/StatRow";
 // Ensure correct path
 
-interface WalletDetails {
-  id: string;
-  name: string;
-  address: string;
-}
+// interface WalletDetails {
+//   id: string;
+//   name: string;
+//   address: string;
+// }
 
 interface MyComponentProps {
   onClose: () => void;
   onProceed: () => void;
+  walletDetails: FundCryptoWalletDetails | null;
+  error: string | null;
+  isLoading: boolean;
   amount: string;
-  walletType: string;
+  successMessage: string | null;
+  
 }
 
 export default function CryptoFunding({
   onClose,
   onProceed,
+  error,
+  walletDetails,
+  isLoading,
   amount,
-  walletType,
+  successMessage,
 }: MyComponentProps) {
-  const [walletDetails, setWalletDetails] = useState<WalletDetails | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const router = useRouter();
-
   useEffect(() => {
     // Disable scrolling when the modal is open
     document.body.style.overflow = "hidden";
@@ -40,112 +42,7 @@ export default function CryptoFunding({
     };
   }, []);
 
-  useEffect(() => {
-    // Fetch wallet details
-    const fetchWalletDetails = async () => {
-      setIsLoading(true);
-      setError(null);
 
-      try {
-        const token = localStorage.getItem("accessToken");
-        if (!token) {
-          router.push("/auth/login");
-          return;
-        }
-
-        const response = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/fund?type=crypto",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Failed to fetch wallet details");
-        }
-        const result = await response.json();
-        setWalletDetails(result.data[0]); // Assuming `result.data[0]` contains the wallet details
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          console.error("An unknown error occurred:", err);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchWalletDetails();
-  }, [router]);
-
-  const handleSubmission = async () => {
-    // Validate wallet details
-    if (!walletDetails) {
-      setError("Wallet details are not available.");
-      return;
-    }
-
-    // Validate wallet type
-    if (!walletType) {
-      setError("Wallet type is required.");
-      return;
-    }
-
-    setIsSubmitting(true);
-    setError(null);
-
-    try {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        router.push("/auth/login");
-        return;
-      }
-
-      const response = await fetch(
-        "https://api-royal-stone.softwebdigital.com/api/fund/bank-deposit",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            walletType: walletType,
-            beneficiary: walletDetails?.id, // Assuming wallet address is used as beneficiary
-            amount: amount,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to complete the transaction.");
-      }
-
-      const result = await response.json();
-      const { id } = result.data.wallets;
-
-      // Set investment ID to Zustand store
-      const { setInvestmentId } = useInvestmentStore.getState();
-      setInvestmentId(id);
-
-      // Proceed to the next step
-      onProceed();
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        console.error("An unknown error occurred:", err);
-      }
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   return (
     <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-50">
@@ -184,17 +81,31 @@ export default function CryptoFunding({
             isLast={true}
           />
         </section>
-        {error && (
-          <p className="text-red-500 text-sm text-center mx-4 mt-2">{error}</p>
+        {error && ( // Display error message conditionally
+          <p className="text-red-600 p-3 rounded ml-4 mt-4 text-sm">{error}</p>
+        )}
+        {successMessage && ( // Display success message conditionally
+          <p className="text-green-600 p-3 rounded ml-4 mt-4 text-sm">
+            {successMessage}
+          </p>
+        )}
+         {isLoading && (
+          <div>
+            <Loading />
+          </div>
         )}
         {isLoading && <Loading />}
         <hr className="mt-8" />
         <div className="mt-12 mx-6 lg:mt-8">
-          <Button
-            ButtonText={isSubmitting ? "Processing..." : "I have made the transfer"}
-            className="bg-color-one w-full"
-            onClick={handleSubmission}
-            disabled={isSubmitting}
+        <Button
+            ButtonText={
+              isLoading ? "Processing..." : "I have made the transfer"
+            }
+            className={`${
+              isLoading ? "bg-inactive hover:bg-inactive" : "bg-color-one"
+            }  w-full text-center`}
+            onClick={onProceed}
+            disabled={isLoading}
           />
         </div>
       </div>

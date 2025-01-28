@@ -3,7 +3,7 @@ import Loading from "@/components/ui/Loading";
 import { useEffect, useState } from "react";
 import { BsFileBarGraphFill } from "react-icons/bs";
 import { GoPlus } from "react-icons/go";
-import InvestmentHistoryModal from "./InvestmentHistoryModal";
+import TransactionHistoryModal from "./TransactionHistoryModal";
 
 interface Investments {
   id: string;
@@ -216,7 +216,7 @@ export default function AllHistoryMobile({
       )}
       {/* Modal for displaying investment details */}
       {showModal && selectedInvestment && (
-        <InvestmentHistoryModal
+        <TransactionHistoryModal
           investment={selectedInvestment} // Passing selected investment as prop
           closeModal={() => setShowModal(false)} // Close modal function
         />

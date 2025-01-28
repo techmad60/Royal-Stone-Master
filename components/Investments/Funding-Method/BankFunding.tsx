@@ -1,39 +1,31 @@
 import Button from "@/components/ui/Button";
 import Loading from "@/components/ui/Loading";
 import Timer from "@/components/ui/Timer";
-import useInvestmentStore from "@/store/investmentStore";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { FundBankDetails } from "@/types/Type";
+import { useEffect } from "react";
 import StatRow from "../../ui/StatRow";
 
-interface BankDetails {
-  id: string;
-  bankName: string;
-  accountName: string;
-  accountNumber: string;
-  bankAddress: string;
-  routingNumber: string;
-}
 
 interface MyComponentProps {
   onClose: () => void;
   onProceed: () => void;
+  bankDetails: FundBankDetails | null;
+  error: string | null;
+  isLoading: boolean;
   amount: string;
-  walletType: string;
+  successMessage: string | null;
 }
 
 export default function BankFunding({
   onClose,
   onProceed,
+  error,
+  bankDetails,
+  isLoading,
   amount,
-  walletType,
+  successMessage,
 }: MyComponentProps) {
-  const [bankDetails, setBankDetails] = useState<BankDetails | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-//   const [investmentId, setInvestmentId] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
+  
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -41,125 +33,6 @@ export default function BankFunding({
       document.body.style.overflow = "";
     };
   }, []);
-
-  useEffect(() => {
-    const fetchBankDetails = async () => {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const token = localStorage.getItem("accessToken");
-        if (!token) {
-          router.push("/auth/login");
-          return;
-        }
-
-        const response = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/fund?type=bank-deposit",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Failed to fetch bank details");
-        }
-
-        const result = await response.json();
-        setBankDetails(result.data[0]);
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          setError(err.message); // Accessing the error message safely
-        } else {
-          console.error("An unknown error occurred:", err);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchBankDetails();
-  }, [router]);
-
-  const handleSubmission = async () => {
-    if (!bankDetails) {
-      setError("Bank details are not available.");
-      return;
-    }
-
-    setIsSubmitting(true);
-    setError(null);
-
-    try {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        router.push("/auth/login");
-        return;
-      }
-
-      const response = await fetch(
-        "https://api-royal-stone.softwebdigital.com/api/fund/bank-deposit",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            walletType: walletType,
-            beneficiary: bankDetails.id, // Assuming this maps to `beneficiary`
-            amount: amount,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          errorData.message || "Failed to complete the transaction."
-        );
-      }
-      const result = await response.json();
-      console.log("Successful Response:", result);
-      const { id } = result.data.wallets;
-    // Pass id to store
-    useInvestmentStore.getState().setInvestmentId(id);
-
-    // Retrieve investmentId after setting it
-    const investmentId = useInvestmentStore.getState().investmentId;
-    console.log("Investment ID:", investmentId);
-      //Proceed to receipt
-      onProceed();
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message); // Accessing the error message safely
-      } else {
-        console.error("An unknown error occurred:", err);
-      }
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <div>
-        <Loading />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-[#D9D9D9A6] z-50">
-        <p className="text-red-500 text-lg">{error}</p>
-      </div>
-    );
-  }
 
   if (!bankDetails) {
     return <p>No bank found</p>;
@@ -230,20 +103,30 @@ export default function BankFunding({
             isLast={true}
           />
         </section>
-        {error && (
-          <p className="text-red-500 text-sm text-center mx-4 mt-2">{error}</p>
+        {error && ( // Display error message conditionally
+          <p className="text-red-600 p-3 rounded ml-4 text-sm">{error}</p>
+        )}
+        {successMessage && ( // Display success message conditionally
+          <p className="text-green-600 p-3 rounded ml-4 text-sm">
+            {successMessage}
+          </p>
+        )}
+         {isLoading && (
+          <div>
+            <Loading />
+          </div>
         )}
         <hr className="hidden mt-3 lg:flex" />
         <div className="mt-4 mx-6 lg:mt-6">
           <Button
             ButtonText={
-              isSubmitting ? "Processing..." : "I have made the transfer"
+              isLoading ? "Processing..." : "I have made the transfer"
             }
             className={`${
-              isSubmitting ? "bg-inactive hover:bg-inactive" : "bg-color-one"
+              isLoading ? "bg-inactive hover:bg-inactive" : "bg-color-one"
             }  w-full text-center`}
-            onClick={handleSubmission}
-            disabled={isSubmitting}
+            onClick={onProceed}
+            disabled={isLoading}
           />
         </div>
       </div>

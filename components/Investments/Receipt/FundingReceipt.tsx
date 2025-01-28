@@ -7,11 +7,12 @@ import Button from "../../ui/Button";
 
 interface ReceiptProps {
     onBack: () => void;
-    onClose: () => void;
-    investmentId?: string | null;
+    // onClose: () => void;
+    onProceed: () => void;
+    transactionID?: string | null;
 }
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-export default function ReceiptModal ({onClose, investmentId, onBack}: ReceiptProps) {
+export default function ReceiptModal ({transactionID, onBack, onProceed}: ReceiptProps) {
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -137,12 +138,12 @@ export default function ReceiptModal ({onClose, investmentId, onBack}: ReceiptPr
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              transactionID: investmentId,
+              transactionID: transactionID,
               proofOfPayment: uploadedImageURL, // Set the avatar field with the uploaded image URL
             }),
           }
         );
-        console.log(investmentId)
+        // console.log(investmentId)
         const bankData = await bankResponse.json();
         if (bankResponse.ok) {
           console.log("bank Response:", bankData);
@@ -151,9 +152,9 @@ export default function ReceiptModal ({onClose, investmentId, onBack}: ReceiptPr
         }
         setFeedbackType("success");
         setFeedbackMessage("Receipt uploaded successfully!");
-        setTimeout(onClose, 500); // Close modal after success
+        onProceed();
         console.log("Navigating to success URL");
-        router.push("/main/investments/fund-wallet?success=true")
+        // router.push("/main/investments/fund-wallet?success=true")
       } else {
         throw new Error(uploadData.message || "Upload failed");
       }

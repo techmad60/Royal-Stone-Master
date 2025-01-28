@@ -33,7 +33,9 @@ interface InvestmentStore {
   isLoading: boolean;
   error: string | { message: string } | null;
   investmentId: string | null;
+  availableCash: number;
   setInvestmentId: (id: string | null) => void;
+  setAvailableCash: (cash: number) => void;
   fetchInvestments: (type: string, page?: number) => Promise<void>;
   setCurrentPage: (page: number) => void;
 }
@@ -46,8 +48,10 @@ const useInvestmentStore = create<InvestmentStore>((set) => ({
   isLoading: false,
   error: null,
   investmentId: null,
+  availableCash: 0,
+  setAvailableCash: (cash) => set({ availableCash: cash }),
   setInvestmentId: (id) => set({ investmentId: id }),
-  fetchInvestments: async (type ="", page = 1) => {
+  fetchInvestments: async (type = "", page = 1) => {
     set({ isLoading: true, error: null }); // Start loading
     try {
       const token = localStorage.getItem("accessToken");
@@ -73,7 +77,8 @@ const useInvestmentStore = create<InvestmentStore>((set) => ({
         set({ error: "Failed to fetch investments." });
       }
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : "Unknown error occurred.";
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error occurred.";
       set({ error: errorMessage });
     } finally {
       set({ isLoading: false }); // Loading complete

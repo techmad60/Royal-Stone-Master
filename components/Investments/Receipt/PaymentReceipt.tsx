@@ -4,20 +4,26 @@ import { useEffect, useRef, useState } from "react";
 import { FaRegImage } from "react-icons/fa6";
 import { TiTimes } from "react-icons/ti";
 import Button from "../../ui/Button";
-
 interface ReceiptProps {
-    onClose: () => void;
-    investmentId?: string | null;
+  onProceed: () => void;
+  onBack: () => void;
+  investmentId?: string | null;
 }
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-export default function ReceiptModal ({onClose, investmentId}: ReceiptProps) {
+export default function ReceiptModal({
+  onProceed,
+  onBack,
+  investmentId,
+}: ReceiptProps) {
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
-  const [feedbackType, setFeedbackType] = useState<"success" | "error" | null>(null);
+  const [feedbackType, setFeedbackType] = useState<"success" | "error" | null>(
+    null
+  );
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const router = useRouter() 
+  const router = useRouter();
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -35,7 +41,6 @@ export default function ReceiptModal ({onClose, investmentId}: ReceiptProps) {
     };
   }, [imagePreview]);
 
-
   const handleImageClick = () => {
     fileInputRef.current?.click();
   };
@@ -43,7 +48,10 @@ export default function ReceiptModal ({onClose, investmentId}: ReceiptProps) {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
-      if (file.size > MAX_FILE_SIZE || !["image/jpeg", "image/png"].includes(file.type)) {
+      if (
+        file.size > MAX_FILE_SIZE ||
+        !["image/jpeg", "image/png"].includes(file.type)
+      ) {
         setFeedbackType("error");
         setFeedbackMessage("File must be a JPG/PNG and less than 5MB.");
         return;
@@ -89,14 +97,14 @@ export default function ReceiptModal ({onClose, investmentId}: ReceiptProps) {
           },
         }
       );
-      
+
       const signatureData = await signatureResponse.json();
       if (!signatureResponse.ok) {
         throw new Error(signatureData.message || "Failed to fetch signature");
       }
 
       if (signatureResponse.status === 401) {
-        router.push("/auth/login")
+        router.push("/auth/login");
       }
 
       const { token, expire, signature } = signatureData.data;
@@ -124,7 +132,7 @@ export default function ReceiptModal ({onClose, investmentId}: ReceiptProps) {
 
       if (uploadResponse.ok) {
         const uploadedImageURL = uploadData.url;
-        localStorage.setItem("uploadedImageURL", uploadedImageURL);
+        // localStorage.setItem("uploadedImageURL", uploadedImageURL);
         setImagePreview(uploadedImageURL);
 
         const bankResponse = await fetch(
@@ -141,17 +149,15 @@ export default function ReceiptModal ({onClose, investmentId}: ReceiptProps) {
             }),
           }
         );
-        console.log(investmentId)
+        console.log(investmentId);
         const bankData = await bankResponse.json();
         if (bankResponse.ok) {
-          console.log("bank Response:", bankData);
+          onProceed();
+          setFeedbackType("success");
+          setFeedbackMessage("Receipt uploaded successfully!");
         } else {
           throw new Error(bankData.message || "Failed to submit bank");
         }
-        setFeedbackType("success");
-        setFeedbackMessage("Receipt uploaded successfully!");
-        setTimeout(onClose, 1000); // Close modal after success
-        router.push("/main/investments?success=true")
       } else {
         throw new Error(uploadData.message || "Upload failed");
       }
@@ -167,15 +173,15 @@ export default function ReceiptModal ({onClose, investmentId}: ReceiptProps) {
       setIsUploading(false);
     }
   };
-    return (
-        <div className="fixed inset-0 bg-[#D9D9D9A6] flex items-end lg:items-center justify-end lg:justify-center z-50">
+  return (
+    <div className="fixed inset-0 bg-[#D9D9D9A6] flex items-end lg:items-center justify-end lg:justify-center z-50">
       <div className="flex flex-col bg-white rounded-t-[15px] w-full h-auto lg:rounded-[20px] lg:max-w-[621px]">
         <div className="flex justify-center items-center mt-4 lg:hidden">
           <hr className="w-[51px] h-[5px] rounded-[40px] bg-[#D9D9D9]" />
         </div>
         <div className="flex items-center border-b w-full pb-2 p-4 sm:p-8 lg:p-4">
           <p
-            onClick={onClose}
+            onClick={onBack}
             className="text-color-form text-sm cursor-pointer"
           >
             Back
@@ -189,22 +195,32 @@ export default function ReceiptModal ({onClose, investmentId}: ReceiptProps) {
             <p className="text-color-form text-sm">
               Kindly provide a screenshot of the transaction.
             </p>
-            <div className={`flex flex-col justify-center items-center space-y-4 my-6 py-6 shadow-sm bg-light-grey rounded-common w-full pr-8`}>
+            <div
+              className={`flex flex-col justify-center items-center space-y-4 my-6 py-6 shadow-sm bg-light-grey rounded-common w-full pr-8`}
+            >
               {!image && !imagePreview && (
                 <>
-                  <div className={`w-7 h-7 shadow-sm flex items-center justify-center transform rotate-45 rounded-[9px] bg-white`}>
+                  <div
+                    className={`w-7 h-7 shadow-sm flex items-center justify-center transform rotate-45 rounded-[9px] bg-white`}
+                  >
                     <span className="text-color-one transform -rotate-45">
                       <FaRegImage className="text-color-one" />
                     </span>
                   </div>
-                  <p className={`text-sm text-color-one cursor-pointer`} onClick={handleImageClick}>
+                  <p
+                    className={`text-sm text-color-one cursor-pointer`}
+                    onClick={handleImageClick}
+                  >
                     Tap to Upload Image
                   </p>
                 </>
               )}
               {(imagePreview || image) && (
                 <div className="mt-4 flex flex-col justify-center items-center relative">
-                  <TiTimes onClick={handleRemoveImage} className="absolute top-0 right-0 text-color-form cursor-pointer text-xl bg-white rounded-full p-1" />
+                  <TiTimes
+                    onClick={handleRemoveImage}
+                    className="absolute top-0 right-0 text-color-form cursor-pointer text-xl bg-white rounded-full p-1"
+                  />
                   <Image
                     src={imagePreview || ""}
                     alt="Image Preview"
@@ -228,22 +244,25 @@ export default function ReceiptModal ({onClose, investmentId}: ReceiptProps) {
           </section>
 
           {feedbackMessage && (
-            <div className={`text-sm ${feedbackType === "error" ? "text-red-500" : "text-green-500"}`}>
+            <div
+              className={`text-sm ${
+                feedbackType === "error" ? "text-red-500" : "text-green-500"
+              }`}
+            >
               {feedbackMessage}
             </div>
           )}
 
           <Button
             ButtonText={isUploading ? "Uploading..." : "Finish"}
-            className={`${isUploading ? "bg-inactive hover:bg-inactive" : "bg-color-one"} w-full mt-4 duration-300`}
+            className={`${
+              isUploading ? "bg-inactive hover:bg-inactive" : "bg-color-one"
+            } w-full mt-4 duration-300`}
             onClick={handleUpload}
             disabled={isUploading}
           />
         </div>
       </div>
     </div>
-    )
+  );
 }
-
-
-

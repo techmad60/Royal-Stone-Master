@@ -55,3 +55,61 @@ export default ProductDetails;
                   </div>
                 </section>
               </section> */}
+                // Construct transaction data based on the MakeInvestmentBankResponse structure
+    // const transactionDataBank: MakeInvestmentBankResponse["data"] = {
+    //   investment: {
+    //     accountID: params.get("accountID") || "",
+    //     amount: params.get("amount") || "",
+    //     type: params.get("type") || "",
+    //     status: params.get("status") || "",
+    //     beneficiary: params.get("beneficiary") || "",
+    //     investmentPurchaseID: params.get("investmentPurchaseID") || "",
+    //     paymentMade: params.get("paymentMade") === "true", // Convert to boolean
+    //     createdAt: params.get("createdAt") || "",
+    //     updatedAt: params.get("updatedAt") || "",
+    //     id: params.get("id") || "",
+    //   },
+    //   beneficiary: {
+    //     type: params.get("beneficiaryType") || "",
+    //     status: params.get("beneficiaryStatus") || "",
+    //     bankName: params.get("bankName") || "",
+    //     accountName: params.get("accountName") || "",
+    //     accountNumber: params.get("accountNumber") || "",
+    //     bankAddress: params.get("bankAddress") || "",
+    //     swiftCode: params.get("swiftCode") || "",
+    //     routingNumber: params.get("routingNumber") || "",
+    //     beneficiaryAddress: params.get("beneficiaryAddress") || "",
+    //     createdAt: params.get("beneficiaryCreatedAt") || "",
+    //     updatedAt: params.get("beneficiaryUpdatedAt") || "",
+    //     id: params.get("beneficiaryID") || "",
+    //   },
+    // };
+    // {
+    //   "admin": {
+    //     "firstname": "Sub",
+    //     "lastname": "Admin",
+    //     "email": "whatis@mail.com",
+    //     "phone": "09090909090",
+    //     "status": "active",
+    //     "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7nG8OgXmMOXXiwbNOc-PPXUcilcIhCkS9BQ&usqp=CAU",
+    //     "role": "673cf4f45fa9ddc57be699f2",
+    //     "twoFactorAuthentication": false,
+    //     "createdAt": "2024-11-19T20:32:01.441Z",
+    //     "updatedAt": "2024-11-19T20:32:01.441Z",
+    //     "id": "673cf5c15fa9ddc57be699fa"
+    //   },
+    //   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklEIjoiNjczY2Y1YzE1ZmE5ZGRjNTdiZTY5OWZhIiwiaWF0IjoxNzMyMDQ4NDgyLCJleHAiOjE3MzIxMzQ4ODJ9.nFhWM-Kj6psy_h6xPLOXNMQVBaSYrYZGKesj1O-_J8c",
+    //   "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklEIjoiNjczY2Y1YzE1ZmE5ZGRjNTdiZTY5OWZhIiwiaWF0IjoxNzMyMDQ4NDgyLCJleHAiOjE3MzIwNTEwNzR9.uyfuEIHTNhfjtaMu8zR7TO5Xg_UPAEwJYnUQ2CvahcE"
+    // }"accountID": "67879abb6bd5ac1493145737",
+  //   {
+  //     "accountID": "67879abb6bd5ac1493145737",
+  //     "amount": 100000,
+  //     "type": "savings-wallet-funding",
+  //     "status": "pending",
+  //     "beneficiary": "676889c88860831a53be6700",
+  //     "paymentMade": true,
+  //     "createdAt": "2025-01-27T08:31:55.901Z",
+  //     "updatedAt": "2025-01-27T08:33:04.652Z",
+  //     "proofOfPayment": "https://ik.imagekit.io/dvihd4xty/code_3e02aMYcD.png",
+  //     "id": "6797447bf8c010ab295577aa"
+  // },

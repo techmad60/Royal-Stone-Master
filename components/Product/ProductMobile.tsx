@@ -1,12 +1,14 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { MdArrowForwardIos } from "react-icons/md";
+import { toast, ToastContainer } from "react-toastify";
 
 interface Product {
   id: string;
   name: string;
   availableUnits: number;
   description: string;
+  status: string; // Add status field for checking
   images: string[];
 }
 
@@ -19,7 +21,12 @@ export default function ProductMobile({
 }) {
   const router = useRouter();
 
-  const handleNavigation = (productId: string) => {
+  const handleNavigation = (productId: string, status: string) => {
+    if (status !== "available") {
+      toast.error("This product has been sold out.");
+      return;
+    }
+
     const basePath =
       navigateTo === "investment"
         ? "/main/investments/make-investment/investment-product"
@@ -27,13 +34,21 @@ export default function ProductMobile({
     router.push(`${basePath}?id=${encodeURIComponent(productId)}`);
   };
 
+  const getAvailabilityTextClass = (availableUnits: number) => {
+    if (availableUnits < 1) return "text-red-700"; // Red for less than 1 unit
+    if (availableUnits === 1) return "text-color-one"; // Default color for 1 unit
+    if (availableUnits < 50) return "text-yellow-600"; // Yellow for less than 50 units
+    return "text-color-one"; // Default color for 50 or more units
+  };
+
   return (
     <div>
+      <ToastContainer position="top-right" autoClose={3000} />
       {products.map((product) => (
         <section
           key={product.id}
           className="flex items-center gap-2 bg-light-grey rounded-common p-2 shadow-sm mt-4 lg:hidden cursor-pointer"
-          onClick={() => handleNavigation(product.id)}
+          onClick={() => handleNavigation(product.id, product.status)}
         >
           <div className="w-[100px] h-[77px] rounded-[12px] overflow-hidden">
             <Image
@@ -46,8 +61,16 @@ export default function ProductMobile({
           </div>
 
           <div className="flex flex-col space-y-1 w-full">
-            <p className="text-[10px] text-color-one">
-              {product.availableUnits} Units Available
+            <p
+              className={`text-[10px] ${getAvailabilityTextClass(
+                product.availableUnits
+              )}`}
+            >
+              {product.availableUnits < 1
+                ? "Sold Out"
+                : product.availableUnits === 1
+                ? "1 Unit Available"
+                : `${product.availableUnits} Units Available`}
             </p>
             <p className="text-sm text-colour-five tracking-tight">
               {product.description?.length > 50

@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../ui/Button";
 
 interface AddCryptoInformationProps {
   onClose: () => void;
-  onCryptoDetailStatus: () => void;
+  onCryptoDetailStatus?: () => void;
 }
 
 export default function AddCryptoInformation({
   onClose,
-  onCryptoDetailStatus,
+  onCryptoDetailStatus = () => {},
 }: AddCryptoInformationProps) {
   const [formData, setFormData] = useState({
     networkID: "",
@@ -111,7 +111,7 @@ export default function AddCryptoInformation({
   };
 
   return (
-    <div className="fixed inset-0 flex items-end lg:items-center justify-end lg:justify-center z-50">
+    <div className="fixed inset-0 flex items-end justify-end lg:items-center lg:justify-center z-50">
       <div className="flex flex-col bg-white rounded-t-[15px] w-full h-[400px] lg:rounded-[20px] lg:max-w-[621px]">
         <div className="flex items-center border-b w-full pb-2 p-4">
           <p

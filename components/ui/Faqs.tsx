@@ -1,10 +1,11 @@
-import { Faq } from "@/types/FaqType";
+
+import { FaqType } from "@/types/Type";
 import React, { useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import Loading from "./Loading";
 
 interface FaqsProps {
-  faqs: Faq[];
+  faqs: FaqType[];
 }
 
 const Faqs: React.FC<FaqsProps> = ({ faqs }) => {

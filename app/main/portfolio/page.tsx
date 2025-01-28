@@ -1,12 +1,13 @@
 "use client";
-import FundModal from "@/components/Portolio/FundModal";
-import HistoryDesktop from "@/components/Portolio/HistoryDesktop";
-// import HistoryMobile from "@/components/Portolio/HistoryMobile";
-import WithdrawModal from "@/components/Portolio/WithdrawModal";
+import FundModal from "@/components/Portolio/Actions/FundModal";
+import WithdrawModal from "@/components/Portolio/Actions/WithdrawModal";
+import HistoryDesktop from "@/components/Portolio/History/HistoryDesktop";
+import HistoryMobile from "@/components/Portolio/History/HistoryMobile";
 import CardComponentFive from "@/components/ui/CardComponentFive";
 import Icon from "@/components/ui/Icon";
 import Loading from "@/components/ui/Loading";
 import NoHistory from "@/components/ui/NoHistory";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BsFileBarGraphFill } from "react-icons/bs";
@@ -25,14 +26,13 @@ export default function Portfolio() {
   const [activeModal, setActiveModal] = useState<string | null>(null); // Tracks active modal: 'withdraw', 'fund', or null
   const router = useRouter();
 
-  const openModal = (modalType:string) => {
+  const openModal = (modalType: string) => {
     setActiveModal(modalType); // Set active modal type
   };
 
   const closeModal = () => {
     setActiveModal(null); // Close any active modal
   };
-  
 
   useEffect(() => {
     // Fetch portfolio data and recent transactions
@@ -98,7 +98,7 @@ export default function Portfolio() {
     };
 
     fetchPortfolioData();
-  }, []);
+  }, [router]);
 
   if (loading) {
     return (
@@ -134,24 +134,14 @@ export default function Portfolio() {
             onClick={() => openModal("withdraw")} // Open Withdraw modal
           >
             <Icon icon={<IoIosSend />} />
-            <p
-              // href="/main/portfolio/withdraw-funds"
-              className="text-xs whitespace-nowrap"
-            >
-              Withdraw
-            </p>
+            <p className="text-xs whitespace-nowrap">Withdraw</p>
           </div>
           <div
             className="flex items-center text-color-one gap-2 cursor-pointer hover:text-green-500 duration-150"
             onClick={() => openModal("fund")} // Open Fund modal
           >
             <Icon icon={<GoPlus />} />
-            <p
-              // href="/main/portfolio/fund-wallet"
-              className="text-xs whitespace-nowrap"
-            >
-              Fund Wallet
-            </p>
+            <p className="text-xs whitespace-nowrap">Fund Wallet</p>
           </div>
         </section>
       </div>
@@ -170,25 +160,25 @@ export default function Portfolio() {
             <h1 className="text-base font-semibold lg:text-xl">
               Recent Transactions
             </h1>
-            <p className="flex items-center text-color-one text-xs">
+            <Link href="/main/transaction-history" className="flex items-center text-color-one text-xs hover:text-green-700 duration-150">
               View all{" "}
               <span>
                 <IoIosArrowForward className="lg:hidden" />
               </span>
-            </p>
+            </Link>
           </div>
           {/* Recent Transactions */}
           <>
             <HistoryDesktop transactions={recentTransactions} />
-            {/* <HistoryMobile transactions={recentTransactions} /> */}
+            <HistoryMobile transactions={recentTransactions} />
           </>
         </div>
       )}
 
-       {/* Withdraw Modal */}
-       {activeModal === "withdraw" && <WithdrawModal onClose={closeModal} />}
+      {/* Withdraw Modal */}
+      {activeModal === "withdraw" && <WithdrawModal onClose={closeModal} />}
 
-       {/* Fund Modal */}
+      {/* Fund Modal */}
       {activeModal === "fund" && <FundModal onClose={closeModal} />}
     </div>
   );

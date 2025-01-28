@@ -1,5 +1,4 @@
 "use client";
-import InvestmentProcessed from "@/components/Investments/Processed/InvestmentProcessed";
 import InvestmentDesktop from "@/components/Investments/ui/InvestmentDesktop";
 import InvestmentMobile from "@/components/Investments/ui/InvestmentMobile";
 import CardComponentFive from "@/components/ui/CardComponentFive";
@@ -7,45 +6,72 @@ import Icon from "@/components/ui/Icon";
 import Loading from "@/components/ui/Loading";
 import NoHistory from "@/components/ui/NoHistory";
 import useInvestmentStore from "@/store/investmentStore";
+import { MakeInvestmentResponse } from "@/types/Type";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BsFileBarGraphFill } from "react-icons/bs";
+import { FaClock } from "react-icons/fa6";
 import { GoPlus } from "react-icons/go";
 import { IoIosSend } from "react-icons/io";
 import PaginationComponent from "../ui/PaginationComponent";
+import Processed from "../ui/Processed";
 import HistoryDesktop from "./History/HistoryDesktop";
-// import HistoryMobile from "./History/HistoryMobile";
+import HistoryMobile from "./History/HistoryMobile";
+import PurchaseDetails from "./TransactionDetails/Purchase";
 
 export default function Investment() {
-  const { fetchInvestments, investments, isLoading, error, currentPage, totalPages, setCurrentPage } =
-    useInvestmentStore();
+  const {
+    fetchInvestments,
+    investments,
+    isLoading,
+    error,
+    currentPage,
+    totalPages,
+    setCurrentPage,
+  } = useInvestmentStore();
   const searchParams = useSearchParams();
-  const [showAlert, setShowAlert] = useState(false);
+  const [transactionData, setTransactionData] = useState<
+    MakeInvestmentResponse["data"] | null
+  >(null);
   const [ledgerBalance, setLedgerBalance] = useState(0);
   const [availableBalance, setAvailableBalance] = useState(0);
   const router = useRouter();
   const handlePageChange = (page: number) => {
     setCurrentPage(page); // Update the page in the product store
   };
-
+  const [currentModal, setCurrentModal] = useState<
+    "transactionDetails" | "bankTransactionDetails" | "processed" | null
+  >(null);
 
   useEffect(() => {
     const success = searchParams.get("success");
     if (success === "true") {
-      setShowAlert(true);
+      setCurrentModal("processed");
 
       const params = new URLSearchParams(searchParams.toString());
       params.delete("success");
+      const transactionData: MakeInvestmentResponse["data"] = {
+        accountID: params.get("accountID") || "",
+        amount: params.get("amount") || "",
+        type: params.get("type") || "",
+        status: params.get("status") || "",
+        productID: params.get("productID") || "",
+        slotPurchased: params.get("slotPurchased") || "",
+        maturityDate: params.get("maturityDate") || "",
+        createdAt: params.get("createdAt") || "",
+        updatedAt: params.get("updatedAt") || "",
+        id: params.get("id") || "",
+      };
+      setTransactionData(transactionData);
       const newUrl = `${window.location.pathname}?${params.toString()}`;
       window.history.replaceState(null, "", newUrl);
     }
   }, [searchParams]);
 
   useEffect(() => {
-    fetchInvestments("", currentPage);
-
+    fetchInvestments("investment-purchase", currentPage);
     const fetchPortfolio = async () => {
       const token = localStorage.getItem("accessToken");
 
@@ -81,12 +107,9 @@ export default function Investment() {
     };
 
     fetchPortfolio();
-  }, [fetchInvestments, currentPage]);
+  }, [fetchInvestments, currentPage, router]);
 
-  const investmentPurchases = investments.filter(
-    (investment) => investment.type === "investment-purchase"
-  );
-
+  console.log(investments);
   if (isLoading) {
     return (
       <div>
@@ -100,12 +123,12 @@ export default function Investment() {
       <div className="text-center text-red-500 mt-6">
         <p>Oops! Something went wrong.</p>
         {error && (
-  <p>
-    {typeof error === "string"
-      ? error
-      : error.message || "Unable to fetch investments at the moment."}
-  </p>
-)}
+          <p>
+            {typeof error === "string"
+              ? error
+              : error.message || "Unable to fetch investments at the moment."}
+          </p>
+        )}
       </div>
     );
   }
@@ -149,7 +172,7 @@ export default function Investment() {
           <div className="flex items-center justify-center text-color-one hover:text-green-400 duration-150 gap-1 lg:flex-col ">
             <Icon icon={<IoIosSend />} />
             <Link
-              href="/main/investments/withdraw-funds"
+              href={`/main/investments/withdraw-funds?availableBalance=${availableBalance}`}
               className="text-xs whitespace-nowrap "
             >
               Withdraw
@@ -158,7 +181,7 @@ export default function Investment() {
           <div className="flex items-center justify-center text-color-one hover:text-green-400 duration-150 gap-1 lg:flex-col ">
             <Icon icon={<BsFileBarGraphFill />} />
             <Link
-              href="/main/investments/make-investment"
+              href={`/main/investments/make-investment`}
               className="text-xs whitespace-nowrap "
             >
               Make Investment
@@ -178,28 +201,35 @@ export default function Investment() {
       <hr />
       {investments.length === 0 ? (
         <div className="lg:mr-8">
-          <NoHistory
-            icon={<BsFileBarGraphFill />}
-            text="No Investment History"
-          />
+          <NoHistory icon={<FaClock />} text="No Investment History" />
         </div>
       ) : (
         <div>
           <h1 className="text-base font-semibold mt-6 lg:text-xl">
             All Investments
           </h1>
-          <>
-            <InvestmentMobile investments={investmentPurchases} />
-            <InvestmentDesktop investments={investmentPurchases} />
-            <PaginationComponent
-      currentPage={currentPage}
-      totalPages={totalPages}
-      onPageChange={handlePageChange}
-    />
-          </>
+          {investments.length === 0 ? (
+            <div className="lg:mr-8">
+              <NoHistory
+                icon={<BsFileBarGraphFill />}
+                text="No Purchase Made Yet!"
+              />
+            </div>
+          ) : (
+            <>
+              <InvestmentMobile investments={investments} />
+              <InvestmentDesktop investments={investments} />
+              <PaginationComponent
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            </>
+          )}
+
           <hr className="lg:hidden mt-4" />
           <hr className="mr-8 hidden lg:flex" />
-          
+
           <div className="flex justify-between my-4 lg:mr-8">
             <p className="text-base font-semibold text-color-zero">
               Recent Transactions
@@ -211,11 +241,23 @@ export default function Investment() {
               View All
             </Link>
           </div>
-          <HistoryDesktop investments={investments} />
-          {/* <HistoryMobile investments={investments} /> */}
+          <HistoryDesktop />
+          <HistoryMobile />
         </div>
       )}
-      {showAlert && <InvestmentProcessed onClose={() => setShowAlert(false)} />}
+      {currentModal === "processed" && (
+        <Processed
+          onClose={() => setCurrentModal(null)}
+          message="Your Investment has been created successfully"
+          onConfirm={() => setCurrentModal("transactionDetails")}
+        />
+      )}
+      {currentModal === "transactionDetails" && (
+        <PurchaseDetails
+          transactionData={transactionData}
+          onClose={() => setCurrentModal(null)}
+        />
+      )}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import WithdrawFundsPage from "@/components/Investments/Withdraw-Funds/WithdrawFunds";
+import WithdrawFundsPage from "@/components/Investments/WithdrawFunds/WithdrawFunds";
 import Loading from "@/components/ui/Loading";
 import { Suspense } from "react";
 

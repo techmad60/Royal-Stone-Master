@@ -5,7 +5,7 @@ import Button from "../../ui/Button";
 
 interface AddBankInformationProps {
   onClose: () => void;
-  onBankDetailStatus: () => void;
+  onBankDetailStatus?: () => void;
 }
 
 // Define interface for form data
@@ -30,7 +30,7 @@ interface Errors {
 }
 
 
-export default function AddBankInformation({ onClose, onBankDetailStatus }: AddBankInformationProps) {
+export default function AddBankInformation({ onClose, onBankDetailStatus = () => {} }: AddBankInformationProps) {
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -129,7 +129,7 @@ export default function AddBankInformation({ onClose, onBankDetailStatus }: AddB
   };
 
   return (
-    <div className="fixed inset-0 flex items-end lg:items-center justify-end lg:justify-center z-50">
+    <div className="fixed inset-0 flex items-end justify-end lg:items-center lg:justify-center z-50">
       <div className="flex flex-col bg-white rounded-t-[15px] w-full h-[620px] lg:h-[700px] lg:rounded-[20px] lg:max-w-[621px]">
         <div className="flex items-center border-b w-full p-4">
           <p

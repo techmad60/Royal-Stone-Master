@@ -1,10 +1,11 @@
 import Icon from "@/components/ui/Icon";
 import Loading from "@/components/ui/Loading";
-import { useState } from "react";
+import TableHeader from "@/components/ui/TableHeader";
+import { useEffect, useState } from "react";
 import { BsFileBarGraphFill } from "react-icons/bs";
 import { GoPlus } from "react-icons/go";
-import { IoIosArrowForward } from "react-icons/io";
-import InvestmentHistoryModal from "./InvestmentHistoryModal";
+import { IoIosArrowForward, IoIosSend } from "react-icons/io";
+import TransactionHistoryModal from "./TransactionHistoryModal";
 interface Investments {
   id: string;
   type: string;
@@ -13,16 +14,50 @@ interface Investments {
   status: string;
 }
 
-export default function HistoryDesktop({
-  investments,
-}: {
-  investments: Investments[];
-}) {
+export default function HistoryDesktop() {
   const [loading, setLoading] = useState(false);
+  const [investments, setInvestments] = useState<Investments[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false); // Modal visibility state
   const [selectedInvestment, setSelectedInvestment] =
     useState<Investments | null>(null); // Selected investment
+
+  useEffect(() => {
+    const fetchInvestments = async () => {
+      const token = localStorage.getItem("accessToken");
+      try {
+        setError(null);
+
+        const response = await fetch(
+          `https://api-royal-stone.softwebdigital.com/api/investment`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+
+        if (!data.status) {
+          throw new Error("Failed to fetch investments.");
+        }
+
+        setInvestments(data.data.data); // Set the fetched investments
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(
+            err.message || "Failed to fetch data. Please try again later."
+          );
+        } else {
+          setError("An unknown error occurred. Please try again later.");
+        }
+      }
+    };
+
+    fetchInvestments();
+  }, []);
 
   const fetchInvestmentDetails = async (id: string, type: string) => {
     const token = localStorage.getItem("accessToken");
@@ -59,11 +94,10 @@ export default function HistoryDesktop({
       // Set the selected investment data and open modal
       setSelectedInvestment(investmentDetails);
       setShowModal(true);
-    }  catch (err: unknown) {
+    } catch (err: unknown) {
       if (err instanceof Error) {
         setError(
           err.message || "Failed to fetch data. Please try again later."
-         
         );
       } else {
         setError("An unknown error occurred. Please try again later.");
@@ -91,17 +125,7 @@ export default function HistoryDesktop({
 
   return (
     <div className="hidden lg:grid">
-      <div className="hidden lg:grid grid-cols-7 items-center bg-light-grey rounded-common py-4 px-3 shadow-sm mr-8">
-        <p className="text-xs text-[rgba(15,28,57,0.5)] col-span-2">
-          Transaction Name
-        </p>
-        <p className="text-xs text-[rgba(15,28,57,0.5)]">Amount</p>
-        <p className="text-xs text-[rgba(15,28,57,0.5)] col-span-2">
-          Transaction Date & Time
-        </p>
-        <p className="text-xs text-[rgba(15,28,57,0.5)]">Status</p>
-        <p className="text-xs text-[rgba(15,28,57,0.5)]">Actions</p>
-      </div>
+      <TableHeader />
       {error && <p className="text-red-500">{error}</p>}
       {latestInvestments.map((investment) => (
         <section
@@ -113,8 +137,10 @@ export default function HistoryDesktop({
               icon={
                 investment.type === "investment-wallet-funding" ? (
                   <GoPlus className="text-color-one" />
-                ) : (
+                ) : investment.type === "investment-purchase" ? (
                   <BsFileBarGraphFill className="text-color-one" />
+                ) : (
+                  <IoIosSend className="text-color-one" />
                 )
               }
             />
@@ -165,7 +191,7 @@ export default function HistoryDesktop({
 
       {/* Modal for displaying investment details */}
       {showModal && selectedInvestment && (
-        <InvestmentHistoryModal
+        <TransactionHistoryModal
           investment={selectedInvestment} // Passing selected investment as prop
           closeModal={() => setShowModal(false)} // Close modal function
         />
