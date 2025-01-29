@@ -16,9 +16,10 @@ interface Notification {
 }
 
 export default function Notification() {
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Fetch initial notifications
   useEffect(() => {
     const fetchNotifications = async () => {
       const token = localStorage.getItem("accessToken");
@@ -44,7 +45,43 @@ export default function Notification() {
     };
 
     fetchNotifications();
-  }, []); // Empty dependency
+  }, []);
+
+  // Initialize Pusher and listen for real-time updates
+  // useEffect(() => {
+  //   const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
+  //     cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
+  //   });
+  
+  //   const channel = pusher.subscribe("royal-stone-development"); // Ensure this is correct
+  
+  //   const handleNotification = (eventType: string, newNotification: Notification) => {
+  //     console.log(`Received ${eventType}:`, newNotification);
+  //     setNotifications((prev) => [newNotification, ...prev]);
+  //   };
+  
+  //   // Listen for all possible event types
+  //   const eventTypes = [
+  //     "funding-approval",
+  //     "funding-declined",
+  //     "withdrawal-approval",
+  //     "withdrawal-declined",
+  //     "investment-maturity",
+  //     "savings-maturity",
+  //   ];
+  
+  //   eventTypes.forEach((eventType) => {
+  //     channel.bind(eventType, (data: Notification) => handleNotification(eventType, data));
+  //   });
+  
+  //   // Cleanup
+  //   return () => {
+  //     eventTypes.forEach((eventType) => channel.unbind(eventType));
+  //     pusher.unsubscribe("royal-stone-development");
+  //     pusher.disconnect();
+  //   };
+  // }, []);
+  
 
   const groupNotificationsByDate = (notifications: Notification[]) => {
     const grouped: Record<string, Notification[]> = {};

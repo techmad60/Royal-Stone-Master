@@ -14,7 +14,7 @@ import { BiSolidBank } from "react-icons/bi";
 import { BsFileBarGraphFill, BsPersonCheck } from "react-icons/bs";
 import { LuScanFace } from "react-icons/lu";
 import { TbTargetArrow } from "react-icons/tb";
-import Loading from "../ui/Loading";
+// import Loading from "../ui/Loading";
 import AddCryptoInformation from "./Bank/AddCrypto";
 import BankInfo from "./Bank/BankInfo";
 
@@ -22,7 +22,7 @@ export default function Dashboard() {
   const fullName = useUserStore((state) => state.fullName);
   useLoadFullName();
   const router = useRouter(); // Initialize useRouter
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   // Zustand store hooks
   const {
     //Bank/Crypto Info Provided
@@ -183,14 +183,8 @@ export default function Dashboard() {
     const userId = localStorage.getItem("userId");
 
     if (userId && isBankProvided && isKycProvided) {
-      // Show the loading UI for 2 seconds
-      setLoading(true);
-      setTimeout(() => {
-        router.push("/main/dashboard"); // Redirect after 2 seconds
-      }, 2000); // 2 seconds delay
-    } else {
-      setLoading(false); // Hide loading UI immediately if conditions are not met
-    }
+        router.push("/main/dashboard");
+    } 
   }, [isBankProvided, isKycProvided, router]);
 
   //Bank Functions
@@ -245,11 +239,11 @@ export default function Dashboard() {
     return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
   };
 
-  if (loading) {
-    return (
-      <div><Loading/></div>
-    )
-  }
+  // if (loading) {
+  //   return (
+  //     <div><Loading/></div>
+  //   )
+  // }
 
   return (
     <div className="flex flex-col lg:pr-8">

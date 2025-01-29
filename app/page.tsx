@@ -6,10 +6,11 @@ import Main from "../components/Sections/Main";
 
 
 export default function Home() {
+  
   return (
     <div className={`bg-color-two flex flex-col`}>
       <Header />
-       <Main />
+      <Main />
       <Footer />
     </div>
   );

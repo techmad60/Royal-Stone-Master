@@ -210,7 +210,7 @@ export default function WithdrawFundsPage() {
     setSuccessMessage(null);
 
     try {
-      const result = await withdrawFunds(amount, beneficiaryID, token, "savings");
+      const result = await withdrawFunds(amount, beneficiaryID, token, "investment");
 
       if (result.success && result.data) {
         setTransactionData(result.data); // Store response data

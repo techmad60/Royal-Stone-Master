@@ -5,6 +5,7 @@ import ProductDesktop from "@/components/Product/ProductDesktop";
 import ProductMobile from "@/components/Product/ProductMobile";
 import CardComponentFive from "@/components/ui/CardComponentFive";
 import Loading from "@/components/ui/Loading";
+import { useKycStore } from "@/store/kycStore";
 import useProductStore from "@/store/productStore";
 import useUserStore, { useLoadFullName } from "@/store/userStore";
 import Link from "next/link";
@@ -16,10 +17,9 @@ import { MdArrowForwardIos } from "react-icons/md";
 import { TbTargetArrow } from "react-icons/tb";
 
 export default function Dashboard() {
+  const { products, fetchProducts, isLoading, error } = useProductStore();
   const fullName = useUserStore((state) => state.fullName);
   useLoadFullName();
-  const { products, fetchProducts, isLoading, error } = useProductStore();
-
   const [dashboardData, setDashboardData] = useState({
     totalSavingsTarget: 0,
     totalInvestments: 0,
@@ -27,68 +27,95 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState("");
   const [recentTransactions, setRecentTransactions] = useState([]);
+  const { isBankProvided, isKycProvided } = useKycStore();
   const router = useRouter();
 
   const capitalizeFirstLetter = (name: string): string =>
     name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        router.push("/auth/login");
+    // Check if we're on the client side before accessing localStorage
+    if (typeof window !== "undefined") {
+      const storedUserId = localStorage.getItem("userId");
+
+      if (!storedUserId) {
+        router.replace("/auth/login"); // No user? Redirect immediately
         return;
       }
-      try {
-        const response = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/account/dashboard",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const data = await response.json();
 
-        if (data.status) {
-          setDashboardData(data.data);
-        } else {
-          setApiError(data.message || "Failed to fetch dashboard data.");
-        }
-        // Fetch recent transactions
-        const transactionsResponse = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/transaction",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const transactionsResult = await transactionsResponse.json();
-
-        if (transactionsResult.status) {
-          setRecentTransactions(transactionsResult.data.data);
-        } else {
-          console.error(
-            "Failed to fetch recent transactions:",
-            transactionsResult.message
-          );
-        }
-      } catch (error) {
-        setApiError("An error occurred while fetching dashboard data.");
-        console.log(error)
-      } finally {
-        setLoading(false);
+      if (!isBankProvided || !isKycProvided) {
+        // If either requirement is missing, redirect after 2s
+        const timeout = setTimeout(() => {
+          router.push("/auth/auth-dashboard");
+        }, 2000);
+        return () => clearTimeout(timeout); // Cleanup timeout on unmount
       }
-    };
 
-    fetchDashboardData();
-    fetchProducts();
-  }, [fetchProducts, router]);
+      // Fetch dashboard data only if all checks pass
+      const fetchDashboardData = async () => {
+        setLoading(true); // Set loading state before starting fetch
+        const token = localStorage.getItem("accessToken");
 
+        if (!token) {
+          router.replace("/auth/login");
+          setLoading(false); // Ensure loading state is reset
+          return;
+        }
+
+        try {
+          const response = await fetch(
+            "https://api-royal-stone.softwebdigital.com/api/account/dashboard",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          const data = await response.json();
+
+          if (data.status) {
+            setDashboardData(data.data);
+          } else {
+            setApiError(data.message || "Failed to fetch dashboard data.");
+            return; // Stop further execution if there’s an error
+          }
+
+          // Fetch transactions
+          const transactionsResponse = await fetch(
+            "https://api-royal-stone.softwebdigital.com/api/transaction",
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const transactionsResult = await transactionsResponse.json();
+
+          if (transactionsResult.status) {
+            setRecentTransactions(transactionsResult.data.data);
+          } else {
+            console.error(
+              "Failed to fetch recent transactions:",
+              transactionsResult.message
+            );
+          }
+        } catch (error) {
+          setApiError("An error occurred while fetching dashboard data.");
+          console.error(error);
+        } finally {
+          setLoading(false); // Stop loading after data fetch or error
+        }
+      };
+
+      // Only fetch data if both bank details and KYC are provided
+
+      fetchDashboardData();
+      fetchProducts()
+    }
+  }, [fetchProducts, router, isBankProvided, isKycProvided]); // Ensure these values are correctly tracked
 
   if (loading) {
     return (
@@ -137,7 +164,10 @@ export default function Dashboard() {
           <Link
             href="/main/investments/make-investment"
             className="py-3 self-center text-sm bg-color-one hover:bg-green-700 duration-150 text-white text-center w-[200px] rounded-[12px]"
-          > Perform a transaction</Link>
+          >
+            {" "}
+            Perform a transaction
+          </Link>
         </div>
       ) : (
         // Recent Transactions UI

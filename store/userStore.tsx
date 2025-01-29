@@ -1,8 +1,6 @@
-"use client";
 import { useEffect } from "react";
 import { create } from "zustand";
 
-// Define an interface for the store state
 interface UserStore {
   fullName: string;
   setFullName: (name: string) => void;
@@ -10,31 +8,32 @@ interface UserStore {
   setReferralCode: (code: string) => void;
 }
 
-// Create your Zustand store
 const useUserStore = create<UserStore>((set) => ({
-  fullName: "", // Default value, will be updated in useEffect
+  fullName: "", // Default value
   referralCode: null,
   setFullName: (name) => {
     set({ fullName: name });
+    // Only access localStorage in the client-side
     if (typeof window !== "undefined") {
-      localStorage.setItem("fullName", name); // Save to localStorage when it's updated
+      localStorage.setItem("fullName", name); 
     }
   },
   setReferralCode: (code) => {
     set({ referralCode: code });
+    // Only access localStorage in the client-side
     if (typeof window !== "undefined") {
-      localStorage.setItem("referralCode", code); // Save to localStorage when it's updated
+      localStorage.setItem("referralCode", code); 
     }
   },
 }));
 
-
-// Create a hook to load the full name from localStorage
+// Load fullName and referralCode from localStorage on mount
 export const useLoadFullName = () => {
   const setFullName = useUserStore((state) => state.setFullName);
   const setReferralCode = useUserStore((state) => state.setReferralCode);
 
   useEffect(() => {
+    // Ensure localStorage access only happens in the browser
     if (typeof window !== "undefined") {
       const storedName = localStorage.getItem("fullName");
       const storedReferralCode = localStorage.getItem("referralCode");

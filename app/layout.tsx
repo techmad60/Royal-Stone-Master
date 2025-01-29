@@ -1,7 +1,8 @@
+// import NotificationList from "@/Services/NotificationList";
+import NotificationProvider from "@/Services/NotificationService";
+import { GeistSans } from "geist/font/sans";
 import { Metadata } from "next";
 import "./globals.css";
-import { GeistSans } from "geist/font/sans";
-
 
 export const metadata: Metadata = {
   title: "Royal Stone",
@@ -21,7 +22,10 @@ export default function RootLayout({
         <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
       </head>
       <body>
-        {children}</body>
+        {/* <NotificationList/> */}
+        <NotificationProvider />
+        {children}
+      </body>
     </html>
   );
 }
