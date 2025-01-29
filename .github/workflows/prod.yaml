@@ -1,89 +1,89 @@
-name: Deployment
+# name: Deployment
 
-on:
-  push:
-    branches:
-      - master
+# on:
+#   push:
+#     branches:
+#       - master
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
 
-    if: github.event_name == 'push'
+#     if: github.event_name == 'push'
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Checkout Repository
+#         uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: "22"
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v2
+#         with:
+#           node-version: "22"
 
-      - name: Install Dependencies
-        run: npm install --legacy-peer-deps
+#       - name: Install Dependencies
+#         run: npm install --legacy-peer-deps
 
-      - name: Build Project
-        env:
-          API_BASE_URL: ${{ secrets.API_BASE_URL }}
-          # GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          # NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
-          # NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY }}
-          # NEXT_PUBLIC_IMAGEKIT_URL: ${{ secrets.NEXT_PUBLIC_IMAGEKIT_URL }}
-          # NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
-          # NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
-          # NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
-          # NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
-          # NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
-          # NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
-          # NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}
-          # NEXT_PUBLIC_VAPID_KEY: ${{ secrets.NEXT_PUBLIC_VAPID_KEY }}
-        run: |
-          npm run build
+#       - name: Build Project
+#         env:
+#           API_BASE_URL: ${{ secrets.API_BASE_URL }}
+#           # GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+#           # NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+#           # NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY }}
+#           # NEXT_PUBLIC_IMAGEKIT_URL: ${{ secrets.NEXT_PUBLIC_IMAGEKIT_URL }}
+#           # NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+#           # NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
+#           # NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+#           # NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
+#           # NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
+#           # NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
+#           # NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}
+#           # NEXT_PUBLIC_VAPID_KEY: ${{ secrets.NEXT_PUBLIC_VAPID_KEY }}
+#         run: |
+#           npm run build
 
-      - name: Deploy to Server
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          port: ${{ secrets.SSH_PORT }}
-          key: ${{ secrets.SSH_KEY }}
-          source: "./*"
-          target: ${{ secrets.PROJECT_PATH }}
+#       - name: Deploy to Server
+#         uses: appleboy/scp-action@v0.1.7
+#         with:
+#           host: ${{ secrets.SSH_HOST }}
+#           username: ${{ secrets.SSH_USER }}
+#           port: ${{ secrets.SSH_PORT }}
+#           key: ${{ secrets.SSH_KEY }}
+#           source: "./*"
+#           target: ${{ secrets.PROJECT_PATH }}
 
-      - name: Create .env file on server
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: |
-            rm -rf ${{ secrets.ENV_PATH }}
-            echo "API_BASE_URL=${{ secrets.API_BASE_URL }}" >> ${{ secrets.ENV_PATH }}
-            # echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> ${{ secrets.ENV_PATH }}
-            # echo "NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}" >> ${{ secrets.ENV_PATH }}
-            # echo "NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY=${{ secrets.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY }}" >> ${{ secrets.ENV_PATH }}
-            # echo "NEXT_PUBLIC_IMAGEKIT_URL=${{ secrets.NEXT_PUBLIC_IMAGEKIT_URL }}" >> ${{ secrets.ENV_PATH }}
-            # echo "NEXT_PUBLIC_FIREBASE_API_KEY=${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}" >> ${{ secrets.ENV_PATH }}
-            # echo "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}" >> ${{ secrets.ENV_PATH }}
-            # echo "NEXT_PUBLIC_FIREBASE_PROJECT_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}" >> ${{ secrets.ENV_PATH }}
-            # echo "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}" >> ${{ secrets.ENV_PATH }}
-            # echo "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}" >> ${{ secrets.ENV_PATH }}
-            # echo "NEXT_PUBLIC_FIREBASE_APP_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}" >> ${{ secrets.ENV_PATH }}
-            # echo "NEXT_PUBLIC_FIREBASE_MEASUREMENT_IDL=${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_IDL }}" >> ${{ secrets.ENV_PATH }}
-            # echo "NEXT_PUBLIC_VAPID_KEY=${{ secrets.NEXT_PUBLIC_VAPID_KEY }}" >> ${{ secrets.ENV_PATH }}
+#       - name: Create .env file on server
+#         uses: appleboy/ssh-action@v0.1.10
+#         with:
+#           host: ${{ secrets.SSH_HOST }}
+#           username: ${{ secrets.SSH_USER }}
+#           key: ${{ secrets.SSH_KEY }}
+#           port: ${{ secrets.SSH_PORT }}
+#           script: |
+#             rm -rf ${{ secrets.ENV_PATH }}
+#             echo "API_BASE_URL=${{ secrets.API_BASE_URL }}" >> ${{ secrets.ENV_PATH }}
+#             # echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> ${{ secrets.ENV_PATH }}
+#             # echo "NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}" >> ${{ secrets.ENV_PATH }}
+#             # echo "NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY=${{ secrets.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY }}" >> ${{ secrets.ENV_PATH }}
+#             # echo "NEXT_PUBLIC_IMAGEKIT_URL=${{ secrets.NEXT_PUBLIC_IMAGEKIT_URL }}" >> ${{ secrets.ENV_PATH }}
+#             # echo "NEXT_PUBLIC_FIREBASE_API_KEY=${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}" >> ${{ secrets.ENV_PATH }}
+#             # echo "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}" >> ${{ secrets.ENV_PATH }}
+#             # echo "NEXT_PUBLIC_FIREBASE_PROJECT_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}" >> ${{ secrets.ENV_PATH }}
+#             # echo "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}" >> ${{ secrets.ENV_PATH }}
+#             # echo "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}" >> ${{ secrets.ENV_PATH }}
+#             # echo "NEXT_PUBLIC_FIREBASE_APP_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}" >> ${{ secrets.ENV_PATH }}
+#             # echo "NEXT_PUBLIC_FIREBASE_MEASUREMENT_IDL=${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_IDL }}" >> ${{ secrets.ENV_PATH }}
+#             # echo "NEXT_PUBLIC_VAPID_KEY=${{ secrets.NEXT_PUBLIC_VAPID_KEY }}" >> ${{ secrets.ENV_PATH }}
 
-      - name: Restart Application
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: |
-            export NVM_DIR="$HOME/.nvm"
-            source $NVM_DIR/nvm.sh
-            cd ${{ secrets.PROJECT_PATH }}
-            pm2 restart 2
-            pm2 save
+#       - name: Restart Application
+#         uses: appleboy/ssh-action@v0.1.10
+#         with:
+#           host: ${{ secrets.SSH_HOST }}
+#           username: ${{ secrets.SSH_USER }}
+#           key: ${{ secrets.SSH_KEY }}
+#           port: ${{ secrets.SSH_PORT }}
+#           script: |
+#             export NVM_DIR="$HOME/.nvm"
+#             source $NVM_DIR/nvm.sh
+#             cd ${{ secrets.PROJECT_PATH }}
+#             pm2 restart 2
+#             pm2 save
