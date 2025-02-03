@@ -1,8 +1,8 @@
 // Footer Component
 import Image from 'next/image';
-import { FaXTwitter, FaLinkedin} from "react-icons/fa6";
-import { FaFacebook} from "react-icons/fa";
 import Link from 'next/link';
+import { FaFacebook } from "react-icons/fa";
+import { FaLinkedin } from "react-icons/fa6";
 
 export default function Footer ({margin = ""}){
     return (
@@ -43,10 +43,10 @@ export default function Footer ({margin = ""}){
                         <section className="flex flex-col space-y-4 justify-start items-start mt-8 lg:mt-0">
                             <p className={`text-center text-sm font-semibold `}>SOCIALS</p>
                             <ul className="flex flex-row space-x-2 lg:space-x-0 lg:grid grid-cols-2 lg:gap-3">
-                                <li><a href="" className='hover:text-green-500 duration-300 text-blue-600'><FaFacebook/></a></li>
-                                <li><a href="" className='hover:text-green-500 duration-300'> <Image src={"/images/instagram.svg"} alt="Instagram Logo" width={16} height={16}/></a></li>
-                                <li><a href="" className='hover:text-green-500 duration-300 text-blue-600'><FaXTwitter className='text-black'/></a></li>
-                                <li><a href="" className='hover:text-green-500 duration-300 text-blue-600'><FaLinkedin className='text-blue-700'/></a></li>
+                                <li><a href="https://www.facebook.com/share/1GyoXrSC2i/?mibextid=wwXIfr" className='hover:text-green-500 duration-300 text-blue-600'><FaFacebook/></a></li>
+                                {/* <li><a href="" className='hover:text-green-500 duration-300'> <Image src={"/images/instagram.svg"} alt="Instagram Logo" width={16} height={16}/></a></li>
+                                <li><a href="" className='hover:text-green-500 duration-300 text-blue-600'><FaXTwitter className='text-black'/></a></li> */}
+                                <li><a href="https://www.linkedin.com/company/royalstone-capital/" className='hover:text-green-500 duration-300 text-blue-600'><FaLinkedin className='text-blue-700'/></a></li>
                             </ul>
                         </section>
                     </div>                   

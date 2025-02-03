@@ -1,10 +1,10 @@
 // Main Component
 import Image from "next/image";
 import AppStoreButton from "../ui/AppStoreButton";
-import GooglePlayButton from "../ui/GooglePlayButton";
-import DownloadApp from "../ui/DownloadApp";
 import CardComponent from "../ui/CardComponent";
 import CardComponentTwo from "../ui/CardComponentTwo";
+import DownloadApp from "../ui/DownloadApp";
+import GooglePlayButton from "../ui/GooglePlayButton";
 // import Carousel from "../ui/Carousel";
 import { GrSend } from "react-icons/gr";
 
@@ -79,7 +79,7 @@ export default function Main() {
 
         {/*Hero Image */}
         <Image
-          src="/images/hero-img.svg"
+          src="/images/revised-hero.svg"
           alt="Hero Image"
           width={340}
           height={437.36}
@@ -106,7 +106,7 @@ export default function Main() {
             </p>
           </div>
           <Image
-            src={"/images/dashboard.svg"}
+            src={"/images/revised-dashboard.svg"}
             alt="App Dashboard"
             className="mt-20 xs:w-[345px] sm:w-[350px] lg:w-[472px]"
             width={330}
@@ -242,7 +242,7 @@ export default function Main() {
         />
         {/* Fund Wallet Destop Image */}
         <Image
-          src={"/images/fund-wallet.svg"}
+          src={"/images/revised-fund.svg"}
           alt="Fund-Wallet"
           className="hidden lg:flex"
           width={472}
@@ -305,7 +305,7 @@ export default function Main() {
           {/* Product 1 */}
           <section className="flex flex-col justify-start items-start flex-shrink-0">
             <Image
-              src={"/images/small-potato.png"}
+              src={"/images/image-1.png"}
               alt="Potato Image"
               className="lg:w-[291px]"
               width={252}
@@ -328,7 +328,7 @@ export default function Main() {
           {/* Product 2 */}
           <section className="flex flex-col justify-start items-start flex-shrink-0">
             <Image
-              src={"/images/small-potato.png"}
+              src={"/images/image-2.png"}
               alt="Potato Image"
               className="lg:w-[291px]"
               width={252}
@@ -338,7 +338,7 @@ export default function Main() {
             <div className="flex flex-col justify-start items-start mt-2">
               <div className="flex flex-col justify-start items-start">
                 <p className="font-medium text-base text-color-zero leading-4 my-2 text-start">
-                  Sweet Potatoes
+                  Mushroom
                 </p>
                 <p className="text-sm text-color-unit">
                   500 Units.{" "}
@@ -351,7 +351,7 @@ export default function Main() {
           {/* Product 3 */}
           <section className="flex flex-col justify-start items-start flex-shrink-0">
             <Image
-              src={"/images/small-potato.png"}
+              src={"/images/image-3.png"}
               alt="Potato Image"
               className="lg:w-[291px]"
               width={252}
@@ -361,7 +361,7 @@ export default function Main() {
             <div className="flex flex-col justify-start items-start mt-2">
               <div className="flex flex-col justify-start items-start">
                 <p className="font-medium text-base text-color-zero leading-4 my-2 text-start">
-                  Sweet Potatoes
+                  Real Estate
                 </p>
                 <p className="text-sm text-color-unit">
                   500 Units.{" "}
@@ -374,7 +374,7 @@ export default function Main() {
           {/* Product 4 */}
           <section className="flex flex-col justify-start items-start flex-shrink-0">
             <Image
-              src={"/images/small-potato.png"}
+              src={"/images/image-4.png"}
               alt="Potato Image"
               className="lg:w-[291px]"
               width={252}
@@ -384,7 +384,7 @@ export default function Main() {
             <div className="flex flex-col justify-start items-start mt-2">
               <div className="flex flex-col justify-start items-start">
                 <p className="font-medium text-base text-color-zero leading-4 my-2 text-start">
-                  Sweet Potatoes
+                  Ripe Fruits
                 </p>
                 <p className="text-sm text-color-unit">
                   500 Units.{" "}
