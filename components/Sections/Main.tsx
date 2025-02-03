@@ -234,7 +234,7 @@ export default function Main() {
 
         {/* Fund Wallet Mobile Image */}
         <Image
-          src={"/images/fund-wallet-full.svg"}
+          src={"/images/revised-mobile-fund.svg"}
           alt="Fund-Wallet"
           className="xs:w-[345px] self-center mt-8 lg:hidden"
           width={330}
