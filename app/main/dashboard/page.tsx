@@ -5,7 +5,7 @@ import ProductDesktop from "@/components/Product/ProductDesktop";
 import ProductMobile from "@/components/Product/ProductMobile";
 import CardComponentFive from "@/components/ui/CardComponentFive";
 import Loading from "@/components/ui/Loading";
-import { useKycStore } from "@/store/kycStore";
+// import { useKycStore } from "@/store/kycStore";
 import useProductStore from "@/store/productStore";
 import useUserStore, { useLoadFullName } from "@/store/userStore";
 import Link from "next/link";
@@ -27,96 +27,112 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState("");
   const [recentTransactions, setRecentTransactions] = useState([]);
-  const { isBankProvided, isKycProvided } = useKycStore();
+  // const { isBankProvided, isKycProvided } = useKycStore();
   const router = useRouter();
 
   const capitalizeFirstLetter = (name: string): string =>
     name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 
   useEffect(() => {
-    // Check if we're on the client side before accessing localStorage
-    if (typeof window !== "undefined") {
-      const storedUserId = localStorage.getItem("userId");
-
-      if (!storedUserId) {
-        router.replace("/auth/login"); // No user? Redirect immediately
+    const fetchProfile = async () => {
+      setLoading(true); // Start loading state
+  
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        router.replace("/auth/login");
         return;
       }
-
-      if (!isBankProvided || !isKycProvided) {
-        // If either requirement is missing, redirect after 2s
-        const timeout = setTimeout(() => {
-          router.push("/auth/auth-dashboard");
-        }, 2000);
-        return () => clearTimeout(timeout); // Cleanup timeout on unmount
-      }
-
-      // Fetch dashboard data only if all checks pass
-      const fetchDashboardData = async () => {
-        setLoading(true); // Set loading state before starting fetch
-        const token = localStorage.getItem("accessToken");
-
-        if (!token) {
-          router.replace("/auth/login");
-          setLoading(false); // Ensure loading state is reset
+  
+      try {
+        const response = await fetch(
+          "https://api-royal-stone.softwebdigital.com/api/account/profile",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+  
+        if (!data.status) {
+          setApiError("Failed to fetch profile data.");
+          setLoading(false);
           return;
         }
-
-        try {
-          const response = await fetch(
-            "https://api-royal-stone.softwebdigital.com/api/account/dashboard",
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          const data = await response.json();
-
-          if (data.status) {
-            setDashboardData(data.data);
-          } else {
-            setApiError(data.message || "Failed to fetch dashboard data.");
-            return; // Stop further execution if there’s an error
-          }
-
-          // Fetch transactions
-          const transactionsResponse = await fetch(
-            "https://api-royal-stone.softwebdigital.com/api/transaction",
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          const transactionsResult = await transactionsResponse.json();
-
-          if (transactionsResult.status) {
-            setRecentTransactions(transactionsResult.data.data);
-          } else {
-            console.error(
-              "Failed to fetch recent transactions:",
-              transactionsResult.message
-            );
-          }
-        } catch (error) {
-          setApiError("An error occurred while fetching dashboard data.");
-          console.error(error);
-        } finally {
-          setLoading(false); // Stop loading after data fetch or error
+  
+        const userProfile = data.data;
+  
+        // Validate KYC and Next of Kin
+        const isKycComplete = userProfile.kycApproval === "filled";
+        const hasNextOfKin = userProfile.nextOfKin && Object.keys(userProfile.nextOfKin).length > 0;
+  
+        if (!isKycComplete || !hasNextOfKin) {
+          setTimeout(() => {
+            router.push("/auth/auth-dashboard");
+          }, 2000);
+          return;
         }
-      };
-
-      // Only fetch data if both bank details and KYC are provided
-
-      fetchDashboardData();
-      fetchProducts()
-    }
-  }, [fetchProducts, router, isBankProvided, isKycProvided]); // Ensure these values are correctly tracked
-
+  
+        // Fetch Dashboard Data if user passes validation
+        fetchDashboardData(token);
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+        setApiError("An error occurred while fetching profile data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    const fetchDashboardData = async (token: string) => {
+      try {
+        const response = await fetch(
+          "https://api-royal-stone.softwebdigital.com/api/account/dashboard",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+  
+        if (data.status) {
+          setDashboardData(data.data);
+        } else {
+          setApiError(data.message || "Failed to fetch dashboard data.");
+        }
+  
+        // Fetch Transactions
+        const transactionsResponse = await fetch(
+          "https://api-royal-stone.softwebdigital.com/api/transaction",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const transactionsResult = await transactionsResponse.json();
+  
+        if (transactionsResult.status) {
+          setRecentTransactions(transactionsResult.data.data);
+        } else {
+          console.error(
+            "Failed to fetch recent transactions:",
+            transactionsResult.message
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+        setApiError("An error occurred while fetching dashboard data.");
+      }
+    };
+  
+    fetchProfile();
+    fetchProducts();
+  }, [fetchProducts, router]);
+  
   if (loading) {
     return (
       <div>

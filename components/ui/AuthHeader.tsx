@@ -22,6 +22,7 @@ export default function AuthHeader({
   const pathname = usePathname();
   const showMenu =
     pathname.includes("/auth/auth-dashboard") || pathname.includes("/main/");
+  const isAuthDashboard = pathname === "/auth/auth-dashboard";
 
   useEffect(() => {
     const fetchProfilePicture = async () => {
@@ -82,24 +83,32 @@ export default function AuthHeader({
         {/* User and Notification Img */}
         {showMenu && (
           <div className="flex items-center gap-1">
-            <div className="w-5 h-5 rounded-full overflow-hidden">
-              {/* Profile Picture */}
-              <Image
-                src={profilePicture}
-                alt="User Image"
-                width={20}
-                height={20}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <Link href="/main/portfolio/notifications">
-              <Image
-                src={"/images/notification.svg"}
-                alt="Notification Image"
-                width={25.41}
-                height={25.41}
-              />
-            </Link>
+            {!isAuthDashboard && (
+              <Link
+                href="/main/settings"
+                className="w-5 h-5 rounded-full overflow-hidden"
+              >
+                {/* Profile Picture */}
+                <Image
+                  src={profilePicture}
+                  alt="User Image"
+                  width={20}
+                  height={20}
+                  className="w-full h-full object-cover"
+                />
+              </Link>
+            )}
+
+            {!isAuthDashboard && (
+              <Link href="/main/portfolio/notifications">
+                <Image
+                  src={"/images/notification.svg"}
+                  alt="Notification Image"
+                  width={25.41}
+                  height={25.41}
+                />
+              </Link>
+            )}
           </div>
         )}
       </div>

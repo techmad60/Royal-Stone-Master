@@ -15,24 +15,6 @@ interface KycState {
   isProfilePictureProvided: boolean;
   setIsProfilePictureProvided: (status: boolean) => void;
 
-  //Bank/Crypto Modal Open
-  isBankModalOpen: boolean;
-  setIsBankModalOpen: (status: boolean) => void;
-  isAddBankInfoModalOpen: boolean;
-  setIsAddBankInfoModalOpen: (status: boolean) => void;
-  isAddCryptoInfoModalOpen: boolean;
-  setIsAddCryptoInfoModalOpen: (status: boolean) => void;
-
-  //Kyc Modal Open
-  isKycModalOpen: boolean;
-  setIsKycModalOpen: (status: boolean) => void;
-  isValidIdModalOpen: boolean;
-  setIsValidIdModalOpen: (status: boolean) => void;
-  isNextOfKinModalOpen: boolean;
-  setIsNextOfKinModalOpen: (status: boolean) => void;
-  isProfilePictureModalOpen: boolean;
-  setIsProfilePictureModalOpen: (status: boolean) => void;
-
   //isKyc Provided Function
   isKycProvided: boolean;
   updateKycProvidedState: () => void; 
@@ -81,34 +63,11 @@ export const useKycStore = create<KycState>((set, get) => ({
     get().updateKycProvidedState(); // Trigger update
   },
   
-  //Modals State
-  isBankModalOpen: false,
-  setIsBankModalOpen: (status) => set({isBankModalOpen: status}),
-
-  isKycModalOpen: false,
-  setIsKycModalOpen: (status) => set({ isKycModalOpen: status }),
-
-  isAddBankInfoModalOpen: false,
-  setIsAddBankInfoModalOpen: (status) => set({ isAddBankInfoModalOpen: status }),
-
-  isAddCryptoInfoModalOpen: false,
-  setIsAddCryptoInfoModalOpen: (status) => set({ isAddCryptoInfoModalOpen: status }),
-
-  isValidIdModalOpen: false,
-  setIsValidIdModalOpen: (status) => set({ isValidIdModalOpen: status }),
-
-  isNextOfKinModalOpen: false,
-  setIsNextOfKinModalOpen: (status) => set({ isNextOfKinModalOpen: status }),
-
-  isProfilePictureModalOpen: false,
-  setIsProfilePictureModalOpen: (status) => set({ isProfilePictureModalOpen: status }),
-
-
   // Computed state and updater
   isKycProvided: false,
   updateKycProvidedState: () => {
-    const { isValidIdProvided, isNextOfKinProvided, isProfilePictureProvided } = get();
-    const isKycProvided = isValidIdProvided && isNextOfKinProvided && isProfilePictureProvided;
+    const { isValidIdProvided, isNextOfKinProvided} = get();
+    const isKycProvided = isValidIdProvided && isNextOfKinProvided
     set({ isKycProvided });
   },
 

@@ -4,7 +4,6 @@ import AddCryptoInformation from "@/components/AuthDashboard/Bank/AddCrypto";
 import BankInfo from "@/components/AuthDashboard/Bank/BankInfo";
 import KycInformation from "@/components/AuthDashboard/Kyc/KycInformation";
 import NextOfKinInformation from "@/components/AuthDashboard/Kyc/NextOfKin";
-import ProfilePictureInformation from "@/components/AuthDashboard/Kyc/ProfilePicture";
 import ValidIdInformation from "@/components/AuthDashboard/Kyc/ValidID";
 import CardVerification from "@/components/AuthDashboard/ui/CardVerification";
 import CardComponentFive from "@/components/ui/CardComponentFive";
@@ -21,57 +20,70 @@ import { TbTargetArrow } from "react-icons/tb";
 export default function Dashboard() {
   const fullName = useUserStore((state) => state.fullName);
   useLoadFullName();
-  const router = useRouter();
+  const router = useRouter(); // Initialize useRouter
   const [loading, setLoading] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
-
   // Zustand store hooks
   const {
+    //Bank/Crypto Info Provided
     isBankDetailsProvided,
     setIsBankDetailsProvided,
     isCryptoDetailsProvided,
     setIsCryptoDetailsProvided,
+
+    //Kyc Info Provided
     isValidIdProvided,
     setIsValidIdProvided,
     isNextOfKinProvided,
     setIsNextOfKinProvided,
     isProfilePictureProvided,
     setIsProfilePictureProvided,
-    isBankModalOpen,
-    setIsBankModalOpen,
-    isAddBankInfoModalOpen,
-    setIsAddBankInfoModalOpen,
-    isAddCryptoInfoModalOpen,
-    setIsAddCryptoInfoModalOpen,
-    isKycModalOpen,
-    setIsKycModalOpen,
-    isValidIdModalOpen,
-    setIsValidIdModalOpen,
-    isNextOfKinModalOpen,
-    setIsNextOfKinModalOpen,
-    isProfilePictureModalOpen,
-    setIsProfilePictureModalOpen,
+
     isBankProvided,
     isKycProvided,
   } = useKycStore();
 
+  const [userId, setUserId] = useState(""); // New state for userId
+  const [currentModal, setCurrentModal] = useState<
+    | "kycModal"
+    | "validIdModal"
+    | "nextOfKinModal"
+    | "profilePictureModal"
+    | "bankModal"
+    | "addBankInfo"
+    | "addCryptoInfo"
+    | null
+  >(null);
+
   useEffect(() => {
     const savedUserId = localStorage.getItem("userId");
-    const fullName = localStorage.getItem("fullName");
 
     if (savedUserId) {
       setUserId(savedUserId);
 
-      // Load status from localStorage
-      const statusMap = [
-        { key: `isBankDetailsProvided-${savedUserId}`, setter: setIsBankDetailsProvided },
-        { key: `isCryptoDetailsProvided-${savedUserId}`, setter: setIsCryptoDetailsProvided },
-        { key: `isValidIdProvided-${savedUserId}`, setter: setIsValidIdProvided },
-        { key: `isNextOfKinProvided-${savedUserId}`, setter: setIsNextOfKinProvided },
-        { key: `isProfilePictureProvided-${savedUserId}`, setter: setIsProfilePictureProvided },
+      const statuses = [
+        {
+          key: `isBankDetailsProvided-${savedUserId}`,
+          setter: setIsBankDetailsProvided,
+        },
+        {
+          key: `isCryptoDetailsProvided-${savedUserId}`,
+          setter: setIsCryptoDetailsProvided,
+        },
+        {
+          key: `isValidIdProvided-${savedUserId}`,
+          setter: setIsValidIdProvided,
+        },
+        {
+          key: `isNextOfKinProvided-${savedUserId}`,
+          setter: setIsNextOfKinProvided,
+        },
+        {
+          key: `isProfilePictureProvided-${savedUserId}`,
+          setter: setIsProfilePictureProvided,
+        },
       ];
 
-      statusMap.forEach(({ key, setter }) => {
+      statuses.forEach(({ key, setter }) => {
         const status = localStorage.getItem(key);
         setter(status === "Provided" || status === "true");
       });
@@ -83,10 +95,13 @@ export default function Dashboard() {
       setIsNextOfKinProvided(false);
       setIsProfilePictureProvided(false);
     }
+    const fullName = localStorage.getItem("fullName");
 
-    if (fullName) {
+    if (fullName !== null) {
+      // The 'fullName' exists in localStorage
       console.log("Full name found:", fullName);
     } else {
+      // The 'fullName' does not exist in localStorage
       console.log("Full name not found in localStorage.");
     }
   }, [
@@ -98,77 +113,125 @@ export default function Dashboard() {
   ]);
 
   useEffect(() => {
-    if (!userId) return;
-
-    // Persist relevant details in localStorage
-    const userStorageKeys = {
-      [`isBankDetailsProvided-${userId}`]: isBankDetailsProvided,
-      [`isCryptoDetailsProvided-${userId}`]: isCryptoDetailsProvided,
-      [`isValidIdProvided-${userId}`]: isValidIdProvided,
-      [`isNextOfKinProvided-${userId}`]: isNextOfKinProvided,
-      [`isProfilePictureProvided-${userId}`]: isProfilePictureProvided,
-    };
-
-    Object.entries(userStorageKeys).forEach(([key, value]) => {
-      localStorage.setItem(key, String(value));
-    });
-
-    if (isBankProvided && isKycProvided) {
-      router.push("/main/dashboard");
-    } else {
-      setLoading(false);
+    if (userId) {
+      // Store `isBankDetailsProvided` as a boolean value in string format ("true" or "false")
+      localStorage.setItem(
+        `isBankDetailsProvided-${userId}`,
+        String(isBankDetailsProvided)
+      );
+      // Store `isCryptoDetailsProvided` as a boolean value in string format ("true" or "false")
+      localStorage.setItem(
+        `isCryptoDetailsProvided-${userId}`,
+        String(isCryptoDetailsProvided)
+      );
+      // Store `isValidIdProvided` as a boolean value in string format ("true" or "false")
+      localStorage.setItem(
+        `isValidIdProvided-${userId}`,
+        String(isValidIdProvided)
+      );
+      // Store `isNextOfKinProvided` as a boolean value in string format ("true" or "false")
+      localStorage.setItem(
+        `isNextOfKinProvided-${userId}`,
+        String(isNextOfKinProvided)
+      );
+      // Store `isProfilePictureProvided` as a boolean value in string format ("true" or "false")
+      localStorage.setItem(
+        `isProfilePictureProvided-${userId}`,
+        String(isProfilePictureProvided)
+      );
     }
-  }, [isBankProvided, isKycProvided, isBankDetailsProvided, isCryptoDetailsProvided, isValidIdProvided, isNextOfKinProvided, isProfilePictureProvided, userId, router]);
+  }, [
+    isBankDetailsProvided,
+    isCryptoDetailsProvided,
+    isValidIdProvided,
+    isNextOfKinProvided,
+    isProfilePictureProvided,
+    userId,
+  ]);
 
   useEffect(() => {
-    if (isKycProvided && isKycModalOpen) {
-      setTimeout(() => setIsKycModalOpen(false), 2000);
+    if (isKycProvided && currentModal === "kycModal") {
+      setTimeout(() => {
+        setCurrentModal(null);
+      }, 2000);
     }
-    if (isBankDetailsProvided && isCryptoDetailsProvided && isBankModalOpen) {
-      setTimeout(() => setIsBankModalOpen(false), 2000);
+    if (
+      isBankDetailsProvided &&
+      isCryptoDetailsProvided &&
+      currentModal === "bankModal"
+    ) {
+      setTimeout(() => {
+        setCurrentModal(null);
+      }, 2000);
     }
-  }, [isKycProvided, isKycModalOpen, setIsKycModalOpen, isBankDetailsProvided, isCryptoDetailsProvided, isBankModalOpen, setIsBankModalOpen]);
+  }, [
+    isKycProvided,
+    currentModal,
+    isBankDetailsProvided,
+    isCryptoDetailsProvided,
+  ]);
 
-  // Bank/Crypto Functions
-  const handleOpenBankInfo = () => setIsBankModalOpen(true);
-  const handleOpenAddBankInfo = () => setIsAddBankInfoModalOpen(true);
-  const handleOpenAddCryptoInfo = () => setIsAddCryptoInfoModalOpen(true);
+  // Navigate to /main/dashboard if BankInfo and KYC are provided
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (userId && isKycProvided) {
+      // Show the loading UI for 2 seconds
+      setLoading(true);
+      setTimeout(() => {
+        router.push("/auth/auth-dashboard"); // Redirect after 2 seconds
+      }, 2000); // 2 seconds delay
+    } else {
+      setLoading(false); // Hide loading UI immediately if conditions are not met
+    }
+  }, [isKycProvided, router]);
 
   const handleBankDetailProvided = () => {
     setIsBankDetailsProvided(true);
-    localStorage.setItem(`isBankDetailsProvided-${userId}`, "Provided");
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      localStorage.setItem(`isBankDetailsProvided-${userId}`, "Provided");
+    }
   };
-  
   const handleCryptoDetailProvided = () => {
     setIsCryptoDetailsProvided(true);
-    localStorage.setItem(`isCryptoDetailsProvided-${userId}`, "Provided");
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      localStorage.setItem(`isCryptoDetailsProvided-${userId}`, "Provided");
+    }
   };
-
-  // Kyc Functions
-  const handleOpenKycInfo = () => setIsKycModalOpen(true);
-  const handleOpenValidIdInfo = () => setIsValidIdModalOpen(true);
-  const handleOpenNextOfKinInfo = () => setIsNextOfKinModalOpen(true);
-  const handleOpenProfilePictureInfo = () => setIsProfilePictureModalOpen(true);
 
   const handleKyc = () => {
     setIsValidIdProvided(true);
-    localStorage.setItem(`isValidIdProvided-${userId}`, "Provided");
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      localStorage.setItem(`isValidIdProvided-${userId}`, "Provided");
+    }
   };
   const handleNextOfKinProvided = () => {
     setIsNextOfKinProvided(true);
-    localStorage.setItem(`isNextOfKinProvided-${userId}`, "Provided");
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      localStorage.setItem(`isNextOfKinProvided-${userId}`, "Provided");
+    }
   };
-  const handleProfilePictureProvided = () => {
-    setIsProfilePictureProvided(true);
-    localStorage.setItem(`isProfilePictureProvided-${userId}`, "Provided");
-  };
+  // const handleProfilePictureProvided = () => {
+  //   setIsProfilePictureProvided(true);
+  //   const userId = localStorage.getItem("userId");
+  //   if (userId) {
+  //     localStorage.setItem(`isProfilePictureProvided-${userId}`, "Provided");
+  //   }
+  // };
 
   const capitalizeFirstLetter = (name: string): string => {
     return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
   };
 
   if (loading) {
-    return <div><Loading /></div>;
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
   }
 
   return (
@@ -200,7 +263,9 @@ export default function Dashboard() {
           statusClass={isBankProvided ? "text-color-one" : "text-color-form"}
           showArrow={isBankProvided ? "hidden" : "flex"}
           showSwitch="hidden"
-          onClick={isBankProvided ? undefined : handleOpenBankInfo}
+          onClick={
+            isBankProvided ? undefined : () => setCurrentModal("bankModal")
+          }
           style={isBankProvided ? "hover:bg-light-grey" : "hover:bg-slate-100"}
         />
 
@@ -212,7 +277,9 @@ export default function Dashboard() {
           statusClass={isKycProvided ? "text-color-one" : "text-color-form"}
           showArrow={isKycProvided ? "hidden" : "flex"}
           showSwitch="hidden"
-          onClick={isKycProvided ? undefined : handleOpenKycInfo}
+          onClick={
+            isKycProvided ? undefined : () => setCurrentModal("kycModal")
+          }
           style={isKycProvided ? "hover:bg-light-grey" : "hover:bg-slate-100"}
         />
 
@@ -224,56 +291,54 @@ export default function Dashboard() {
           showArrow="hidden"
           showSwitch="flex"
         />
+
+        <p className="text-colour-five mt-8 px-4 text-sm">
+          NB: Provide the Kyc information to be redirected to the main page.
+        </p>
       </div>
 
       {/* Bank */}
-      {isBankModalOpen && (
+      {currentModal === "bankModal" && (
         <BankInfo
-          onClickAddBankDetails={handleOpenAddBankInfo}
-          onClickAddCryptoDetails={handleOpenAddCryptoInfo}
-          onClose={() => setIsBankModalOpen(false)}
+          onClickAddBankDetails={() => setCurrentModal("addBankInfo")}
+          onClickAddCryptoDetails={() => setCurrentModal("bankModal")}
+          onClose={() => setCurrentModal(null)}
           // onSave={handleBankInfoSaved}
         />
       )}
 
-      {isAddBankInfoModalOpen && (
+      {currentModal === "addBankInfo" && (
         <AddBankInformation
-          onClose={() => setIsAddBankInfoModalOpen(false)}
+          onClose={() => setCurrentModal("bankModal")}
           onBankDetailStatus={handleBankDetailProvided}
         />
       )}
-      {isAddCryptoInfoModalOpen && (
+      {currentModal === "addCryptoInfo" && (
         <AddCryptoInformation
-          onClose={() => setIsAddCryptoInfoModalOpen(false)}
+          onClose={() => setCurrentModal("addCryptoInfo")}
           onCryptoDetailStatus={handleCryptoDetailProvided}
         />
       )}
 
       {/* Kyc */}
-      {isKycModalOpen && (
+      {currentModal === "kycModal" && (
         <KycInformation
-          onClickNextOfKin={handleOpenNextOfKinInfo}
-          onClickValidId={handleOpenValidIdInfo}
-          onClickProfilePicture={handleOpenProfilePictureInfo}
-          onClose={() => setIsKycModalOpen(false)}
+          onClickNextOfKin={() => setCurrentModal("nextOfKinModal")}
+          onClickValidId={() => setCurrentModal("validIdModal")}
+          onClickProfilePicture={() => setCurrentModal("profilePictureModal")}
+          onClose={() => setCurrentModal(null)}
         />
       )}
-      {isValidIdModalOpen && (
+      {currentModal === "validIdModal" && (
         <ValidIdInformation
-          onClose={() => setIsValidIdModalOpen(false)}
+          onClose={() => setCurrentModal(null)}
           onValidIdStatus={handleKyc}
         />
       )}
-      {isNextOfKinModalOpen && (
+      {currentModal === "nextOfKinModal" && (
         <NextOfKinInformation
-          onClose={() => setIsNextOfKinModalOpen(false)}
+          onClose={() => setCurrentModal(null)}
           onNextOfKinStatus={handleNextOfKinProvided}
-        />
-      )}
-      {isProfilePictureModalOpen && (
-        <ProfilePictureInformation
-          onClose={() => setIsProfilePictureModalOpen(false)}
-          onProfilePictureStatus={handleProfilePictureProvided}
         />
       )}
     </div>

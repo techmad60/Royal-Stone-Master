@@ -129,7 +129,7 @@ export default function AddBankInformation({ onClose, onBankDetailStatus = () =>
   };
 
   return (
-    <div className="fixed inset-0 flex items-end justify-end lg:items-center lg:justify-center z-50">
+    <div className="fixed inset-0 flex items-end bg-[#D9D9D9A6] justify-end lg:items-center lg:justify-center z-50">
       <div className="flex flex-col bg-white rounded-t-[15px] w-full h-[620px] lg:h-[700px] lg:rounded-[20px] lg:max-w-[621px]">
         <div className="flex items-center border-b w-full p-4">
           <p
