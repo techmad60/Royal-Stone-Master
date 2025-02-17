@@ -1,11 +1,11 @@
 import Icon from "@/components/ui/Icon";
-import { DepositResponse } from "@/types/Type";
+import { DepositBankResponse } from "@/types/Type";
 import { useEffect } from "react";
 import { GoPlus } from "react-icons/go";
 
 interface MyComponentProps {
   onClose?: () => void;
-  transactionData?: DepositResponse["data"] | null;
+  transactionData?: DepositBankResponse["data"] | null;
 }
 
 export default function FundingDetails({

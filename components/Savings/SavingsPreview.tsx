@@ -1,17 +1,29 @@
 "use client";
-import { useEffect } from "react";
 import Button from "@/components/ui/Button";
-import Icon from "../ui/Icon";
+import { useEffect } from "react";
 import { TbTargetArrow } from "react-icons/tb";
+import Icon from "../ui/Icon";
 
 interface MyComponentProps {
   onClose: () => void;
   onProceed: () => void;
+  selectedType: "bank" | "crypto" | "wallet" | null;
+  name : string;
+  targetAmount: number;
+  duration: number;
+  currentAmount: number | string;
+  startDate: string;
 }
 
 export default function SavingsPreview({
   onClose,
   onProceed,
+  selectedType,
+  name,
+  targetAmount,
+  duration,
+  currentAmount,
+  startDate
 }: MyComponentProps) {
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -50,7 +62,13 @@ export default function SavingsPreview({
             <p className="text-color-zero font-semibold text-sm lg:text-base lg:font-medium">
               Savings Target
             </p>
-            <p className="text-color-six text-sm">Via Bank Transfer</p>
+            <p className="text-color-six text-sm">
+              {selectedType === "wallet"
+                ? "Via Wallet"
+                : selectedType === "crypto"
+                ? "Via Crypto Transfer"
+                : "Via Bank Transfer"}
+            </p>
           </div>
         </div>
 
@@ -58,25 +76,27 @@ export default function SavingsPreview({
           <div className="flex flex-col space-y-4">
             <div className="flex flex-col space-y-2">
               <p className="text-color-form">Savings Plan</p>
-              <p className="text-color-six">Annual Rent Savings</p>
+              <p className="text-color-six">{name}</p>
             </div>
             <div className="flex flex-col space-y-2">
               <p className="text-color-form">Current Payment</p>
-              <p className="text-color-six">$20</p>
+              <p className="text-color-six">${currentAmount}</p>
             </div>
             <div className="flex flex-col space-y-2">
               <p className="text-color-form">Starting Pay Date</p>
-              <p className="text-color-six">21/9/2024</p>
+              <p className="text-color-six">{new Date(startDate).toLocaleDateString(
+                "en-GB"
+              )}</p>
             </div>
           </div>
           <div className="flex flex-col space-y-4">
             <div className="flex flex-col space-y-2">
               <p className="text-color-form">Target Amount</p>
-              <p className="text-color-six">$200</p>
+              <p className="text-color-six">${targetAmount}</p>
             </div>
             <div className="flex flex-col space-y-2">
               <p className="text-color-form">Savings Duration</p>
-              <p className="text-color-six">Weekly</p>
+              <p className="text-color-six">{duration} days</p>
             </div>
           </div>
         </section>

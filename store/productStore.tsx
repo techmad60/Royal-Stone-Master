@@ -5,6 +5,7 @@ interface Product {
   name: string;
   description: string;
   totalUnits: number;
+  location: string;
   availableUnits: number;
   costPerUnit: number;
   ROI: { value: number; duration: number };

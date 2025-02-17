@@ -3,6 +3,7 @@ import Loading from "@/components/ui/Loading";
 import { useEffect, useState } from "react";
 import { BsFileBarGraphFill } from "react-icons/bs";
 import { GoPlus } from "react-icons/go";
+import { IoIosSend } from "react-icons/io";
 import TransactionHistoryModal from "./TransactionHistoryModal";
 
 interface Investments {
@@ -17,9 +18,7 @@ interface HistoryMobileProps {
   investments: Investments[];
 }
 
-export default function AllHistoryMobile({
-  investments,
-}: HistoryMobileProps) {
+export default function AllHistoryMobile({ investments }: HistoryMobileProps) {
   const [groupedTransactions, setGroupedTransactions] = useState<
     { date: string; items: Investments[] }[]
   >([]);
@@ -27,7 +26,7 @@ export default function AllHistoryMobile({
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false); // Modal visibility state
   const [selectedInvestment, setSelectedInvestment] =
-  useState<Investments | null>(null); // Selected investment
+    useState<Investments | null>(null); // Selected investment
 
   useEffect(() => {
     // Group investments by date
@@ -103,13 +102,12 @@ export default function AllHistoryMobile({
       if (err instanceof Error) {
         setError(
           err.message || "Failed to fetch data. Please try again later."
-         
         );
       } else {
         setError("An unknown error occurred. Please try again later.");
       }
     } finally {
-      console.log(error)
+      console.log(error);
       setLoading(false);
     }
   };
@@ -121,7 +119,6 @@ export default function AllHistoryMobile({
       </div>
     );
   }
-
 
   return (
     <div className="lg:hidden mt-4">
@@ -164,8 +161,10 @@ export default function AllHistoryMobile({
                       icon={
                         investment.type === "investment-wallet-funding" ? (
                           <GoPlus className="text-color-one" />
-                        ) : (
+                        ) : investment.type === "investment-purchase" ? (
                           <BsFileBarGraphFill className="text-color-one" />
+                        ) : (
+                          <IoIosSend className="text-color-one" />
                         )
                       }
                       containerSize="w-[39.6px] h-[39.6px] rounded-[14.85px] bg-[rgba(241,255,240,1)]"

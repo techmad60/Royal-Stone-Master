@@ -1,4 +1,5 @@
-// import NotificationList from "@/Services/NotificationList";
+import NotificationList from "@/Services/NotificationList";
+// import AuthWrapper from "@/components/Registration/AuthWrapper";
 import NotificationProvider from "@/Services/NotificationService";
 import { GeistSans } from "geist/font/sans";
 import { Metadata } from "next";
@@ -22,9 +23,10 @@ export default function RootLayout({
         <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
       </head>
       <body>
-        {/* <NotificationList/> */}
+        <NotificationList/>
         <NotificationProvider />
         {children}
+        {/* <AuthWrapper>{children}</AuthWrapper> Wrap children in AuthWrapper */}
       </body>
     </html>
   );

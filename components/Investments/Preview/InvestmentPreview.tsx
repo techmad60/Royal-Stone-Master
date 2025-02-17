@@ -85,8 +85,8 @@ export default function InvestPreview({
             </div>
           </div>
         </section>
-        <div onClick={onProceed} className="mt-8 mx-6">
-          <Button ButtonText="Proceed" className="bg-color-one w-full" />
+        <div className="mt-8 mx-6">
+          <Button ButtonText="Proceed" className="bg-color-one w-full" onClick={onProceed}/>
         </div>
       </div>
     </div>

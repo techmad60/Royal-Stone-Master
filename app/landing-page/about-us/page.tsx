@@ -81,7 +81,7 @@ export default function AboutUs() {
 
           {/* Responsive Dashboard Image  */}
           <Image
-            src={"/images/dashboard.svg"}
+            src={"/images/revised-dashboard.svg"}
             alt="App Dashboard"
             className="sm:w-[350px] lg:w-[472px] mt-16"
             width={345}
@@ -112,7 +112,7 @@ export default function AboutUs() {
 
           {/* Responsive Fund Wallet Image  */}
           <Image
-            src={"/images/fund-wallet.svg"}
+            src={"/images/revised-fund.svg"}
             alt="Fund wallet Image"
             className="sm:w-[345px] lg:w-[390px] mt-16"
             width={340}

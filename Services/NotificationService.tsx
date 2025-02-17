@@ -23,14 +23,7 @@ export default function NotificationProvider() {
       const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
         cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
       });
-      // Add a manual notification for testing
-    addNotification({
-        id: "test",
-        title: "Manual Notification",
-        body: "Testing Zustand UI updates!",
-        createdAt: new Date().toISOString(),
-        status: "unread",
-      });
+    
       console.log("Pusher initialized:", pusher);
       const channelName = process.env.NEXT_PUBLIC_PUSHER_CHANNEL!;
       const channel = pusher.subscribe(channelName);

@@ -98,8 +98,20 @@ export default function BankTransfer({
             paddingStyle="py-1"
           />
           <StatRow
+            label="IBAN/Swift Code"
+            value={bankDetails.swiftCode}
+            valueClass="text-color-six text-sm"
+            paddingStyle="py-1"
+          />
+          <StatRow
             label="Routing Number"
             value={bankDetails.routingNumber}
+            valueClass="text-color-six text-sm"
+            paddingStyle="py-1"
+          />
+          <StatRow
+            label="Beneficiary Adddress"
+            value={bankDetails.beneficiaryAddress}
             valueClass="text-color-six text-sm"
             paddingStyle="py-1"
             isLast={true}

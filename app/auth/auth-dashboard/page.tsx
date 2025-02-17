@@ -14,7 +14,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BiSolidBank } from "react-icons/bi";
 import { BsFileBarGraphFill, BsPersonCheck } from "react-icons/bs";
-import { LuScanFace } from "react-icons/lu";
 import { TbTargetArrow } from "react-icons/tb";
 
 export default function Dashboard() {
@@ -176,9 +175,8 @@ export default function Dashboard() {
     const userId = localStorage.getItem("userId");
     if (userId && isKycProvided) {
       // Show the loading UI for 2 seconds
-      setLoading(true);
       setTimeout(() => {
-        router.push("/auth/auth-dashboard"); // Redirect after 2 seconds
+        router.push("/main/dashboard"); // Redirect after 2 seconds
       }, 2000); // 2 seconds delay
     } else {
       setLoading(false); // Hide loading UI immediately if conditions are not met
@@ -214,14 +212,7 @@ export default function Dashboard() {
       localStorage.setItem(`isNextOfKinProvided-${userId}`, "Provided");
     }
   };
-  // const handleProfilePictureProvided = () => {
-  //   setIsProfilePictureProvided(true);
-  //   const userId = localStorage.getItem("userId");
-  //   if (userId) {
-  //     localStorage.setItem(`isProfilePictureProvided-${userId}`, "Provided");
-  //   }
-  // };
-
+ 
   const capitalizeFirstLetter = (name: string): string => {
     return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
   };
@@ -283,14 +274,14 @@ export default function Dashboard() {
           style={isKycProvided ? "hover:bg-light-grey" : "hover:bg-slate-100"}
         />
 
-        {/* Biometrics Card */}
+        {/* Biometrics Card
         <CardVerification
           iconImg={<LuScanFace className="text-xl text-color-one" />}
           label="Enable Biometrics"
           status="Not Set"
           showArrow="hidden"
           showSwitch="flex"
-        />
+        /> */}
 
         <p className="text-colour-five mt-8 px-4 text-sm">
           NB: Provide the Kyc information to be redirected to the main page.
@@ -331,13 +322,13 @@ export default function Dashboard() {
       )}
       {currentModal === "validIdModal" && (
         <ValidIdInformation
-          onClose={() => setCurrentModal(null)}
+          onClose={() => setCurrentModal("kycModal")}
           onValidIdStatus={handleKyc}
         />
       )}
       {currentModal === "nextOfKinModal" && (
         <NextOfKinInformation
-          onClose={() => setCurrentModal(null)}
+          onClose={() => setCurrentModal("kycModal")}
           onNextOfKinStatus={handleNextOfKinProvided}
         />
       )}

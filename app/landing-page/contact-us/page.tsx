@@ -19,10 +19,10 @@ export default function ContactUs() {
                 <section className="flex flex-col justify-center items-center py-8 bg-white w-full my-12 md:px-16">
                     <div className="flex flex-col justify-center items-center gap-6 lg:flex-row mx-4 w-full">
                         {/* Chat on Whatsapp */}
-                        <CardComponentThree icon="/images/whatsapp-icon.svg" text="Whatsapp" contact="09010201223" href="tel:+2349010201223"/>
+                        <CardComponentThree icon="/images/whatsapp-icon.svg" text="Whatsapp" contact="+1 (350) 203-4750" href="tel:+13502034750"/>
                         
                         {/* Call on Phone */}
-                        <CardComponentThree icon="/images/phone-icon.svg" text="Phone" contact="09010201223" href="tel:+2349010201223"/>
+                        <CardComponentThree icon="/images/phone-icon.svg" text="Phone" contact="+1 (350) 203-4750" href="tel:+13502034750"/>
                         
                         {/* Send a Mail */}
                         <CardComponentThree icon="/images/mail-icon.svg" text="Mail" contact="INFO@ROYALSTONECAPITAL.COM" href="mailto:INFO@ROYALSTONECAPITAL.COM"/>
@@ -40,8 +40,8 @@ export default function ContactUs() {
                                     type="name" 
                                     name="name" 
                                     required 
-                                    className="rounded-sm  h-[40px] placeholder:text-black"
-                                    placeholder=""/>
+                                    className="rounded-sm  h-[40px]"
+                                    placeholder="Cooper WinterWind"/>
                                 </div>
                                 
                                 {/* Phone Number */}
@@ -50,8 +50,8 @@ export default function ContactUs() {
                                     <input 
                                     type="tel" 
                                     required 
-                                    className="rounded-sm border-b border-slate-200 h-[40px] placeholder:text-black"
-                                    placeholder=""/>
+                                    className="rounded-sm border-b border-slate-200 h-[40px]"
+                                    placeholder="+1 (350) 203-4750"/>
                                 </div>
                             </div>
                             
@@ -63,8 +63,8 @@ export default function ContactUs() {
                                     type="email" 
                                     name="email" 
                                     required 
-                                    className="rounded-sm border-b border-slate-200 h-[40px] placeholder:text-black"
-                                    placeholder=""/>
+                                    className="rounded-sm border-b border-slate-200 h-[40px]"
+                                    placeholder="cooperwinterwind@gmail.com"/>
                                 </div>
 
                                 {/* Message */}

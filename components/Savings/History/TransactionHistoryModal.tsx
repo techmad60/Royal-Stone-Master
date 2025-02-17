@@ -1,8 +1,8 @@
 import { Savings } from "@/types/Type";
 import { useEffect } from "react";
-import { BsFileBarGraphFill } from "react-icons/bs";
 import { GoPlus } from "react-icons/go";
 import { IoIosSend } from "react-icons/io";
+import { TbTargetArrow } from "react-icons/tb";
 import Icon from "../../ui/Icon";
 
 interface TransactionHistoryProps {
@@ -16,10 +16,12 @@ export default function TransactionHistoryModal({
 }: TransactionHistoryProps) {
   // Prevent background scroll when modal is open
   useEffect(() => {
+    document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [savings]);
+  }, []);
+
 
   return (
     <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-50">
@@ -53,7 +55,7 @@ export default function TransactionHistoryModal({
               ) : savings.type === "savings-wallet-funding" ? (
                 <GoPlus className="text-color-one text-2xl" />
               ) : (
-                <BsFileBarGraphFill className="text-color-one text-2xl" />
+                <TbTargetArrow className="text-color-one text-2xl" />
               )
             }
             containerSize="w-[41px] h-[41px]"

@@ -113,3 +113,71 @@ export default ProductDetails;
   //     "proofOfPayment": "https://ik.imagekit.io/dvihd4xty/code_3e02aMYcD.png",
   //     "id": "6797447bf8c010ab295577aa"
   // },
+  // const validateForm = () => {
+  //   const requiredFields = [
+  //     { value: savingsPlan, message: "Please enter a Savings Plan." },
+  //     { value: targetAmount, message: "Please enter a Target Amount." },
+  //     {
+  //       value: savingsFrequency,
+  //       message: "Please select a Savings Frequency.",
+  //     },
+  //     { value: amount, message: "Please enter an Amount." },
+  //     { value: startDate, message: "Please select a Starting Pay Date." },
+  //     { value: endDate, message: "Please select a Payout Date." },
+  //     {
+  //       value: isChecked,
+  //       message: "You must confirm the details before proceeding.",
+  //     },
+  //   ];
+
+  //   for (const field of requiredFields) {
+  //     if (!field.value) {
+  //       setFormError(field.message);
+  //       return false;
+  //     }
+  //   }
+
+  //   if (startDate && endDate && startDate > endDate) {
+  //     setFormError("Start date cannot be later than the payout date.");
+  //     return false;
+  //   }
+
+  //   setFormError(null);
+  //   return true;
+  // };
+  // const API_URL = 'https://api-royal-stone.softwebdigital.com/api/admin/auth/access-token';
+
+  // async function refreshAccessToken(): Promise<string | null> {
+  //   const refreshToken = localStorage.getItem('refreshToken');
+    
+  //   if (!refreshToken) {
+  //     return null;
+  //   }
+  
+  //   try {
+  //     const response = await fetch(`${API_URL}?refreshToken=${refreshToken}`, {
+  //       method: 'GET',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+  
+  //     if (!response.ok) {
+  //       throw new Error('Failed to refresh token');
+  //     }
+  
+  //     const data = await response.json();
+  //     const newAccessToken = data?.data?.accessToken;
+  
+  //     // Save the new access token to localStorage
+  //     if (newAccessToken) {
+  //       localStorage.setItem('accessToken', newAccessToken);
+  //     }
+  
+  //     return newAccessToken;
+  //   } catch (error) {
+  //     console.error('Error refreshing access token:', error);
+  //     return null;
+  //   }
+  // }
+  

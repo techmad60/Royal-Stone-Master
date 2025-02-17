@@ -1,16 +1,19 @@
 "use client";
-import BankFunding from "@/components/Investments/Funding-Method/BankFunding";
-import CryptoFunding from "@/components/Investments/Funding-Method/CryptoFunding";
+// import BankFunding from "@/components/Investments/Funding-Method/BankFunding";
 import ReceiptModal from "@/components/Investments/Receipt/FundingReceipt";
 import BankComponent from "@/components/ui/BankComponent";
 import Button from "@/components/ui/Button";
 import CircleToggle from "@/components/ui/CircleToggle";
+import BankFunding from "@/components/ui/FundBank";
+import CryptoFunding from "@/components/ui/FundCrypto";
 import Navigator from "@/components/ui/Navigator";
 import Processed from "@/components/ui/Processed";
 import { DepositFund } from "@/Services/apiService";
 import useBankCryptoStore from "@/store/bankCryptoStore";
 import {
-  DepositResponse,
+  DepositBankResponse,
+  DepositCryptoResponse,
+  DepositTransactionResponse,
   FundBankDetails,
   FundCryptoWalletDetails,
 } from "@/types/Type";
@@ -18,6 +21,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BiSolidBank } from "react-icons/bi";
 import { FaBitcoin } from "react-icons/fa";
+import CryptoPreview from "../Preview/CryptoPreview";
 import FundingDetails from "../TransactionDetails/FundingDetails";
 
 const fundSteps = [
@@ -34,10 +38,10 @@ export default function FundWalletPage() {
   const [transactionID, setTransactionID] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [transactionData, setTransactionData] = useState<
-    DepositResponse["data"] | null
-  >(null);
-  const walletType = "investment"
+  const [transactionData, setTransactionData] =
+    useState<DepositTransactionResponse | null>(null);
+
+  const walletType = "investment";
   const router = useRouter();
 
   useEffect(() => {
@@ -72,9 +76,9 @@ export default function FundWalletPage() {
         const result = await response.json();
 
         if (type === "bank-deposit") {
-          setBankDetails(result.data[0]); // Update bank details
+          setBankDetails(result.data); // Update bank details
         } else if (type === "crypto") {
-          setWalletDetails(result.data[0]); // Update wallet details
+          setWalletDetails(result.data); // Update wallet details
         }
       } catch (err: unknown) {
         if (err instanceof Error) {
@@ -100,6 +104,7 @@ export default function FundWalletPage() {
     | "bankFunding"
     | "cryptoFunding"
     | "receipt"
+    | "cryptoPreview"
     | "processed"
     | null
   >(null);
@@ -117,10 +122,7 @@ export default function FundWalletPage() {
     if (selectedType === "bank") {
       setCurrentModal("bankFunding");
     } else if (selectedType === "crypto") {
-      // Show error for crypto payment method
-      setFormError(
-        "This payment method is not ready yet. Please select another option."
-      );
+      setCurrentModal("cryptoFunding");
     } else {
       setCurrentModal(null);
     }
@@ -143,70 +145,84 @@ export default function FundWalletPage() {
     setFormError("");
     return { isValid: true, error: "" };
   };
-
+// Type guard to check if the response is from a Bank
+function isBankResponse(
+  response: DepositTransactionResponse
+): response is DepositBankResponse["data"] {
+  return (
+    (response as DepositBankResponse["data"]).wallets !== undefined
+  );
+}
+function isCryptoResponse(
+  response: DepositTransactionResponse
+): response is DepositCryptoResponse["data"] {
+  return (
+    (response as DepositCryptoResponse["data"]).url !== undefined
+  );
+}
   const handleDepositFund = async () => {
     setIsLoading(true);
-    setError(null); // Clear previous error messages
-    setSuccessMessage(null); // Clear previous success messages
-  
+    setError(null);
+    setSuccessMessage(null);
+
     try {
       const token = localStorage.getItem("accessToken");
       if (!token) {
         router.push("/auth/login");
         return;
       }
-  
-      // Call DepositFund based on the selected funding type (bank or crypto)
+
       const depositResult = await DepositFund(
-        amount, // Amount to deposit
+        amount,
         walletType,
-        selectedType === "bank" ? bankDetails?.id || "" : null, // Pass beneficiary only for bank deposit
+        selectedType === "bank" ? bankDetails?.id || null : null,
         token
       );
-  
-      // Handle the response (success or error)
-      if (depositResult.success && depositResult.data) {
-        setTransactionData(depositResult.data);
-        const successMessage = depositResult.message || "Deposit Successful!";
-        setSuccessMessage(successMessage); // Set success message
-  
-        // Timeout to clear success message after 3 seconds
-        setTimeout(() => {
-          setSuccessMessage(null);
-        }, 2000);
-  
-        const { id } = depositResult.data.wallets;
-        setTransactionID(id);
-        if (selectedType === "bank") {
-          setCurrentModal("receipt"); // Show receipt modal
+
+      if (depositResult) {
+        const response = depositResult.data;
+
+       // Check if the response is a Bank Response
+        if (isBankResponse(response)) {
+          // It's a Bank Response
+          setTransactionData(response); // Set Bank-specific data
+          const successMessage = depositResult.message || "Deposit Successful!";
+          setSuccessMessage(successMessage); // Set success message
+
+          // Timeout to clear success message after 3 seconds
+          setTimeout(() => {
+            setSuccessMessage(null);
+          }, 2000);
+
+          // Determine transaction ID dynamically
+          const transactionID = response.wallets?.id;
+          setTransactionID(transactionID);
+
+          // Show receipt modal for Bank
+          setCurrentModal("receipt");
+        } else if (isCryptoResponse(response)) {
+          setCurrentModal(null)
+          // Redirect to the URL in Crypto Response
+          const url = response.url;
+          if (url) {
+            window.location.href = url; // Redirect to Crypto payment URL
+          }
         } else {
-          setCurrentModal(null);
+          // Handle any other cases if necessary
         }
       } else {
-        const errorMessage = depositResult.message || "An error occurred during the deposit.";
-        setError(errorMessage); // Set error message
-  
-        // Timeout to clear error message after 3 seconds
-        setTimeout(() => {
-          setError(null);
-        }, 2000);
+        setError("An error occurred during the deposit.");
+        setTimeout(() => setError(null), 2000);
       }
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message); // Set error message if an error occurs
-      } else {
-        setError("An unknown error occurred.");
-      }
-  
-      // Timeout to clear error message after 3 seconds
-      setTimeout(() => {
-        setError(null);
-      }, 2000);
+      setError(
+        err instanceof Error ? err.message : "An unknown error occurred."
+      );
+      setTimeout(() => setError(null), 2000);
     } finally {
-      setIsLoading(false); // Stop loading spinner or indicator
+      setIsLoading(false);
     }
   };
-  
 
   const handleFundingSelection = (method: "bank" | "crypto") => {
     setSelectedType(method);
@@ -218,9 +234,9 @@ export default function FundWalletPage() {
     <div>
       <Navigator currentStep={1} steps={fundSteps} />
 
-      <p className="text-color-zero text-base font-semibold py-4 lg:text-lg">
+      <div className="text-color-zero text-base font-semibold py-4 lg:text-lg">
         Fund Wallet
-      </p>
+      </div>
       <form
         className="flex flex-col space-y-4 mt-2"
         onSubmit={handleFundWalletClick}
@@ -309,6 +325,7 @@ export default function FundWalletPage() {
           successMessage={successMessage}
           onProceed={handleDepositFund}
           onClose={() => setCurrentModal(null)}
+          transactionType="investment payment"
         />
       )}
 
@@ -321,6 +338,21 @@ export default function FundWalletPage() {
           onProceed={handleDepositFund}
           onClose={() => setCurrentModal(null)}
           amount={amount}
+          heading="Make Investment"
+          transactionType="Investment Payment"
+        />
+      )}
+
+      {currentModal === "cryptoPreview" && (
+        <CryptoPreview
+          walletDetails={walletDetails}
+          paymentID={transactionID}
+          onClose={() => setCurrentModal(null)}
+          onProceed={() => setCurrentModal("transactionDetails")}
+          // isLoading={isLoading}
+          amount={amount}
+          error={error}
+          successMessage={successMessage}
         />
       )}
 
@@ -331,16 +363,20 @@ export default function FundWalletPage() {
           onProceed={() => setCurrentModal("processed")}
         />
       )}
-
       {currentModal === "processed" && (
         <Processed
           message={`Your wallet has successfully been funded with $${amount}`}
           onClose={() => setCurrentModal(null)}
           onConfirm={() => setCurrentModal("transactionDetails")}
+          showButton={selectedType !== "crypto"} // Hide button if crypto is selected
         />
       )}
-       {currentModal === "transactionDetails" && (
-        <FundingDetails transactionData={transactionData} onClose={() => setCurrentModal(null)}/>
+
+      {currentModal === "transactionDetails" && isBankResponse(transactionData) && (
+        <FundingDetails
+          transactionData={transactionData}
+          onClose={() => setCurrentModal(null)}
+        />
       )}
     </div>
   );

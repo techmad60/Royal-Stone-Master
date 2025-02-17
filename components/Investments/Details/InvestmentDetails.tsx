@@ -12,6 +12,8 @@ import {
   FundBankDetails,
   FundCryptoWalletDetails,
   MakeInvestmentBankResponse,
+  MakeInvestmentCryptoResponse,
+  MakeTransactionResponse,
 } from "@/types/Type";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -51,9 +53,8 @@ export default function InvestmentDetails() {
     useState<FundCryptoWalletDetails | null>(null);
   const router = useRouter();
   const [investmentId, setInvestmentId] = useState<string | null>(null);
-  const [transactionData, setTransactionData] = useState<
-    MakeInvestmentBankResponse["data"] | null
-  >(null);
+  const [transactionData, setTransactionData] =
+    useState<MakeTransactionResponse | null>(null);
 
   useEffect(() => {
     if (products.length === 0) {
@@ -90,9 +91,9 @@ export default function InvestmentDetails() {
         const result = await response.json();
 
         if (type === "bank-deposit") {
-          setBankDetails(result.data[0]); // Update bank details
+          setBankDetails(result.data); // Update bank details
         } else if (type === "crypto") {
-          setWalletDetails(result.data[0]); // Update wallet details
+          setWalletDetails(result.data); // Update wallet details
         }
       } catch (err: unknown) {
         if (err instanceof Error) {
@@ -176,25 +177,23 @@ export default function InvestmentDetails() {
       setFormError(error);
       return;
     }
+    
     // Handle payment type
     if (selectedType === "bank") {
       setCurrentModal("bankTransfer");
     } else if (selectedType === "crypto") {
-      setFormError(
-        "This Payment Method isn't available yet. Please choose another method."
-      );
-      setCurrentModal(null); // Ensure no modal opens
-      return;
+      setCurrentModal("cryptoTransfer");
     } else {
       setFormError(""); // Clear any lingering errors
-      setCurrentModal("investPreview");
+      setCurrentModal("investPreview"); // Show invest preview modal
       return;
     }
-
+  
     // If everything is valid and no errors, open investPreview
     setFormError(""); // Clear any lingering errors
     setCurrentModal("investPreview");
   };
+  
 
   // Update the amount whenever the number of units is changed
   const handleNoOfUnitsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -263,8 +262,22 @@ export default function InvestmentDetails() {
       }
     }
   };
+  // Type guard to check if the response is from a Bank
+  function isBankResponse(
+    response: MakeTransactionResponse
+  ): response is MakeInvestmentBankResponse["data"] {
+    return (
+      (response as MakeInvestmentBankResponse["data"]).investment !== undefined
+    );
+  }
 
-  // Purchase Via Crypto Or Bank
+  // Type guard to check if the response is from a Crypto
+  function isCryptoResponse(
+    response: MakeTransactionResponse
+  ): response is MakeInvestmentCryptoResponse["data"] {
+    return (response as MakeInvestmentCryptoResponse["data"]).url !== undefined;
+  }
+
   const handlePurchaseViaBank = async () => {
     setIsLoading(true);
     setApiError(null); // Clear previous error messages
@@ -286,26 +299,38 @@ export default function InvestmentDetails() {
       );
 
       // Handle the response (success or error)
-      if (depositResult.success && depositResult.data) {
-        setTransactionData(depositResult.data);
-        const successMessage = depositResult.message || "Deposit Successful!";
-        setSuccessMessage(successMessage); // Set success message
+      if (depositResult) {
+        const response = depositResult.data;
 
-        // Timeout to clear success message after 3 seconds
-        setTimeout(() => {
-          setSuccessMessage(null);
-        }, 2000);
+        // Check if the response is a Bank Response
+        if (isBankResponse(response)) {
+          // It's a Bank Response
+          setTransactionData(response); // Set Bank-specific data
+          const successMessage = depositResult.message || "Deposit Successful!";
+          setSuccessMessage(successMessage); // Set success message
 
-        const { id } = depositResult.data?.investment;
-        setInvestmentId(id);
-        if (selectedType === "bank") {
-          setCurrentModal("receipt"); // Show receipt modal
+          // Timeout to clear success message after 3 seconds
+          setTimeout(() => {
+            setSuccessMessage(null);
+          }, 2000);
+
+          // Determine transaction ID dynamically
+          const InvestmentId = response.investment?.id;
+          setInvestmentId(InvestmentId);
+
+          // Show receipt modal for Bank
+          setCurrentModal("receipt");
+        } else if (isCryptoResponse(response)) {
+          setTransactionData(response); 
+          const url = response.url;
+          if (url) {
+            window.location.href = url; // Redirect to Crypto payment URL
+          }
         } else {
-          setCurrentModal(null);
+          // Handle any other cases if necessary
         }
       } else {
-        const errorMessage =
-          depositResult.message || "An error occurred during the deposit.";
+        const errorMessage = "An error occurred during the deposit.";
         setApiError(errorMessage); // Set error message
 
         // Timeout to clear error message after 3 seconds
@@ -505,7 +530,7 @@ export default function InvestmentDetails() {
           product={product}
         />
       )}
-      {currentModal === "bankTransfer" && bankDetails && (
+      {currentModal === "bankTransfer" && (
         <BankTransfer
           onClose={() => {
             setCurrentModal(null); // Reset the current modal
@@ -524,7 +549,7 @@ export default function InvestmentDetails() {
       {currentModal === "cryptoTransfer" && (
         <CryptoTransfer
           error={apiError}
-          isLoading = {isLoading}
+          isLoading={isLoading}
           onClose={() => setCurrentModal(null)}
           walletDetails={walletDetails}
           onProceed={handlePurchaseViaBank}
@@ -553,12 +578,13 @@ export default function InvestmentDetails() {
           message="Your investment has been created successfully!"
         />
       )}
-      {currentModal === "transactionDetails" && (
-        <PurchaseViaBankDetails
-          transactionData={transactionData}
-          onClose={() => setCurrentModal(null)}
-        />
-      )}
+      {currentModal === "transactionDetails" &&
+        isBankResponse(transactionData) && (
+          <PurchaseViaBankDetails
+            transactionData={transactionData} // This will only be Bank Response
+            onClose={() => setCurrentModal(null)}
+          />
+        )}
     </div>
   );
 }

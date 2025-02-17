@@ -173,7 +173,7 @@ export default function ProductDetails({
           </h1>
           <div className="flex items-center gap-2 py-2 border-b">
             <MdLocationOn className="text-color-form" />
-            <p className="text-color-form text-sm">Sokoto, Nigeria</p>
+            <p className="text-color-form text-sm">{product.location || "Sokoto, Nigeria"}</p>
           </div>
           <TextToggle description={product.description} />
         </section>

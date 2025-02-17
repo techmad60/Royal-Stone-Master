@@ -11,7 +11,7 @@ import { useEffect } from "react";
 export default function TransactionDetails() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
-  const { investments, fetchInvestments, isLoading, error } =
+  const { investments, fetchInvestments, error } =
     useInvestmentStore();
 
   useEffect(() => {
@@ -30,7 +30,6 @@ export default function TransactionDetails() {
         <Loading />
       </div>
     );
-  console.log(isLoading);
   const investmentSteps = [
     { label: "Investments", href: "/main/investments" },
     {

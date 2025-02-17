@@ -1,13 +1,13 @@
 "use client";
 import HistoryDesktop from "@/components/Savings/History/HistoryDesktop";
 import HistoryMobile from "@/components/Savings/History/HistoryMobile";
-import ProgressCard from "@/components/Savings/ProgressBar";
-import ProgressBarDesktop from "@/components/Savings/ProgressBarDesktop";
-import Button from "@/components/ui/Button";
+import SavingsTargetDesktop from "@/components/Savings/Savings-Targets/Desktop";
+import SavingsTargetMobile from "@/components/Savings/Savings-Targets/Mobile";
 import CardComponentFive from "@/components/ui/CardComponentFive";
 import Icon from "@/components/ui/Icon";
-import Loading from "@/components/ui/Loading";
 import NoHistory from "@/components/ui/NoHistory";
+import PaginationComponent from "@/components/ui/PaginationComponent";
+import { useSavingsTargetStore } from "@/store/savingsTargetStore";
 import Link from "next/dist/client/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -19,8 +19,20 @@ import { TbTargetArrow } from "react-icons/tb";
 export default function Savings() {
   const [ledgerBalance, setLedgerBalance] = useState(0);
   const [availableBalance, setAvailableBalance] = useState(0);
-  const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const {
+    savingsTarget,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    error,
+    fetchSavingsTarget,
+  } = useSavingsTargetStore();
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page); // Update the page in the product store
+  };
+
   useEffect(() => {
     const fetchPortfolio = async () => {
       const token = localStorage.getItem("accessToken");
@@ -47,27 +59,22 @@ export default function Savings() {
           console.error("Failed to fetch portfolio:", result.message);
         }
       } catch (error) {
-        // Handle the error object properly
         if (error instanceof Error) {
           console.error("Error fetching portfolio:", error.message);
         } else {
           console.error("Unexpected error:", error);
         }
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchPortfolio();
-  }, [router]);
-  const [showNotifications, setShowNotifications] = useState(true);
-  if (loading) {
-    return (
-      <div>
-        <Loading />
-      </div>
-    );
+    fetchSavingsTarget(); // Fetch savings targets here
+  }, [router, fetchSavingsTarget]);
+
+  if (error) {
+    return <p className="text-red-500 text-sm">{error}</p>;
   }
+
   return (
     <div className="flex flex-col pb-4 lg:mr-8">
       <div className="lg:mr-8 lg:gap-4 xl:flex items-end lg:mb-6 ">
@@ -135,13 +142,12 @@ export default function Savings() {
         </section>
       </div>
 
-      <hr className="" />
-      {showNotifications ? (
+      {savingsTarget.length === 0 ? (
         <div className="lg:mr-8">
-          <NoHistory icon={<TbTargetArrow />} text="No Savings History" />
-          <div onClick={() => setShowNotifications(false)}>
-            <Button ButtonText="With History" className="mx-auto" />
-          </div>
+          <NoHistory
+            icon={<TbTargetArrow />}
+            text="No Savings Target History Yet."
+          />
         </div>
       ) : (
         <div>
@@ -149,67 +155,19 @@ export default function Savings() {
             <h1 className="text-base font-semibold mt-4 text-color-zero">
               Savings Target
             </h1>
-            <div className="lg:hidden">
-              <ProgressCard
-                title="Annual Rent Savings"
-                status="ONGOING"
-                currentAmount={120}
-                goalAmount={370}
-              />
-              <ProgressCard
-                title="New Laptop Savings"
-                status="ONGOING"
-                currentAmount={400}
-                goalAmount={1000}
-              />
-              <ProgressCard
-                title="Tuition Fees Savings"
-                status="COMPLETED"
-                currentAmount={1000}
-                goalAmount={1000}
-              />
-            </div>
 
-            <div className="hidden lg:grid my-5">
-              <div className="bg-light-grey shadow-sm hidden lg:grid grid-cols-9 p-3 mr-8 rounded-[15px]">
-                <p className="text-xs text-[rgba(15,28,57,0.5)] col-span-2">
-                  Plan Name
-                </p>
-                <p className="text-xs text-[rgba(15,28,57,0.5)]">
-                  Amount Saved
-                </p>
-                <p className="text-xs text-[rgba(15,28,57,0.5)] col-span-2">
-                  Progress
-                </p>
-                <p className="text-xs text-[rgba(15,28,57,0.5)]">
-                  Target Amount
-                </p>
-                <p className="text-xs text-[rgba(15,28,57,0.5)]">Status</p>
-                <p className="text-xs text-[rgba(15,28,57,0.5)]">Due Dates</p>
-                <p className="text-xs text-[rgba(15,28,57,0.5)]">Actions</p>
+            <SavingsTargetMobile savingsTarget={savingsTarget} />
+            <SavingsTargetDesktop savingsTarget={savingsTarget} />
+            {savingsTarget.length !== 0 && (
+              <div className="mt-4">
+                <PaginationComponent
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                />
               </div>
-              <ProgressBarDesktop
-                title="Annual Rent Savings"
-                status="ONGOING"
-                currentAmount={120}
-                goalAmount={370}
-              />
-              <hr className="my-3" />
-              <ProgressBarDesktop
-                title="New Laptop Savings"
-                status="ONGOING"
-                currentAmount={400}
-                goalAmount={1000}
-              />
-              <hr className="my-3" />
-              <ProgressBarDesktop
-                title="Annual Rent Savings"
-                status="COMPLETED"
-                currentAmount={1000}
-                goalAmount={1000}
-              />
-            </div>
-
+            )}
+            <hr />
             <div className="flex justify-between my-4 lg:mr-8">
               <p className="text-base font-semibold text-color-zero">
                 Recent Transactions
@@ -223,10 +181,6 @@ export default function Savings() {
             </div>
             <HistoryDesktop />
             <HistoryMobile />
-          </div>
-
-          <div onClick={() => setShowNotifications(true)}>
-            <Button ButtonText="Without History" className="mx-auto" />
           </div>
         </div>
       )}

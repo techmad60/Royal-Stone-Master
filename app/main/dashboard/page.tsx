@@ -36,13 +36,13 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchProfile = async () => {
       setLoading(true); // Start loading state
-  
+
       const token = localStorage.getItem("accessToken");
       if (!token) {
         router.replace("/auth/login");
         return;
       }
-  
+
       try {
         const response = await fetch(
           "https://api-royal-stone.softwebdigital.com/api/account/profile",
@@ -54,26 +54,25 @@ export default function Dashboard() {
           }
         );
         const data = await response.json();
-  
+
         if (!data.status) {
           setApiError("Failed to fetch profile data.");
           setLoading(false);
           return;
         }
-  
+
         const userProfile = data.data;
-  
+
         // Validate KYC and Next of Kin
         const isKycComplete = userProfile.kycApproval === "filled";
-        const hasNextOfKin = userProfile.nextOfKin && Object.keys(userProfile.nextOfKin).length > 0;
-  
+        const hasNextOfKin =
+          userProfile.nextOfKin &&
+          Object.keys(userProfile.nextOfKin).length > 0;
+
         if (!isKycComplete || !hasNextOfKin) {
-          setTimeout(() => {
-            router.push("/auth/auth-dashboard");
-          }, 2000);
-          return;
+          router.push("/auth/auth-dashboard");
         }
-  
+
         // Fetch Dashboard Data if user passes validation
         fetchDashboardData(token);
       } catch (error) {
@@ -83,7 +82,7 @@ export default function Dashboard() {
         setLoading(false);
       }
     };
-  
+
     const fetchDashboardData = async (token: string) => {
       try {
         const response = await fetch(
@@ -96,13 +95,13 @@ export default function Dashboard() {
           }
         );
         const data = await response.json();
-  
+
         if (data.status) {
           setDashboardData(data.data);
         } else {
           setApiError(data.message || "Failed to fetch dashboard data.");
         }
-  
+
         // Fetch Transactions
         const transactionsResponse = await fetch(
           "https://api-royal-stone.softwebdigital.com/api/transaction",
@@ -114,7 +113,7 @@ export default function Dashboard() {
           }
         );
         const transactionsResult = await transactionsResponse.json();
-  
+
         if (transactionsResult.status) {
           setRecentTransactions(transactionsResult.data.data);
         } else {
@@ -128,11 +127,11 @@ export default function Dashboard() {
         setApiError("An error occurred while fetching dashboard data.");
       }
     };
-  
+
     fetchProfile();
     fetchProducts();
   }, [fetchProducts, router]);
-  
+
   if (loading) {
     return (
       <div>

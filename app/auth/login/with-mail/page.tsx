@@ -62,6 +62,7 @@ export default function WithMail() {
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("fullname", account.fullname); // Save user's full name
       localStorage.setItem("userId", account.id); // Store the userId
+      localStorage.setItem("email", formData.email)
       console.log("Tokens stored successfully:", {
         accessToken,
         refreshToken,

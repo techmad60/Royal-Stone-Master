@@ -1,24 +1,56 @@
+"use client";
+import HistoryDesktop from "@/components/Stocks/History/HistoryDesktop";
+import HistoryMobile from "@/components/Stocks/History/HistoryMobile";
 import StockLinks from "@/components/Stocks/StockLinks";
+import Loading from "@/components/ui/Loading";
+import NoHistory from "@/components/ui/NoHistory";
+import PaginationComponent from "@/components/ui/PaginationComponent";
+import useStockHistoryStore from "@/store/stockHistoryStore";
+import { useEffect } from "react";
 import { RiStockLine } from "react-icons/ri";
 
-
 export default function TradingHistory() {
-  return  (
-    <div className="flex flex-col lg:pr-8">
+  const { stocks, currentPage, totalPages, fetchStocks, setCurrentPage, isLoading } = useStockHistoryStore();
+
+  useEffect(() => {
+    fetchStocks(currentPage);
+  }, [currentPage, fetchStocks]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  if (isLoading) {
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col lg:mr-8">
       <div className="flex flex-col lg:border-b py-4">
         <StockLinks />
       </div>
-     
-      <div className="flex flex-col justify-center items-center space-y-4 my-8 py-6 shadow-sm bg-light-grey rounded-common w-full pr-8">
-        <div
-          className={`w-7 h-7 shadow-sm flex items-center justify-center transform rotate-45 rounded-[9px] bg-white"
-          }`}
-        >
-          <span className="text-color-one transform -rotate-45"><RiStockLine/> {/* Counter-rotate icon */}</span>
+      {stocks.length === 0 ? (
+        <div className="lg:mr-8">
+          <NoHistory icon={<RiStockLine />} text="No Transaction History" />
         </div>
-        <p className="text-sm text-color-form">No Stocks have been traded yet</p>
-      </div>
+      ) : (
+        <>
+          <HistoryMobile stocks={stocks} />
+          <HistoryDesktop stocks={stocks} />
+          {stocks.length > 0 && (
+            <PaginationComponent
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+          )}
+          
+        </>
+      )}
     </div>
-   
-  )
+  );
 }

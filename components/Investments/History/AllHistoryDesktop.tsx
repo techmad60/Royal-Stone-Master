@@ -1,9 +1,10 @@
 import Icon from "@/components/ui/Icon";
 import Loading from "@/components/ui/Loading";
+import TableHeader from "@/components/ui/TableHeader";
 import { useState } from "react";
 import { BsFileBarGraphFill } from "react-icons/bs";
 import { GoPlus } from "react-icons/go";
-import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowForward, IoIosSend } from "react-icons/io";
 import TransactionHistoryModal from "./TransactionHistoryModal";
 interface Investments {
   id: string;
@@ -82,17 +83,7 @@ export default function AllHistoryDesktop({
 
   return (
     <div className="hidden mt-7 lg:grid">
-      <div className="hidden lg:grid grid-cols-7 items-center bg-light-grey rounded-common py-4 px-3 shadow-sm mr-8">
-        <p className="text-xs text-[rgba(15,28,57,0.5)] col-span-2">
-          Transaction Name
-        </p>
-        <p className="text-xs text-[rgba(15,28,57,0.5)]">Amount</p>
-        <p className="text-xs text-[rgba(15,28,57,0.5)] col-span-2">
-          Transaction Date & Time
-        </p>
-        <p className="text-xs text-[rgba(15,28,57,0.5)]">Status</p>
-        <p className="text-xs text-[rgba(15,28,57,0.5)]">Actions</p>
-      </div>
+      <TableHeader/>
       {error && <p className="text-red-500">{error}</p>}
       {investments.map((investment) => (
         <section
@@ -100,12 +91,14 @@ export default function AllHistoryDesktop({
           className="grid grid-cols-7 px-3 mr-8 border-b py-4 my-4"
         >
           <div className="flex items-center gap-3 col-span-2">
-            <Icon
+          <Icon
               icon={
                 investment.type === "investment-wallet-funding" ? (
                   <GoPlus className="text-color-one" />
-                ) : (
+                ) : investment.type === "investment-purchase" ? (
                   <BsFileBarGraphFill className="text-color-one" />
+                ) : (
+                  <IoIosSend className="text-color-one" />
                 )
               }
             />
