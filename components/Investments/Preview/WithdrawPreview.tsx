@@ -108,19 +108,13 @@ export default function WithdrawPreview({
             </div>
 
             <div className="flex flex-col space-y-2">
-              <p className="text-color-form">
-                {selectedAccount
-                  ? isBankAccount(selectedAccount)
-                    ? "Account Number"
-                    : "Address"
-                  : "No account selected"}
-              </p>
+              {selectedAccount && isBankAccount(selectedAccount) && (
+                <p className="text-color-form">Account Number</p>
+              )}
               <p className="text-color-six">
-                {selectedAccount
-                  ? isBankAccount(selectedAccount)
-                    ? selectedAccount.accountNumber
-                    : selectedAccount.address
-                  : "No account selected"}
+                {selectedAccount && isBankAccount(selectedAccount)
+                  ? selectedAccount.accountNumber
+                  : ""}
               </p>
             </div>
           </div>
@@ -150,7 +144,7 @@ export default function WithdrawPreview({
             )}
           </div>
         </section>
-       
+
         {error && ( // Display error message conditionally
           <div className="text-red-600 p-3 rounded">
             <p>{error}</p>
@@ -161,7 +155,7 @@ export default function WithdrawPreview({
             <p>{successMessage}</p>
           </div>
         )}
-         {loading && (
+        {loading && (
           <div>
             <Loading />
           </div>
@@ -169,9 +163,7 @@ export default function WithdrawPreview({
         <div className="mx-6 mt-3">
           <Button
             ButtonText={loading ? "Proceeding..." : "Proceed"}
-            className={`w-full ${
-              loading ? "bg-inactive" : "bg-color-one"
-            }`}
+            className={`w-full ${loading ? "bg-inactive" : "bg-color-one"}`}
             onClick={!loading ? onProceed : undefined} // Prevent clicking when loading
             disabled={loading} // Disable the button when loading
           />

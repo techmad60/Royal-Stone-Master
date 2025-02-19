@@ -7,13 +7,13 @@ import CardComponentFive from "@/components/ui/CardComponentFive";
 import Icon from "@/components/ui/Icon";
 import Loading from "@/components/ui/Loading";
 import NoHistory from "@/components/ui/NoHistory";
-import Link from "next/link";
+// import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BsFileBarGraphFill } from "react-icons/bs";
 import { FaClock } from "react-icons/fa6";
 import { GoPlus } from "react-icons/go";
-import { IoIosArrowForward, IoIosSend } from "react-icons/io";
+import { IoIosSend } from "react-icons/io";
 import { TbTargetArrow } from "react-icons/tb";
 
 export default function Portfolio() {
@@ -160,12 +160,12 @@ export default function Portfolio() {
             <h1 className="text-base font-semibold lg:text-xl">
               Recent Transactions
             </h1>
-            <Link href="/main/transaction-history" className="flex items-center text-color-one text-xs hover:text-green-700 duration-150">
+            {/* <Link href="/main/transaction-history" className="flex items-center text-color-one text-xs hover:text-green-700 duration-150">
               View all{" "}
               <span>
                 <IoIosArrowForward className="lg:hidden" />
               </span>
-            </Link>
+            </Link> */}
           </div>
           {/* Recent Transactions */}
           <>

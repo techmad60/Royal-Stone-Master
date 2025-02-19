@@ -1,4 +1,5 @@
 import Icon from "@/components/ui/Icon";
+import NoHistory from "@/components/ui/NoHistory";
 import TableHeader from "@/components/ui/TableHeader";
 import { Savings } from "@/types/Type";
 import { useEffect, useState } from "react";
@@ -63,66 +64,74 @@ export default function AllHistoryDesktop() {
 
   return (
     <div className="hidden lg:grid mt-4">
-      <TableHeader />
+      {savings.length > 0 && <TableHeader />}
+  
       {error && <p className="text-red-500">{error}</p>}
-      {savings.map((savings) => (
-        <section
-          key={savings.id}
-          className="grid grid-cols-7 px-3 mr-8 border-b py-4 my-4"
-        >
-          <div className="flex items-center gap-3 col-span-2">
-            <Icon
-              icon={
-                savings.type === "savings-wallet-funding" ? (
-                  <GoPlus className="text-color-one" />
-                ) : savings.type === "savings-withdrawal" ? (
-                  <IoIosSend className="text-color-one" />
-                ) : (
-                  <TbTargetArrow className="text-color-one" />
-                )
-              }
-            />
-            <p className="text-sm text-color-zero">
-              {savings.type
-                .replace(/-/g, " ")
-                .replace(/\b\w/g, (char) => char.toUpperCase())}
+  
+      {savings.length > 0 ? (
+        savings.map((savings) => (
+          <section
+            key={savings.id}
+            className="grid grid-cols-7 px-3 mr-8 border-b py-4 my-4"
+          >
+            <div className="flex items-center gap-3 col-span-2">
+              <Icon
+                icon={
+                  savings.type === "savings-wallet-funding" ? (
+                    <GoPlus className="text-color-one" />
+                  ) : savings.type === "savings-withdrawal" ? (
+                    <IoIosSend className="text-color-one" />
+                  ) : (
+                    <TbTargetArrow className="text-color-one" />
+                  )
+                }
+              />
+              <p className="text-sm text-color-zero">
+                {savings.type
+                  .replace(/-/g, " ")
+                  .replace(/\b\w/g, (char) => char.toUpperCase())}
+              </p>
+            </div>
+            <p className="text-sm text-color-zero">${savings.amount}</p>
+            <p className="text-sm text-color-zero col-span-2">
+              {new Date(savings.createdAt).toLocaleString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}{" "}
+              |{" "}
+              {new Date(savings.createdAt).toLocaleString("en-US", {
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true,
+              })}
             </p>
-          </div>
-          <p className="text-sm text-color-zero">${savings.amount}</p>
-          <p className="text-sm text-color-zero col-span-2">
-            {new Date(savings.createdAt).toLocaleString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}{" "}
-            |{" "}
-            {new Date(savings.createdAt).toLocaleString("en-US", {
-              hour: "numeric",
-              minute: "2-digit",
-              hour12: true,
-            })}
-          </p>
-          <p
-            className={`text-sm ${
-              savings.status === "pending"
-                ? "text-yellow-500"
-                : savings.status === "successful"
-                ? "text-green-500"
-                : "text-red-500"
-            }`}
-          >
-            {savings.status.charAt(0).toUpperCase() + savings.status.slice(1)}
-          </p>
-          <button
-            onClick={() => fetchSavingsDetails(savings.id)}
-            className="flex items-center justify-center border rounded-[20px] gap-2 w-[78px] py-1 hover:border-green-700 hover:text-green-700 duration-150"
-          >
-            <p className="text-xs text-color-form hover:text-green-700">View</p>
-            <IoIosArrowForward className="text-color-form text-sm hover:text-green-700" />
-          </button>
-        </section>
-      ))}
-
+            <p
+              className={`text-sm ${
+                savings.status === "pending"
+                  ? "text-yellow-500"
+                  : savings.status === "successful"
+                  ? "text-green-500"
+                  : "text-red-500"
+              }`}
+            >
+              {savings.status.charAt(0).toUpperCase() + savings.status.slice(1)}
+            </p>
+            <button
+              onClick={() => fetchSavingsDetails(savings.id)}
+              className="flex items-center justify-center border rounded-[20px] gap-2 w-[78px] py-1 hover:border-green-700 hover:text-green-700 duration-150"
+            >
+              <p className="text-xs text-color-form hover:text-green-700">View</p>
+              <IoIosArrowForward className="text-color-form text-sm hover:text-green-700" />
+            </button>
+          </section>
+        ))
+      ) : (
+        <div className="lg:mr-8">
+          <NoHistory icon={<TbTargetArrow />} text="No Savings History Yet." />
+        </div>
+      )}
+  
       {showModal && selectedSavings && (
         <TransactionHistoryModal
           savings={selectedSavings}
@@ -130,5 +139,5 @@ export default function AllHistoryDesktop() {
         />
       )}
     </div>
-  );
-}
+  )};
+  

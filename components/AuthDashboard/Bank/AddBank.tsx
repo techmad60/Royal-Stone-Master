@@ -43,7 +43,7 @@ export default function AddBankInformation({ onClose, onBankDetailStatus = () =>
     accountNumber: "",
     accountHolderName: "",
     bankAddress: "",
-    beneficiaryAddress: "",
+    beneficiaryAddress: "", //Optional
     swiftCode: "", // Optional
     routingNumber: "", // Optional
   });
@@ -102,7 +102,7 @@ export default function AddBankInformation({ onClose, onBankDetailStatus = () =>
           bankAddress: formData.bankAddress,
           swiftCode: formData.swiftCode || "", // Send empty string if not provided
           routingNumber: formData.routingNumber || "", // Send empty string if not provided
-          beneficiaryAddress: formData.beneficiaryAddress,
+          beneficiaryAddress: formData.beneficiaryAddress || "", 
         }),
       });
 

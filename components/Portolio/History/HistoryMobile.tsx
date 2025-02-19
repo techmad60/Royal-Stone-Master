@@ -86,7 +86,7 @@ export default function HistoryMobile({ transactions }: HistoryMobileProps) {
         return <GoPlus className="text-color-one" />;
       case "savings-withdrawal":
         return <IoIosSend className="text-color-one" />;
-      case "savings-target":
+      case "savings-target-funding":
         return <TbTargetArrow className="text-color-one" />;
       default:
         return <BsFileBarGraphFill className="text-color-one" />; // Default fallback icon

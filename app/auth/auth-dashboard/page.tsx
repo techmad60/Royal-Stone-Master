@@ -292,7 +292,7 @@ export default function Dashboard() {
       {currentModal === "bankModal" && (
         <BankInfo
           onClickAddBankDetails={() => setCurrentModal("addBankInfo")}
-          onClickAddCryptoDetails={() => setCurrentModal("bankModal")}
+          onClickAddCryptoDetails={() => setCurrentModal("addCryptoInfo")}
           onClose={() => setCurrentModal(null)}
           // onSave={handleBankInfoSaved}
         />
@@ -306,7 +306,7 @@ export default function Dashboard() {
       )}
       {currentModal === "addCryptoInfo" && (
         <AddCryptoInformation
-          onClose={() => setCurrentModal("addCryptoInfo")}
+          onClose={() => setCurrentModal("bankModal")}
           onCryptoDetailStatus={handleCryptoDetailProvided}
         />
       )}

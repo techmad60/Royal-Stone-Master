@@ -178,8 +178,10 @@ export default function AddCryptoInformation({
                 }`}
               >
                 {feedbackMessage}
+                
               </div>
             )}
+            <p className="text-color-form text-sm">The page will reload after you save.</p>
 
             <Button
               ButtonText={isSubmitting ? "Saving..." : "Save"}

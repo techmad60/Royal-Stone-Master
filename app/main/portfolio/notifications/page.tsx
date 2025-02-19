@@ -3,7 +3,7 @@ import PortfolioNavigator from "@/components/Portolio/ui/PortfolioNavigator";
 import Icon from "@/components/ui/Icon";
 import Loading from "@/components/ui/Loading";
 import NoHistory from "@/components/ui/NoHistory";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaBell } from "react-icons/fa";
 
@@ -18,6 +18,7 @@ interface Notification {
 export default function Notification() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   // Fetch initial notifications
   useEffect(() => {
@@ -47,42 +48,6 @@ export default function Notification() {
     fetchNotifications();
   }, []);
 
-  // Initialize Pusher and listen for real-time updates
-  // useEffect(() => {
-  //   const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
-  //     cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
-  //   });
-  
-  //   const channel = pusher.subscribe("royal-stone-development"); // Ensure this is correct
-  
-  //   const handleNotification = (eventType: string, newNotification: Notification) => {
-  //     console.log(`Received ${eventType}:`, newNotification);
-  //     setNotifications((prev) => [newNotification, ...prev]);
-  //   };
-  
-  //   // Listen for all possible event types
-  //   const eventTypes = [
-  //     "funding-approval",
-  //     "funding-declined",
-  //     "withdrawal-approval",
-  //     "withdrawal-declined",
-  //     "investment-maturity",
-  //     "savings-maturity",
-  //   ];
-  
-  //   eventTypes.forEach((eventType) => {
-  //     channel.bind(eventType, (data: Notification) => handleNotification(eventType, data));
-  //   });
-  
-  //   // Cleanup
-  //   return () => {
-  //     eventTypes.forEach((eventType) => channel.unbind(eventType));
-  //     pusher.unsubscribe("royal-stone-development");
-  //     pusher.disconnect();
-  //   };
-  // }, []);
-  
-
   const groupNotificationsByDate = (notifications: Notification[]) => {
     const grouped: Record<string, Notification[]> = {};
 
@@ -98,6 +63,50 @@ export default function Notification() {
   };
 
   const groupedNotifications = groupNotificationsByDate(notifications);
+
+  const markAsRead = async (notificationId: string) => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      console.error("No access token found!");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "https://api-royal-stone.softwebdigital.com/api/notification",
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            notificationID: notificationId, // Correct payload structure
+            status: "read",
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to mark notification as read");
+      }
+
+      // Update UI: Set the notification as "read"
+      setNotifications((prev) =>
+        prev.map((notif) =>
+          notif.id === notificationId ? { ...notif, status: "read" } : notif
+        )
+      );
+
+      // Navigate to notification details page
+      router.push(
+        `/main/portfolio/notifications/view-notification?notificationId=${notificationId}`
+      );
+    } catch (error) {
+      console.error("Error marking notification as read:", error);
+    }
+  };
 
   if (loading) {
     return (
@@ -126,17 +135,18 @@ export default function Notification() {
                   <hr />
                 </div>
                 {notificationsForDate.map((notification) => (
-                  <Link
+                  <button
+                  // href=""
                     key={notification.id}
-                    href={`/main/portfolio/notifications/view-notification?notificationId=${notification.id}`}
-                    className="flex my-6 items-end bg-light-grey p-[8px] shadow-sm rounded-[14.85px] lg:w-[572px] lg:h-[67px] lg:justify-between lg:items-center lg:rounded-common lg:p-6"
+                    onClick={() => markAsRead(notification.id)}
+                    className="flex my-6 items-end bg-light-grey p-[8px] shadow-sm rounded-[14.85px] w-full lg:w-[572px] lg:h-[67px] lg:justify-between lg:items-center lg:rounded-common lg:p-6"
                   >
                     <div className="flex gap-2 lg:gap-4">
                       <Icon
                         icon={<FaBell className="text-2xl text-color-one" />}
                         containerSize="w-[39.6px] h-[39.6px] rounded-[14.85px] bg-[rgba(241,255,240,1)] flex-shrink-0"
                       />
-                      <div>
+                      <div className="flex flex-col items-start">
                         <p className="text-sm text-color-zero font-medium tracking-tight">
                           {notification.title}
                         </p>
@@ -172,19 +182,19 @@ export default function Notification() {
                         )}
                       </p>
                       {/* Status Dot */}
-                      {notification.status !== "read" && (
+                      {notification.status && (
                         <span
                           className={`absolute -top-4 right-0 transform translate-x-[50%] -translate-y-[50%] w-[8px] h-[8px] rounded-full lg:-top-0 ${
                             notification.status === "delivered"
                               ? "bg-green-700"
-                              : notification.status === "failed"
-                              ? "bg-red-700"
+                              : notification.status === "read"
+                              ? "bg-light-grey"
                               : ""
                           }`}
                         ></span>
                       )}
                     </div>
-                  </Link>
+                  </button>
                 ))}
               </div>
             )

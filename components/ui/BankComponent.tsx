@@ -42,7 +42,7 @@ export default function BankComponent({
 
   return (
     <section
-      className={`rounded-[20px] shadow-sm flex items-start justify-between w-[168px] h-[105px] p-3 cursor-pointer duration-200 
+      className={`rounded-[20px] shadow-sm flex flex-shrink-0 items-start justify-between w-[168px] h-[105px] p-3 cursor-pointer duration-200 
         ${style.includes("bg-") ? style : `bg-light-grey hover:bg-slate-100 ${style}`}`}
       onClick={onClick}
     >

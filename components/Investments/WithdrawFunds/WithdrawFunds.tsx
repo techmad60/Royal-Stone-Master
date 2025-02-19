@@ -32,9 +32,6 @@ export default function WithdrawFundsPage() {
     WithdrawalResponse["data"] | null
   >(null);
   const router = useRouter();
-  // const searchParams = useSearchParams();
-  // const availableCash = parseFloat(searchParams.get("availableBalance") || "0");
-  // const parsedAmount = Number(amount);
   const [selectedAccountDetails, setSelectedAccountDetails] = useState<{
     selectedAccount: BankDetails | CryptoWallet | null;
   }>({
@@ -143,13 +140,6 @@ export default function WithdrawFundsPage() {
         error: "Please enter a valid amount.",
       };
     }
-    // console.log(availableCash);
-    // if (parsedAmount > availableCash || availableCash === 0) {
-    //   return {
-    //     isValid: false,
-    //     error: "Insufficient Balance",
-    //   };
-    // }
     if (!selectedType) {
       return {
         isValid: false,

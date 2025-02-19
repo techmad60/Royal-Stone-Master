@@ -12,7 +12,7 @@ const NotificationList = () => {
     notifications.forEach((notif) => {
       if (!displayedNotifications.current.has(notif.id)) {
         // Only show if not already displayed
-        toast.info(<NotificationMessage title={notif.title} body={notif.body} />, {
+        toast.success(<NotificationMessage title={notif.title}/>, {
           toastId: notif.id, // Ensures no duplicate toasts
           position: "top-right",
           autoClose: 3000,
@@ -30,11 +30,15 @@ const NotificationList = () => {
   return <ToastContainer />;
 };
 
-const NotificationMessage = ({ title, body }: { title: string; body: string }) => (
-  <div>
-    <strong>{title}</strong>
-    <p>{body}</p>
-  </div>
-);
+const NotificationMessage = ({ title }: { title: string; }) => {
+  const formattedTitle = title.replace(/(\d+)/g, "$$$1"); // Adds $ before any number
+  console.log("Title", formattedTitle)
+
+  return (
+    <div>
+      <strong className="text-color-zero">{formattedTitle}</strong>
+    </div>
+  );
+};
 
 export default NotificationList;

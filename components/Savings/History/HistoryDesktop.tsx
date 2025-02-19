@@ -72,7 +72,7 @@ export default function HistoryDesktop() {
 
   return (
     <div className="hidden lg:grid">
-      <TableHeader />
+      {latestSavings.length > 0 && <TableHeader />}
       {error && <p className="text-red-500">{error}</p>}
       {latestSavings.length > 0 ? (
         latestSavings.map((savings) => (
@@ -83,7 +83,7 @@ export default function HistoryDesktop() {
             <div className="flex items-center gap-3 col-span-2">
               <Icon
                 icon={
-                  savings.type === "savings-wallet-funding" ? (
+                  savings.type === "savings-direct-funding" || "savings-wallet-funding" ? (
                     <GoPlus className="text-color-one" />
                   ) : savings.type === "savings-withdrawal" ? (
                     <IoIosSend className="text-color-one" />
@@ -127,14 +127,19 @@ export default function HistoryDesktop() {
               onClick={() => fetchSavingsDetails(savings.id)}
               className="flex items-center justify-center border rounded-[20px] gap-2 w-[78px] py-1 hover:border-green-700 hover:text-green-700 duration-150"
             >
-              <p className="text-xs text-color-form hover:text-green-700">View</p>
+              <p className="text-xs text-color-form hover:text-green-700">
+                View
+              </p>
               <IoIosArrowForward className="text-color-form text-sm hover:text-green-700" />
             </button>
           </section>
         ))
       ) : (
         <div className="lg:mr-8">
-          <NoHistory icon={<TbTargetArrow />} text="No Recent Transactions Yet." />
+          <NoHistory
+            icon={<TbTargetArrow />}
+            text="No Recent Transactions Yet."
+          />
         </div>
       )}
 

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { BsFileBarGraphFill, BsPeopleFill } from "react-icons/bs";
-import { FaClock } from "react-icons/fa6";
+// import { FaClock } from "react-icons/fa6";
 import { FiLogOut } from "react-icons/fi";
 import { GoHomeFill } from "react-icons/go";
 import { IoMdSettings } from "react-icons/io";
@@ -174,12 +174,12 @@ export default function MainPageNavbar({
                 label="Referrals"
                 disabled={isDisabled}
               />
-              <NavLink
+              {/* <NavLink
                 href="/main/transaction-history"
                 icon={<FaClock />}
                 label="Transaction History"
                 disabled={isDisabled}
-              />
+              /> */}
               <NavLink
                 href="/main/settings"
                 icon={<IoMdSettings />}

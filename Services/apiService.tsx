@@ -102,10 +102,10 @@ export async function PurchaseViaBank(
 
 //Withdraw Funds
 export async function withdrawFunds(
-  amount: string,
+  amount: string | number,
   beneficiaryID: string,
   token: string,
-  type: "investment" | "savings" // Specify type of withdrawal
+  type: "investment" | "savings" | "referral" // Specify type of withdrawal
 ): Promise<WithdrawalResult> {
   const baseEndpoint = "https://api-royal-stone.softwebdigital.com/api/withdrawal";
   const endpoint = `${baseEndpoint}/${type}/bank`; // Dynamically construct URL
@@ -136,6 +136,7 @@ export async function withdrawFunds(
     throw new Error(errorMessage);
   }
 }
+
 
 export async function DepositFund(
   amount: string,
