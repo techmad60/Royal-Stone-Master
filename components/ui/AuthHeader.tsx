@@ -5,11 +5,19 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaBars } from "react-icons/fa";
 
+
 interface AuthHeaderProps {
   title?: string;
   toggleNav?: () => void;
   grid?: string;
 }
+
+interface Notification {
+  id: string;
+  status: string;
+  message: string;
+}
+
 
 export default function AuthHeader({ title, toggleNav, grid }: AuthHeaderProps) {
   const [profilePicture, setProfilePicture] = useState<string>("/images/profile-empty.png");
@@ -54,7 +62,8 @@ export default function AuthHeader({ title, toggleNav, grid }: AuthHeaderProps) 
 
         if (response.ok) {
           const responseData = await response.json();
-          const unread = responseData.data?.data.filter((notif: any) => notif.status !== "read").length || 0;
+          const unread = responseData.data?.data.filter((notif: Notification) => notif.status !== "read").length || 0;
+
           setUnreadCount(unread);
         }
       } catch (error) {

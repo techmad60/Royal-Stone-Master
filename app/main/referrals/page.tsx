@@ -29,7 +29,6 @@ export default function Referrals() {
   const referralCode = useUserStore((state) => state.referralCode);
   const [referrals, setReferrals] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [totalEarning, setTotalEarning] = useState(0);
   const [currentBalance, setCurrentBalance] = useState(0);
   const [showWithdrawalOptions, setShowWithdrawalOptions] = useState(false);
@@ -62,8 +61,6 @@ export default function Referrals() {
         router.push("/auth/login");
         return;
       }
-
-      setError(null);
       setLoading(true);
 
       try {
@@ -102,7 +99,7 @@ export default function Referrals() {
         setBankDetails(bankData.status ? bankData.data : []);
         setCryptoWallets(cryptoData.status ? cryptoData.data : []);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "An error occurred");
+        toast.error(err instanceof Error ? err.message : "An error occurred");
         console.error("Error fetching data:", err);
       } finally {
         setLoading(false);
@@ -122,7 +119,7 @@ export default function Referrals() {
     } else {
       setSelectedCryptoId(id ?? null);
     }
-    setError("");
+    // setError("");
   };
 
   const validateInputs = (
@@ -167,13 +164,11 @@ export default function Referrals() {
   const handleWithdrawal = async () => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
-      setError("You must be logged in to proceed.");
       return;
     }
 
     const beneficiaryID = selectedAccountDetails?.selectedAccount?.id || "";
     setLoading(true);
-    setError(null);
 
     try {
       const result = await withdrawFunds(
