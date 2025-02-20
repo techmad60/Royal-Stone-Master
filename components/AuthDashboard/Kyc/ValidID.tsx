@@ -80,7 +80,7 @@ export default function ValidIdInformation({ onClose, onValidIdStatus }: ValidId
 
       const accessToken = localStorage.getItem("accessToken");
       if (!accessToken) {
-        router.push("/auth/login")
+        router.push("/auth/login/with-mail")
         return;
       }
 
@@ -95,7 +95,7 @@ export default function ValidIdInformation({ onClose, onValidIdStatus }: ValidId
       );
 
       if (signatureResponse.status === 401) {
-        router.push("/auth/login");
+        router.push("/auth/login/with-mail");
         return;
       }
 

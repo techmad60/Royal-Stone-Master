@@ -66,7 +66,7 @@ export default function StockDetails() {
     try {
       const token = localStorage.getItem("accessToken");
       if (!token) {
-        router.push("/auth/login");
+        router.push("/auth/login/with-mail");
         return;
       }
       const purchaseResponse = await purchaseStocks(

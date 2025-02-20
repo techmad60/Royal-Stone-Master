@@ -60,7 +60,7 @@ export default function AddCryptoDetails() {
     const fetchNetworks = async () => {
       try {
         if (!token) {
-          router.push("/auth/login");
+          router.push("/auth/login/with-mail");
         }
         setIsLoading(true);
         const response = await fetch(

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import Button from "../../ui/Button";
 
 interface NextOfKinInfoProps {
@@ -74,7 +74,7 @@ export default function NextOfKinInformation({ onClose, onNextOfKinStatus }: Nex
      
 
       if (response.status === 401 ) {
-        router.push("/auth/login")
+        router.push("/auth/login/with-mail")
       }
 
       if (response.ok) {

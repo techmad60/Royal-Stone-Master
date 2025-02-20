@@ -64,6 +64,7 @@ const config: Config = {
   			}
   		},
   		screens: {
+			'lxs' : '420px',
   			'xs': '375px',
   			'2xs': '320px',
   			'xlg': '1280px',

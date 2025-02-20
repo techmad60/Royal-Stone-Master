@@ -27,7 +27,7 @@ export default function NavLink({
           ? "text-slate-300" // Inactive style for auth-dashboard
           : isActive
           ? "text-color-one"
-          : "text-slate-400 hover:text-green-400"
+          : "text-color-zero hover:text-green-400"
       } duration-150`}
       
     >

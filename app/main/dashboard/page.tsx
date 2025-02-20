@@ -39,7 +39,7 @@ export default function Dashboard() {
 
       const token = localStorage.getItem("accessToken");
       if (!token) {
-        router.replace("/auth/login");
+        router.replace("/auth/login/with-mail");
         return;
       }
 

@@ -76,7 +76,7 @@ export default function Investment() {
       const token = localStorage.getItem("accessToken");
 
       if (!token) {
-        router.push("/auth/login");
+        router.push("/auth/login/with-mail");
       }
       try {
         const response = await fetch(

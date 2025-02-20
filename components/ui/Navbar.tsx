@@ -122,7 +122,7 @@ export default function Navbar() {
 
           <div className="flex flex-col space-y-6 mt-4 w-full justify-center items-center lg:flex lg:flex-row lg:space-x-4 lg:space-y-0 lg:mt-0 rounded-md text-center lg:w-auto">
             <Link
-              href="/auth/login"
+              href="/auth/login/with-mail/with-mail"
               className="text-color-one w-[295px] h-[45px] p-[10px] flex justify-center items-center bg-white rounded-[10px] border border-slate-200 transition duration-150 hover:text-green-700 hover:border-green-700 hover:ease-in font-semibold lg:w-[80px] lg:h-[37px] lg:px-4 lg:py-2 lg:text-sm "
             >
               Login
@@ -145,7 +145,7 @@ export default function Navbar() {
               Get Started
             </button> */}
             <Link
-              href="/auth/signup"
+              href="/auth/signup/with-mail"
               className="text-color-three w-[295px] h-[45px] p-[10px] flex justify-center items-center bg-color-one hover:bg-green-700 transition duration-150 hover:ease-in font-semibold rounded-[10px] lg:w-[127px] lg:h-[37px] lg:text-sm"
             >
               Get Started

@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 
 export default function ForgotPassword() {
@@ -44,7 +44,7 @@ export default function ForgotPassword() {
 
       // Navigate to the verification page with the email as a query parameter
       router.push(
-        `/auth/login/with-mail/forgot-password/verify-email?email=${encodeURIComponent(
+        `/auth/login/with-mail/with-mail/forgot-password/verify-email?email=${encodeURIComponent(
           email
         )}`
       );

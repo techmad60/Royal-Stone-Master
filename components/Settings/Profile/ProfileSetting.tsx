@@ -37,7 +37,7 @@ export default function ProfileSettings() {
         const token = localStorage.getItem("accessToken");
         console.log(token);
         if (!token) {
-          router.push("/auth/login");
+          router.push("/auth/login/with-mail");
           return;
         }
 
@@ -52,7 +52,7 @@ export default function ProfileSettings() {
 
         if (!response.ok) {
           if (response.status === 401) {
-            router.push("/auth/login");
+            router.push("/auth/login/with-mail");
           }
           throw new Error("Failed to fetch profile data.");
         }
@@ -105,7 +105,7 @@ export default function ProfileSettings() {
     try {
       const token = localStorage.getItem("accessToken"); // Retrieve token from local storage
       if (!token) {
-        router.push("/auth/login");
+        router.push("/auth/login/with-mail");
         return; // Stop execution if the token is not found
       }
 

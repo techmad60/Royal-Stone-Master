@@ -8,6 +8,7 @@ interface Product {
   id: string;
   name: string;
   availableUnits: number;
+  totalUnits: number;
   description: string;
   status: string;
   images: string[];
@@ -52,27 +53,33 @@ export default function ProductDesktop({
   return (
     <div>
       {/* Table Header */}
+      {/* grid-cols-[50px_3fr_1fr_1fr_1fr_1fr_1fr] */}
       <ToastContainer position="top-right" autoClose={3000} />
       {products.length !== 0 && (
-        <div className="hidden lg:grid grid-cols-6 items-center bg-light-grey rounded-common py-4 px-8 shadow-sm mt-4">
-          <p className="text-xs text-slate-400 col-span-3">
+        <div className="hidden lg:grid grid-cols-[35px_3fr_1fr_1fr_1fr_1fr] items-center bg-light-grey rounded-common py-4 px-8 shadow-sm mt-4">
+          <p className="text-xs text-color-form">S/N</p>
+          <p className="text-xs text-color-zero">
             Product Image & Name
           </p>
-          <p className="text-xs text-slate-400">Units Available</p>
-          <p className="text-xs text-slate-400">Status</p>
-          <p className="text-xs text-slate-400">Actions</p>
+          <p className="text-xs text-color-zero">Total Units</p>
+          <p className="text-xs text-color-zero">Available Units</p>
+          <p className="text-xs text-color-zero">Status</p>
+          <p className="text-xs text-color-zero">Actions</p>
         </div>
       )}
 
       {/* Table Body */}
       <div>
-        {products.map((product) => (
+        {products.map((product, index) => (
           <section
             key={product.id}
-            className="hidden lg:grid grid-cols-6 items-center my-4 mx-8 py-4 border-b"
+            className="hidden lg:grid grid-cols-[35px_3fr_1fr_1fr_1fr_1fr] items-center my-4 mx-8 py-4 border-b"
           >
+            {/* Serial Number (S/N) */}
+            <p className="text-xs text-color-form">{index + 1}</p>
+
             {/* Product Image & Name */}
-            <div className="flex items-center col-span-3 gap-2">
+            <div className="flex items-center gap-2">
               <div className="w-[40px] h-[40px] rounded-[5px] overflow-hidden">
                 <Image
                   src={product.images[0] || "/placeholder-image.png"}
@@ -87,7 +94,12 @@ export default function ProductDesktop({
               </p>
             </div>
 
-            {/* Units Available */}
+            {/* Total Units */}
+            <div>
+              <p className="text-sm text-color-zero">{product.totalUnits}</p>
+            </div>
+
+            {/* Available units */}
             <div>
               <p className="text-sm text-color-zero">
                 {product.availableUnits}
@@ -106,7 +118,6 @@ export default function ProductDesktop({
                 {product.status
                   .replace(/([a-z])([A-Z])/g, "$1 $2") // Adds space between camelCase
                   .replace(/^./, (str) => str.toUpperCase())}{" "}
-                {/* Capitalizes the first letter */}
               </span>
             </div>
 

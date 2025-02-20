@@ -35,7 +35,7 @@ export default function WelcomePage() {
 
     try {
       const response = await fetch(
-        "https://api-royal-stone.softwebdigital.com/api/auth/login",
+        "https://api-royal-stone.softwebdigital.com/api/auth/login/with-mail",
         {
           method: "POST",
           headers: {
@@ -106,7 +106,7 @@ export default function WelcomePage() {
           </div>
         </div>
         <Link
-          href="/auth/login/with-mail/forgot-password"
+          href="/auth/login/with-mail/with-mail/forgot-password"
           className="text-end text-sm text-color-one hover:text-green-700"
         >
           Forgot Password?
@@ -124,7 +124,7 @@ export default function WelcomePage() {
       <p className="text-slate-400 text-sm text-center mt-8 lg:w-[417px] xl:w-[535px]">
         Not your account?{" "}
         <span className="font-semibold text-color-one duration-300 hover:text-green-700">
-          <Link href="/auth/login">Switch Account</Link>
+          <Link href="/auth/login/with-mail">Switch Account</Link>
         </span>
       </p>
     </div>

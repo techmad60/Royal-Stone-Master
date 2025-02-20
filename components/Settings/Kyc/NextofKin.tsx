@@ -48,7 +48,7 @@ export default function NextofKinSettings() {
 
       if (!response.ok) {
         if (response.status === 401) {
-          router.push("/auth/login");
+          router.push("/auth/login/with-mail");
         }
         throw new Error("Failed to fetch profile data.");
       }
@@ -96,7 +96,7 @@ export default function NextofKinSettings() {
 
     try {
       if (!token) {
-        router.push("/auth/login");
+        router.push("/auth/login/with-mail");
         return;
       }
 

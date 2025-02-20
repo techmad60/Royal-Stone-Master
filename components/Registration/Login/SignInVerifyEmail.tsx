@@ -1,14 +1,14 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import Navigator from "@/components/ui/Navigator";
 import Button from "@/components/ui/Button";
+import Navigator from "@/components/ui/Navigator";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import OtpInput from "../../ui/OtpInput";
 
 const loginSteps = [
-  { label: "Sign in", href: "/auth/login" },
-  { label: "With email", href: "/auth/login/with-mail" },
-  { label: "Forgot Password", href: "/auth/login/with-mail/forgot-password" },
+  { label: "Sign in", href: "/auth/login/with-mail" },
+  { label: "With email", href: "/auth/login/with-mail/with-mail" },
+  { label: "Forgot Password", href: "/auth/login/with-mail/with-mail/forgot-password" },
 ];
 
 export default function VerifyMail() {
@@ -119,7 +119,7 @@ export default function VerifyMail() {
 
       // Redirect to reset password page
       router.push(
-        `/auth/login/with-mail/forgot-password/verify-email/reset-password?email=${encodeURIComponent(
+        `/auth/login/with-mail/with-mail/forgot-password/verify-email/reset-password?email=${encodeURIComponent(
           email
         )}&otp=${encodeURIComponent(fullOtp)}`
       );

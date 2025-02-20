@@ -1,5 +1,5 @@
 import Investment from "@/components/Investments/Investment";
-import Loading from "@/components/ui/Loading";
+// import Loading from "@/components/ui/Loading";
 import { Suspense } from "react";
 
 export default function InvestmentPage() {
@@ -7,7 +7,7 @@ export default function InvestmentPage() {
     <Suspense
       fallback={
         <div>
-          <Loading />
+          {/* <Loading /> */}
         </div>
       }
     >

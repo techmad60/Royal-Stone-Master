@@ -118,7 +118,7 @@ export default function AddBankInformation({ onClose, onBankDetailStatus = () =>
         alert(result.message || "An error occurred. Please try again.");
       }
       if (response.status === 401) {
-        router.push("/auth/login")
+        router.push("/auth/login/with-mail")
       }
     } catch (error) {
       console.error("Error submitting bank details:", error);

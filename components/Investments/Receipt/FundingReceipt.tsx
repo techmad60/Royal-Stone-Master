@@ -98,7 +98,7 @@ export default function ReceiptModal ({transactionID, onBack, onProceed}: Receip
       }
 
       if (signatureResponse.status === 401) {
-        router.push("/auth/login")
+        router.push("/auth/login/with-mail")
       }
 
       const { token, expire, signature } = signatureData.data;

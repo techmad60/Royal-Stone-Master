@@ -80,13 +80,13 @@ export default function AuthHeader({ title, toggleNav, grid }: AuthHeaderProps) 
   }, []);
 
   return (
-    <div className={`flex flex-col space-y-4 lg:pr-8 ${grid}`}>
+    <div className={`flex flex-col space-y-4 fixed z-50 w-full lg:pr-8 ${grid}`}>
       {/* Logo Img */}
       <Link href="/" className="flex">
         <Image className="logo lg:hidden" src={"/images/logo.svg"} alt="Royal-Stone Logo" width={106.75} height={20} />
       </Link>
 
-      <div className="flex justify-between items-center border-y py-4 lg:border-y-0 lg:border-b">
+      <div className="flex gap-28 items-center border-y py-4 lxs:gap-[17rem] sm:gap-[30rem] xl:gap-[52rem] lg:border-y-0 lg:border-b">
         <div className="flex gap-4 items-center">
           {showMenu && <FaBars className="lg:hidden" onClick={toggleNav} />}
           <h1 className="font-semibold text-base text-color-zero lg:text-[22px]">{title}</h1>

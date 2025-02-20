@@ -48,7 +48,7 @@ export default function CompleteSetup() {
     const token = localStorage.getItem("accessToken");
     if (!token) {
       console.warn("Access token not found. Redirecting to login...");
-      router.push("/auth/login"); // Redirect if no token
+      router.push("/auth/login/with-mail"); // Redirect if no token
     } else {
       setAccessToken(token);
     }
@@ -88,7 +88,7 @@ export default function CompleteSetup() {
     try {
       if (!accessToken) {
         alert("Access token not found. Please log in again.");
-        router.push("/auth/login");
+        router.push("/auth/login/with-mail");
         return;
       }
 

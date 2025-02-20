@@ -58,7 +58,7 @@ export default function Referrals() {
     const fetchData = async () => {
       const token = localStorage.getItem("accessToken");
       if (!token) {
-        router.push("/auth/login");
+        router.push("/auth/login/with-mail");
         return;
       }
       setLoading(true);

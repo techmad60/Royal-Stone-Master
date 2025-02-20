@@ -40,7 +40,7 @@ export default function Portfolio() {
         const token = localStorage.getItem("accessToken");
 
         if (!token) {
-          router.push("/auth/login");
+          router.push("/auth/login/with-mail");
         }
 
         // Fetch portfolio data

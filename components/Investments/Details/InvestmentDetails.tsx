@@ -67,7 +67,7 @@ export default function InvestmentDetails() {
       try {
         const token = localStorage.getItem("accessToken");
         if (!token) {
-          router.push("/auth/login");
+          router.push("/auth/login/with-mail");
           return;
         }
 
@@ -228,7 +228,7 @@ export default function InvestmentDetails() {
     try {
       const token = localStorage.getItem("accessToken");
       if (!token) {
-        router.push("/auth/login");
+        router.push("/auth/login/with-mail");
         return;
       }
       const purchaseResponse = await makePurchase(
@@ -286,7 +286,7 @@ export default function InvestmentDetails() {
     try {
       const token = localStorage.getItem("accessToken");
       if (!token) {
-        router.push("/auth/login");
+        router.push("/auth/login/with-mail");
         return;
       }
 

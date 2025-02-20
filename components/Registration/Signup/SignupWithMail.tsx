@@ -12,7 +12,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 
 const signupSteps = [
-  { label: "Create Account", href: "/auth/signup" },
+  { label: "Create Account", href: "/auth/signup/with-mail" },
   { label: "With Email", href: "/auth/signup/with-mail" },
 ];
 
@@ -324,7 +324,7 @@ export default function SignupWithMail() {
       <p className="text-slate-400 text-center mt-8 lg:w-[417px] xl:w-[536px]">
         Already have an account?{" "}
         <span className="font-semibold text-color-one duration-300 hover:text-green-700">
-          <Link href="/auth/login">Sign in</Link>
+          <Link href="/auth/login/with-mail">Sign in</Link>
         </span>
       </p>
     </div>

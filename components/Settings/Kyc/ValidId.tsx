@@ -47,7 +47,7 @@ export default function ValidID() {
         // Step 1: Fetch accessToken
         const accessToken = localStorage.getItem("accessToken");
         if (!accessToken) {
-          return router.push("/auth/login");
+          return router.push("/auth/login/with-mail");
         }
 
         // Step 2: Fetch KYC data from the API
@@ -149,7 +149,7 @@ export default function ValidID() {
       // Step 1: Fetch accessToken from local storage
       const accessToken = localStorage.getItem("accessToken");
       if (!accessToken) {
-        router.push("/auth/login");
+        router.push("/auth/login/with-mail");
         return;
       }
 

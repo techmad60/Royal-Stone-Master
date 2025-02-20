@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import Button from "../../ui/Button";
 
 interface SendOtpProps {
@@ -50,7 +50,7 @@ export default function SendOtp({ onClose, onVerify }: SendOtpProps) {
       }
 
       if (response.status === 401) {
-        router.push("/auth/login");
+        router.push("/auth/login/with-mail");
       }
 
       // Handle success

@@ -19,12 +19,12 @@ import StatRow from "@/components/ui/StatRow";
 import { PurchaseSavingsViaBank } from "@/Services/apiService";
 import { useSavingsTargetStore } from "@/store/savingsTargetStore";
 import {
-    FundBankDetails,
-    FundCryptoWalletDetails,
-    MakeSavingsBankResponse,
-    MakeSavingsCryptoResponse,
-    MakeSavingsTransactionResponse,
-    MakeSavingsWalletResponse,
+  FundBankDetails,
+  FundCryptoWalletDetails,
+  MakeSavingsBankResponse,
+  MakeSavingsCryptoResponse,
+  MakeSavingsTransactionResponse,
+  MakeSavingsWalletResponse,
 } from "@/types/Type";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -79,7 +79,7 @@ export default function SavingsTarget() {
       try {
         const token = localStorage.getItem("accessToken");
         if (!token) {
-          router.push("/auth/login");
+          router.push("/auth/login/with-mail");
           return;
         }
 
@@ -273,7 +273,7 @@ export default function SavingsTarget() {
     try {
       const token = localStorage.getItem("accessToken");
       if (!token) {
-        router.push("/auth/login");
+        router.push("/auth/login/with-mail");
         return;
       }
 

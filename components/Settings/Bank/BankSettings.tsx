@@ -85,7 +85,7 @@ export default function BankSetting({
 
       try {
         const token = localStorage.getItem("accessToken");
-        if (!token) return router.push("/auth/login");
+        if (!token) return router.push("/auth/login/with-mail");
 
         const fetchWithToken = async (url: string) => {
           const response = await fetch(url, {

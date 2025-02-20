@@ -1,6 +1,6 @@
 //app/login/page.tsx
-import Link from "next/link";
 import CardComponentFour from "@/components/ui/CardComponentFour";
+import Link from "next/link";
 
 export default function Login() {
   return (
@@ -12,7 +12,7 @@ export default function Login() {
             icon="/images/mail-icon.svg"
             textStart="Sign in with"
             textEnd="Email"
-            href="/auth/login/with-mail"
+            href="/auth/login/with-mail/with-mail"
             className="lg:h-[83px]"
           />
 

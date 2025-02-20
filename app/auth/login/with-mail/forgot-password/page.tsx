@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Navigator from "@/components/ui/Navigator";
 import Button from "@/components/ui/Button";
+import Navigator from "@/components/ui/Navigator";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const loginSteps = [
-  { label: "Sign in with", href: "/auth/login" },
-  { label: "With Email", href: "/auth/login/with-mail" },
-  { label: "Forgot Password", href: "/auth/login/with-mail/forgot-password" },
+  { label: "Sign in with", href: "/auth/login/with-mail" },
+  { label: "With Email", href: "/auth/login/with-mail/with-mail" },
+  { label: "Forgot Password", href: "/auth/login/with-mail/with-mail/forgot-password" },
 ];
 
 export default function ForgotPassword() {
@@ -49,7 +49,7 @@ export default function ForgotPassword() {
   
       // Navigate to the verification page with the email as a query parameter
       router.push(
-        `/auth/login/with-mail/forgot-password/verify-email?email=${encodeURIComponent(
+        `/auth/login/with-mail/with-mail/forgot-password/verify-email?email=${encodeURIComponent(
           email
         )}`
       );

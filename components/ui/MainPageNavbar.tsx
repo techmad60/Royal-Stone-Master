@@ -2,16 +2,17 @@
 import NavLink from "@/components/ui/MainPageNavLink";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { BsFileBarGraphFill, BsPeopleFill } from "react-icons/bs";
-// import { FaClock } from "react-icons/fa6";
 import { FiLogOut } from "react-icons/fi";
 import { GoHomeFill } from "react-icons/go";
 import { IoMdSettings } from "react-icons/io";
 import { LiaTimesSolid } from "react-icons/lia";
 import { RiMouseFill, RiStockLine } from "react-icons/ri";
 import { TbPackages, TbTargetArrow } from "react-icons/tb";
+import LogOut from "./LogOutModal";
+
 
 interface MainPageNavbarProps {
   isNavOpen: boolean;
@@ -22,8 +23,9 @@ export default function MainPageNavbar({
   isNavOpen,
   toggleNav,
 }: MainPageNavbarProps) {
-  const router = useRouter(); // Use Next.js router for navigation
+  // const router = useRouter(); // Use Next.js router for navigation
   const pathname = usePathname();
+  const [isLogOutModal, setIsLogOutModal] = useState(false);
 
   const isDisabled = pathname === "/auth/auth-dashboard";
   // Prevent scrolling when navbar is open
@@ -38,64 +40,9 @@ export default function MainPageNavbar({
     return () => document.body.classList.remove("overflow-hidden");
   }, [isNavOpen]);
 
-  const handleLogout = () => {
-    // Confirm logout with the user
-    const isConfirmed = confirm("Are you sure you want to log out? 🤔");
-    if (!isConfirmed) return;
 
-    // Get the current userId and username
-    const userId = localStorage.getItem("userId");
-    const userName = localStorage.getItem("userName");
-    // const referral
-
-    // Define KYC-related keys to preserve
-    const kycKeys = [
-      "isBankDetailsProvided",
-      "ïsCryptoDetailsProvided",
-      "isValidIdProvided",
-      "isNextOfKinProvided",
-      "isProfilePictureProvided",
-    ];
-
-    // Preserve the KYC statuses and username for the current user
-    const preservedData: Record<string, string | null> = { userName };
-    if (userId) {
-      kycKeys.forEach((key) => {
-        preservedData[key] = localStorage.getItem(`${key}-${userId}`);
-      });
-    }
-
-    // Remove all keys from localStorage except the ones to preserve
-    Object.keys(localStorage).forEach((key) => {
-      if (
-        key !== "userName" &&
-        !kycKeys.some((kycKey) => key.startsWith(`${kycKey}-${userId}`))
-      ) {
-        localStorage.removeItem(key);
-      }
-    });
-
-    // Restore the preserved data
-    if (userId) {
-      kycKeys.forEach((key) => {
-        const statusValue = preservedData[key];
-        if (statusValue !== null) {
-          localStorage.setItem(`${key}-${userId}`, statusValue);
-        }
-        console.log(statusValue);
-      });
-    }
-    if (userName) {
-      localStorage.setItem("userName", userName);
-    }
-
-    // Redirect to login page
-    try {
-      router.push("/auth/login");
-    } catch (error) {
-      console.error("Failed to redirect to login page:", error);
-      alert("An error occurred during logout. Please try again.");
-    }
+  const handleLogOutModal = () => {
+    setIsLogOutModal(true);
   };
 
   return (
@@ -186,8 +133,8 @@ export default function MainPageNavbar({
             <hr className="my-6" />
             <li className="">
               <button
-                className="flex items-center text-sm space-x-4 text-slate-400 hover:text-red-500 duration-300"
-                onClick={handleLogout} // Add the logout handler
+                className="flex items-center text-sm space-x-4 text-color-zero hover:text-red-500 duration-300"
+                onClick={handleLogOutModal} // Add the logout handler
               >
                 <FiLogOut />
                 <span>Log Out</span>
@@ -196,6 +143,9 @@ export default function MainPageNavbar({
           </ul>
         </nav>
       </div>
+      {isLogOutModal && (
+        <LogOut onClose={() => setIsLogOutModal(false)} />
+      )}
     </>
   );
 }

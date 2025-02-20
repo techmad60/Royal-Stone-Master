@@ -1,6 +1,6 @@
 //app/signup/page.tsx
-import Link from "next/link";
 import CardComponentFour from "@/components/ui/CardComponentFour";
+import Link from "next/link";
 
 export default function SignUp() {
     return (
@@ -20,7 +20,7 @@ export default function SignUp() {
             <p className="text-slate-400 lg:border-t lg:pt-4">
                 Already have an account?{" "}
                 <span className="font-semibold text-color-one duration-300 hover:text-green-700">
-                    <Link href="/auth/login">Sign in</Link>
+                    <Link href="/auth/login/with-mail">Sign in</Link>
                 </span>
             </p>
         </section>

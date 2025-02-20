@@ -9,9 +9,9 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 
 const loginSteps = [
-  { label: "Sign in with", href: "/auth/login" },
-  { label: "With Email", href: "/auth/login/with-mail" },
-  { label: "Forgot Password", href: "/auth/login/with-mail/forgot-password" },
+  { label: "Sign in with", href: "/auth/login/with-mail/with-mail" },
+  { label: "With Email", href: "/auth/login/with-mail/with-mail" },
+  { label: "Forgot Password", href: "/auth/login/with-mail/with-mail/forgot-password" },
 ];
 
 export default function WithMail() {
@@ -127,7 +127,7 @@ export default function WithMail() {
           </div>
         </div>
         <Link
-          href="/auth/login/with-mail/forgot-password"
+          href="/auth/login/with-mail/with-mail/forgot-password"
           className="text-end text-sm text-color-one hover:text-green-700"
         >
           Forgot Password?
@@ -145,7 +145,7 @@ export default function WithMail() {
       <p className="text-slate-400 text-sm text-center mt-8 lg:w-[417px] xl:w-[535px]">
         Don&apos;t have an account?{" "}
         <span className="font-semibold text-color-one duration-300 hover:text-green-700">
-          <Link href="/auth/signup">Sign up</Link>
+          <Link href="/auth/signup/with-mail">Sign up</Link>
         </span>
       </p>
     </div>

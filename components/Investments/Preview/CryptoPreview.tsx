@@ -45,7 +45,7 @@ export default function CryptoPreview({
     try {
       const token = localStorage.getItem("accessToken");
       if (!token) {
-        router.push("/auth/login"); // Redirect if no token found
+        router.push("/auth/login/with-mail"); // Redirect if no token found
         return;
       }
 
