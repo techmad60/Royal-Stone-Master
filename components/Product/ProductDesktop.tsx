@@ -24,34 +24,46 @@ export default function ProductDesktop({
 }) {
   const router = useRouter();
 
-  const handleNavigation = (productId: string, status: string) => {
+  const handleNavigation = (
+    productId: string,
+    status: string,
+    action: "invest" | "view"
+  ) => {
     if (status !== "available") {
       toast.error("This product has been sold out.");
       return;
     }
 
-    const basePath =
-      navigateTo === "investment"
-        ? "/main/investments/make-investment/investment-product"
-        : "/main/product/product-details";
+    let basePath = "";
+
+    if (action === "invest") {
+      basePath =
+        "/main/investments/make-investment/investment-product/investment-details";
+    } else {
+      basePath =
+        navigateTo === "investment"
+          ? "/main/investments/make-investment/investment-product"
+          : "/main/product/product-details";
+    }
+
     router.push(`${basePath}?id=${encodeURIComponent(productId)}`);
   };
 
   return (
     <div>
       {/* Table Header */}
-      <ToastContainer position="top-right" autoClose={3000}/>
+      <ToastContainer position="top-right" autoClose={3000} />
       {products.length !== 0 && (
         <div className="hidden lg:grid grid-cols-6 items-center bg-light-grey rounded-common py-4 px-8 shadow-sm mt-4">
-        <p className="text-xs text-slate-400 col-span-3">
-          Product Image & Name
-        </p>
-        <p className="text-xs text-slate-400">Units Available</p>
-        <p className="text-xs text-slate-400">Status</p>
-        <p className="text-xs text-slate-400">Actions</p>
-      </div>
+          <p className="text-xs text-slate-400 col-span-3">
+            Product Image & Name
+          </p>
+          <p className="text-xs text-slate-400">Units Available</p>
+          <p className="text-xs text-slate-400">Status</p>
+          <p className="text-xs text-slate-400">Actions</p>
+        </div>
       )}
-      
+
       {/* Table Body */}
       <div>
         {products.map((product) => (
@@ -77,16 +89,18 @@ export default function ProductDesktop({
 
             {/* Units Available */}
             <div>
-              <p className="text-sm text-color-zero">{product.availableUnits}</p>
+              <p className="text-sm text-color-zero">
+                {product.availableUnits}
+              </p>
             </div>
 
             {/* Status */}
             <div>
               <span
-                className={`text-sm font-semibold px-2 py-1 rounded-full ${
+                className={`text-sm  px-2 py-1 rounded-full ${
                   product.status === "available"
-                    ? "bg-green-100 text-green-700"
-                    : "bg-red-100 text-red-700"
+                    ? " text-color-one"
+                    : " text-red-500"
                 }`}
               >
                 {product.status
@@ -99,7 +113,9 @@ export default function ProductDesktop({
             {/* Actions */}
             <div className="flex gap-2">
               <button
-                onClick={() => handleNavigation(product.id, product.status)} // Pass status
+                onClick={() =>
+                  handleNavigation(product.id, product.status, "invest")
+                }
                 className="text-xs text-color-one rounded-[20px] border border-slate-100 font-semibold hover:bg-green-700 hover:text-white duration-300 w-[93px] h-[34px] flex items-center justify-center"
                 aria-label={`Invest in ${product.name}`}
               >
@@ -109,7 +125,7 @@ export default function ProductDesktop({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleNavigation(product.id, product.status); // Pass status
+                    handleNavigation(product.id, product.status, "view"); // Pass status
                   }}
                   className="text-xs font-medium hover:text-green-700 duration-300 flex items-center text-color-form"
                   aria-label={`View details of ${product.name}`}

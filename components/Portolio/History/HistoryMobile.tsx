@@ -1,5 +1,7 @@
+"use client";
 import Icon from "@/components/ui/Icon";
-import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import { BsFileBarGraphFill } from "react-icons/bs";
 import { GoPlus } from "react-icons/go";
 import { IoIosSend } from "react-icons/io";
@@ -20,44 +22,44 @@ interface HistoryMobileProps {
 export default function HistoryMobile({ transactions }: HistoryMobileProps) {
   const [latestTransactions, setLatestTransactions] = useState<Transactions[]>(
     []
-  ); // Explicit type
+  );
   const [latestDateLabel, setLatestDateLabel] = useState<string>("");
+  const pathname = usePathname();
+  const isDashboard = pathname === "/main/dashboard";
+  const router = useRouter();
 
-  useEffect(() => {
-    // Group investments by date
-    const groupByDate = (transactions: Transactions[]) => {
-      const grouped: { [key: string]: Transactions[] } = {};
-      transactions.forEach((transaction) => {
-        const dateKey = new Date(transaction.createdAt).toLocaleDateString(); // Local date string
-        if (!grouped[dateKey]) {
-          grouped[dateKey] = [];
-        }
-        grouped[dateKey].push(transaction);
-      });
+  const groupByDate = (transactions: Transactions[]) => {
+    const grouped: { [key: string]: Transactions[] } = {};
+    transactions.forEach((transaction) => {
+      const dateKey = new Date(transaction.createdAt).toISOString().split("T")[0];
+      if (!grouped[dateKey]) {
+        grouped[dateKey] = [];
+      }
+      grouped[dateKey].push(transaction);
+    });
 
-      return Object.entries(grouped)
-        .map(([date, items]) => ({ date, items }))
-        .sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
-    };
+    return Object.entries(grouped)
+      .map(([date, items]) => ({ date, items }))
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  };
 
-    // Group and find the latest transactions
-    const groupedTransactions = groupByDate(
+  const groupedTransactions = useMemo(() => {
+    return groupByDate(
       transactions.sort(
         (a, b) =>
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       )
     );
+  }, [transactions]);
 
+  useEffect(() => {
     if (groupedTransactions.length > 0) {
-      const today = new Date().toLocaleDateString();
-      const yesterday = new Date(Date.now() - 86400000).toLocaleDateString();
+      const today = new Date().toISOString().split("T")[0];
+      const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
 
-      const latestGroup = groupedTransactions[0]; // Most recent group
+      const latestGroup = groupedTransactions[0];
       const latestDate = latestGroup.date;
 
-      // Set the label based on the date
       if (latestDate === today) {
         setLatestDateLabel("Today");
       } else if (latestDate === yesterday) {
@@ -71,10 +73,13 @@ export default function HistoryMobile({ transactions }: HistoryMobileProps) {
           })
         );
       }
-
-      setLatestTransactions(latestGroup.items); // Set transactions for the latest date
+      setLatestTransactions(latestGroup.items);
     }
-  }, [transactions]);
+  }, [groupedTransactions]);
+
+  const displayedTransactions = isDashboard
+    ? latestTransactions.slice(0, 2)
+    : latestTransactions;
 
   const getIconForTransactionType = (type: string) => {
     switch (type) {
@@ -89,22 +94,31 @@ export default function HistoryMobile({ transactions }: HistoryMobileProps) {
       case "savings-target-funding":
         return <TbTargetArrow className="text-color-one" />;
       default:
-        return <BsFileBarGraphFill className="text-color-one" />; // Default fallback icon
+        return <BsFileBarGraphFill className="text-color-one" />;
+    }
+  };
+
+  const handleTransactionClick = (type: string) => {
+    if (type.includes("investment")) {
+      router.push("/main/investments");
+    } else if (type.includes("savings")) {
+      router.push("/main/savings");
     }
   };
 
   return (
     <div className="lg:hidden">
-      {latestTransactions.length > 0 ? (
+      {displayedTransactions.length > 0 ? (
         <section>
           <div>
             <p className="text-sm text-color-form pb-2">{latestDateLabel}</p>
             <hr />
           </div>
-          {latestTransactions.map((transaction: Transactions) => (
+          {displayedTransactions.map((transaction: Transactions) => (
             <section
               key={transaction.id}
               className="flex justify-between bg-light-grey shadow-sm rounded-common p-4 my-4"
+              onClick={() => handleTransactionClick(transaction.type)}
             >
               <div className="flex gap-4">
                 <Icon

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
+
 const loginSteps = [
   { label: "Sign in with", href: "/auth/login" },
   { label: "With Email", href: "/auth/login/with-mail" },
@@ -19,6 +20,8 @@ export default function WithMail() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   // Fetching setFullName from your Zustand store
   const setFullName = useUserStore((state) => state.setFullName);
@@ -40,7 +43,7 @@ export default function WithMail() {
 
     try {
       const response = await fetch(
-        "https://api-royal-stone.softwebdigital.com/api/auth/login",
+        `${API_URL}/auth/login`,
         {
           method: "POST",
           headers: {

@@ -68,18 +68,16 @@ export default function HistoryMobile() {
     const groupByDate = (investments: Investments[]) => {
       const grouped: { [key: string]: Investments[] } = {};
       investments.forEach((investment) => {
-        const dateKey = new Date(investment.createdAt).toLocaleDateString(); // Local date string
+        const dateKey = new Date(investment.createdAt).toISOString().split("T")[0]; // Fix here
         if (!grouped[dateKey]) {
           grouped[dateKey] = [];
         }
         grouped[dateKey].push(investment);
       });
-
+    
       return Object.entries(grouped)
         .map(([date, items]) => ({ date, items }))
-        .sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     };
 
     // Group and find the latest transactions

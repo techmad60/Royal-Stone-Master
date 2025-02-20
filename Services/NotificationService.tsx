@@ -23,23 +23,9 @@ export default function NotificationProvider() {
       const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
         cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
       });
-    
-      console.log("Pusher initialized:", pusher);
+
       const channelName = process.env.NEXT_PUBLIC_PUSHER_CHANNEL!;
       const channel = pusher.subscribe(channelName);
-      console.log("Subscribed to channel:", channelName);
-      console.log("Pusher Key:", process.env.NEXT_PUBLIC_PUSHER_KEY);
-      console.log("Pusher Cluster:", process.env.NEXT_PUBLIC_PUSHER_CLUSTER);
-      console.log("Pusher Channel:", process.env.NEXT_PUBLIC_PUSHER_CHANNEL);
-      pusher.connection.bind("connected", () => {
-        console.log("✅ Pusher is connected!");
-      });
-      pusher.connection.bind("disconnected", () => {
-        console.log("❌ Pusher disconnected!");
-      });
-      pusher.connection.bind("error", (err: unknown) => {
-        console.error("⚠️ Pusher error:", err);
-      });
 
       const eventTypes = [
         "funding-approval",
@@ -50,31 +36,15 @@ export default function NotificationProvider() {
         "savings-maturity",
       ];
 
-    //   eventTypes.forEach((eventType) => {
-    //     channel.bind(eventType, (data: Notification) => {
-    //       console.log(`📩 Received event: ${eventType}`, data);
-    //       addNotification(data);
-    //     });
-    //   });
-      
-      
       // Catch all events (for debugging)
-      channel.bind_global((event:string, data:Notification) => {
-        console.log(`🌍 Received global event: ${event}`, data);
-      
+      channel.bind_global((event: string, data: Notification) => {
         // Extract the base event name by checking against known prefixes
         const matchedEvent = eventTypes.find((type) => event.startsWith(type));
-      
+
         if (matchedEvent) {
-          console.log(`✅ Matched event type: ${matchedEvent}`);
-          console.log("🛎 Calling addNotification with data:", data);
           addNotification(data);
-        } else {
-          console.warn(`⚠️ Unrecognized event: ${event}`);
         }
       });
-      
-      
 
       pusherRef.current = pusher;
 

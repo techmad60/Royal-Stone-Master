@@ -14,8 +14,16 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "api.polygon.io",
-      }
+      },
     ],
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*", // When frontend calls /api/xyz
+        destination: "https://api-royal-stone.softwebdigital.com/api/:path*", // It redirects to backend
+      },
+    ];
   },
 };
 

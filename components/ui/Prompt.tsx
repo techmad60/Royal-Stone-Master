@@ -16,7 +16,7 @@ export default function Prompt({prompt = ""}) {
         {prompt}
       </p>
       <Image
-        src={"/images/hero-img.svg"}
+        src={"/images/revised-hero.svg"}
         alt="Hero Image"
         className=""
         width={516}

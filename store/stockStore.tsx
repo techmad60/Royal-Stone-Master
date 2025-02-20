@@ -7,8 +7,11 @@ interface StockStore {
   totalPages: number;
   loading: boolean;
   error: string;
-  fetchStocks: (page?: number) => Promise<void>;
+  searchQuery: string;
+  fetchStocks: (page?: number, query?: string) => Promise<void>;
+
   setCurrentPage: (page: number) => void;
+  setSearchQuery: (query: string) => void;
 }
 
 export const useStockStore = create<StockStore>((set) => ({
@@ -17,28 +20,31 @@ export const useStockStore = create<StockStore>((set) => ({
   totalPages: 1,
   loading: false,
   error: "",
+  searchQuery: "",
 
-  fetchStocks: async (page = 1) => {
+  fetchStocks: async (page = 1, query = "") => {
     set({ loading: true, error: "" });
-
+  
     try {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch(`https://api-royal-stone.softwebdigital.com/api/stock?page=${page}`, {
-        method: "GET",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://api-royal-stone.softwebdigital.com/api/stock?page=${page}&search=${query}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const data = await response.json();
-
+  
       if (data.status) {
         set({
           stocks: data.data.data,
           currentPage: page,
           totalPages: data.data.totalPages,
         });
-        
       } else {
         set({ error: "Failed to fetch stocks." });
       }
@@ -49,5 +55,8 @@ export const useStockStore = create<StockStore>((set) => ({
       set({ loading: false });
     }
   },
-  setCurrentPage: (page) => set({ currentPage: page }), // Update currentPage
+
+  setCurrentPage: (page) => set({ currentPage: page }),
+
+  setSearchQuery: (query) => set({ searchQuery: query }),
 }));

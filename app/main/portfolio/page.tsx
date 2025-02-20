@@ -7,7 +7,6 @@ import CardComponentFive from "@/components/ui/CardComponentFive";
 import Icon from "@/components/ui/Icon";
 import Loading from "@/components/ui/Loading";
 import NoHistory from "@/components/ui/NoHistory";
-// import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BsFileBarGraphFill } from "react-icons/bs";
@@ -113,7 +112,7 @@ export default function Portfolio() {
       <div className="lg:mr-8 lg:gap-4 xl:flex items-end lg:mb-6">
         <div className="flex gap-4 mt-4">
           <CardComponentFive
-            icon={<TbTargetArrow className="text-base" />}
+            icon={<BsFileBarGraphFill className="text-base" />}
             label="Investment Wallet Balance"
             number={`$${portfolioData.totalInvestmentBalance.toFixed(2)}`}
             classname="text-base font-semibold lg:font-extrabold lg:text-[32px]"
@@ -121,7 +120,7 @@ export default function Portfolio() {
           />
 
           <CardComponentFive
-            icon={<BsFileBarGraphFill className="text-base" />}
+            icon={< TbTargetArrow className="text-base" />}
             label="Savings Wallet Balance"
             number={`$${portfolioData.totalSavingsBalance.toFixed(2)}`}
             classname="text-base font-semibold lg:font-extrabold lg:text-[32px]"

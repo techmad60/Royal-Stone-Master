@@ -3,6 +3,7 @@ import NotificationList from "@/Services/NotificationList";
 import NotificationProvider from "@/Services/NotificationService";
 import { GeistSans } from "geist/font/sans";
 import { Metadata } from "next";
+import { ToastContainer } from "react-toastify";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -23,6 +24,7 @@ export default function RootLayout({
         <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
       </head>
       <body>
+      <ToastContainer position="top-right" autoClose={3000} />
         <NotificationList/>
         <NotificationProvider />
         {children}

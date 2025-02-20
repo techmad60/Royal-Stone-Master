@@ -40,7 +40,7 @@ export default function StocksPage() {
         <>
           {/* Ensure Responsiveness */}
           <StockListMobile stocks={stocks} />
-          <StockDesktopList stocks={stocks} />
+          <StockDesktopList stocks={stocks}/>
           {stocks.length !== 0 && (
             <div className="mt-4">
               <PaginationComponent
