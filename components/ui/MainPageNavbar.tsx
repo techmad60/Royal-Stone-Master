@@ -13,8 +13,6 @@ import { LiaTimesSolid } from "react-icons/lia";
 import { RiMouseFill, RiStockLine } from "react-icons/ri";
 import { TbPackages, TbTargetArrow } from "react-icons/tb";
 
-
-
 interface MainPageNavbarProps {
   isNavOpen: boolean;
   toggleNav: () => void;
@@ -39,18 +37,17 @@ export default function MainPageNavbar({
     // Cleanup function to remove class on unmount
     return () => document.body.classList.remove("overflow-hidden");
   }, [isNavOpen]);
- 
 
   const handleLogout = () => {
     // Confirm logout with the user
     const isConfirmed = confirm("Are you sure you want to log out? 🤔");
     if (!isConfirmed) return;
-  
+
     // Get the current userId and username
     const userId = localStorage.getItem("userId");
     const userName = localStorage.getItem("userName");
     // const referral
-  
+
     // Define KYC-related keys to preserve
     const kycKeys = [
       "isBankDetailsProvided",
@@ -59,7 +56,7 @@ export default function MainPageNavbar({
       "isNextOfKinProvided",
       "isProfilePictureProvided",
     ];
-  
+
     // Preserve the KYC statuses and username for the current user
     const preservedData: Record<string, string | null> = { userName };
     if (userId) {
@@ -67,7 +64,7 @@ export default function MainPageNavbar({
         preservedData[key] = localStorage.getItem(`${key}-${userId}`);
       });
     }
-  
+
     // Remove all keys from localStorage except the ones to preserve
     Object.keys(localStorage).forEach((key) => {
       if (
@@ -77,7 +74,7 @@ export default function MainPageNavbar({
         localStorage.removeItem(key);
       }
     });
-  
+
     // Restore the preserved data
     if (userId) {
       kycKeys.forEach((key) => {
@@ -85,14 +82,13 @@ export default function MainPageNavbar({
         if (statusValue !== null) {
           localStorage.setItem(`${key}-${userId}`, statusValue);
         }
-        console.log(statusValue)
+        console.log(statusValue);
       });
-     
     }
     if (userName) {
       localStorage.setItem("userName", userName);
     }
-  
+
     // Redirect to login page
     try {
       router.push("/auth/login");
@@ -101,7 +97,6 @@ export default function MainPageNavbar({
       alert("An error occurred during logout. Please try again.");
     }
   };
-  
 
   return (
     <>
@@ -145,15 +140,9 @@ export default function MainPageNavbar({
                 disabled={isDisabled}
               />
               <NavLink
-                href="/main/portfolio"
-                icon={<RiMouseFill />}
-                label="Portfolio"
-                disabled={isDisabled}
-              />
-              <NavLink
-                href="/main/stocks"
-                icon={<RiStockLine />}
-                label="Stocks"
+                href="/main/investments"
+                icon={<BsFileBarGraphFill />}
+                label="Investments"
                 disabled={isDisabled}
               />
               <NavLink
@@ -163,11 +152,18 @@ export default function MainPageNavbar({
                 disabled={isDisabled}
               />
               <NavLink
-                href="/main/investments"
-                icon={<BsFileBarGraphFill />}
-                label="Investments"
+                href="/main/stocks"
+                icon={<RiStockLine />}
+                label="Stocks"
                 disabled={isDisabled}
               />
+              <NavLink
+                href="/main/portfolio"
+                icon={<RiMouseFill />}
+                label="Portfolio"
+                disabled={isDisabled}
+              />
+
               <NavLink
                 href="/main/referrals"
                 icon={<BsPeopleFill />}

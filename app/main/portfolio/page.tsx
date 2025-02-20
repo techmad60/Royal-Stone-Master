@@ -116,18 +116,20 @@ export default function Portfolio() {
             label="Investment Wallet Balance"
             number={`$${portfolioData.totalInvestmentBalance.toFixed(2)}`}
             classname="text-base font-semibold lg:font-extrabold lg:text-[32px]"
-            width="lg:w-[378px] xl:w-[355px]"
+            width="lg:w-[378px] xl:w-[290px] 2xlg:w-[355px]"
           />
 
           <CardComponentFive
-            icon={< TbTargetArrow className="text-base" />}
+            icon={<TbTargetArrow className="text-base" />}
             label="Savings Wallet Balance"
             number={`$${portfolioData.totalSavingsBalance.toFixed(2)}`}
             classname="text-base font-semibold lg:font-extrabold lg:text-[32px]"
-            width="lg:w-[378px] xl:w-[355px]"
+            width="lg:w-[378px] xl:w-[290px] 2xlg:w-[355px]"
           />
         </div>
-        <section className="flex bg-light-grey shadow-sm rounded-common p-4 my-4 justify-center mx-auto gap-8 lg:gap-16 lg:w-[382px] xl:my-0 lg:h-[103px]">
+        <section
+          className={`flex bg-light-grey shadow-sm rounded-common p-4 my-4 justify-center mx-auto gap-2 lg:gap-12 lg:w-[382px] lg:h-[103px] xl:my-0`}
+        >
           <div
             className="flex items-center text-color-one gap-2 cursor-pointer hover:text-green-500 duration-150 lg:border-r lg:pr-16"
             onClick={() => openModal("withdraw")} // Open Withdraw modal

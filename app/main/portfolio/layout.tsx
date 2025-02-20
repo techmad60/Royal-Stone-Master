@@ -4,7 +4,7 @@ import AuthHeader from "@/components/ui/AuthHeader";
 import MainPageNavbar from "@/components/ui/MainPageNavbar";
 import { useState } from "react";
 
-export default function ProductLayout({
+export default function PortfolioLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -26,4 +26,6 @@ export default function ProductLayout({
     </div>
   );
 }
+
+
 
