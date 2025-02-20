@@ -21,7 +21,6 @@ export default function WithMail() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   // Fetching setFullName from your Zustand store
   const setFullName = useUserStore((state) => state.setFullName);
@@ -43,7 +42,7 @@ export default function WithMail() {
 
     try {
       const response = await fetch(
-        `${API_URL}/auth/login`,
+        `https://api-royal-stone.softwebdigital.com/api/auth/login`,
         {
           method: "POST",
           headers: {
@@ -101,7 +100,7 @@ export default function WithMail() {
             required
             value={formData.email}
             onChange={handleChange}
-            className="rounded-sm border-b border-slate-200 text-colour-five"
+            className="rounded-sm border-b border-slate-200 text-colour-five p-3"
             placeholder="cooperwind@gmail.com"
           />
         </div>
@@ -115,7 +114,7 @@ export default function WithMail() {
               required
               value={formData.password}
               onChange={handleChange}
-              className="rounded-sm border-b border-slate-200 w-full text-colour-five"
+              className="rounded-sm border-b border-slate-200 w-full text-colour-five p-3"
               placeholder="eXample@123"
             />
             <button

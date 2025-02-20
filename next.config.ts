@@ -17,14 +17,14 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  async rewrites() {
-    return [
-      {
-        source: "/api/:path*", // When frontend calls /api/xyz
-        destination: "https://api-royal-stone.softwebdigital.com/api/:path*", // It redirects to backend
-      },
-    ];
-  },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: "/api/:path*", // When frontend calls /api/xyz
+  //       destination: "https://api-royal-stone.softwebdigital.com/api/:path*", // It redirects to backend
+  //     },
+  //   ];
+  // },
 };
 
 export default nextConfig;
