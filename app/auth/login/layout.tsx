@@ -15,7 +15,9 @@ export default function LoginLayout({
         </div>
         <div className="flex flex-col">
           <AuthHeader title="Sign in to your Royal Stone Account"/>
-          {children} {/* Ensure children are rendered here */}
+          <div className="mt-[6rem] lg:mt-20">
+            {children} {/* Ensure children are rendered here */}
+          </div>
         </div>
       </div>
     </div>

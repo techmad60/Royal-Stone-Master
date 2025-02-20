@@ -80,7 +80,7 @@ export default function AuthHeader({ title, toggleNav, grid }: AuthHeaderProps) 
   }, []);
 
   return (
-    <div className={`flex flex-col space-y-4 fixed z-50 w-full lg:pr-8 ${grid}`}>
+    <div className={`flex flex-col space-y-4 fixed z-50 w-full bg-white px-4 sm:px-12 lg:px-0 lg:pr-8 ${grid}`}>
       {/* Logo Img */}
       <Link href="/" className="flex">
         <Image className="logo lg:hidden" src={"/images/logo.svg"} alt="Royal-Stone Logo" width={106.75} height={20} />

@@ -200,7 +200,7 @@ export default function SignupWithMail() {
             required
             value={formData.name}
             onChange={handleChange}
-            className="rounded-sm border-b border-slate-200 text-colour-five"
+            className="rounded-sm border-b border-slate-200 text-colour-five p-3"
             placeholder="Cooper Winterwind"
           />
         </div>
@@ -214,7 +214,7 @@ export default function SignupWithMail() {
             required
             value={formData.email}
             onChange={handleChange}
-            className="rounded-sm border-b border-slate-200 text-colour-five"
+            className="rounded-sm border-b border-slate-200 text-colour-five p-3"
             placeholder="cooperwind@gmail.com"
           />
           {emailError && (
@@ -261,7 +261,7 @@ export default function SignupWithMail() {
               required
               value={formData.password}
               onChange={handleChange}
-              className="rounded-sm border-b border-slate-200 w-full text-colour-five"
+              className="rounded-sm border-b border-slate-200 w-full text-colour-five p-3"
               placeholder="eXample@123"
             />
             <button
@@ -292,7 +292,7 @@ export default function SignupWithMail() {
             name="referralCode"
             value={formData.referralCode}
             onChange={handleChange}
-            className="rounded-sm border-b border-slate-200 text-colour-five"
+            className="rounded-sm border-b border-slate-200 text-colour-five p-3"
             placeholder="091156"
           />
         </div>

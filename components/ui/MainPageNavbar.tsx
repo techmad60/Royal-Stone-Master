@@ -30,15 +30,15 @@ export default function MainPageNavbar({
   const isDisabled = pathname === "/auth/auth-dashboard";
   // Prevent scrolling when navbar is open
   useEffect(() => {
-    if (isNavOpen) {
+    if (isNavOpen && window.innerWidth < 1024) {
       document.body.classList.add("overflow-hidden");
     } else {
       document.body.classList.remove("overflow-hidden");
     }
-
-    // Cleanup function to remove class on unmount
+  
     return () => document.body.classList.remove("overflow-hidden");
   }, [isNavOpen]);
+  
 
 
   const handleLogOutModal = () => {
@@ -49,13 +49,13 @@ export default function MainPageNavbar({
     <>
       {isNavOpen && (
         <div
-          className="fixed top-0 right-0 w-[25vw] min-h-screen bg-black opacity-50 z-50 lg:hidden"
+          className="fixed top-0 right-0 w-[25vw] min-h-screen bg-black opacity-50 z-[90] lg:hidden"
           onClick={toggleNav}
         />
       )}
       <div
         className={`flex z-50 flex-col bg-light-grey absolute min-h-screen top-0 left-0 p-4 space-y-8 w-3/4 lg:w-[230px] lg:static lg:px-8 border-r border-slate-200 xl:w-[268px] ${
-          isNavOpen ? "fixed" : "hidden lg:flex"
+          isNavOpen ? "fixed overflow-hidden" : "hidden lg:flex"
         }`}
       >
         <button className="flex justify-center lg:hidden" onClick={toggleNav}>

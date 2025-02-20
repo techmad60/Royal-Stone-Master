@@ -10,14 +10,17 @@ export default function LoginLayout({
     <div className="flex flex-col bg-white">
       <div className="p-4 lg:grid grid-cols-2 lg:p-0 gap-12">
         <div>
-          <Prompt prompt="Welcome back! 1,000+ users are already on the path to smart investing. Ready to take the next step? 🤔"/>
+          <Prompt prompt="Welcome back! 1,000+ users are already on the path to smart investing. Ready to take the next step? 🤔" />
         </div>
         <div className="flex flex-col">
-          <p className="font-semibold text-base text-color-zero mt-6 lg:text-[22px]">Welcome back to your Royal Stone account</p>
-          {children} {/* Ensure children are rendered here */}
+          <p className="font-semibold text-base text-color-zero mt-6 lg:text-[22px]">
+            Welcome back to your Royal Stone account
+          </p>
+          <div className="mt-32">
+            {children} {/* Ensure children are rendered here */}
+          </div>
         </div>
       </div>
     </div>
   );
 }
-

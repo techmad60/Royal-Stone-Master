@@ -1,8 +1,8 @@
 //app/auth-dashboard/layout.tsx
 "use client"
-import { useState } from "react";
 import AuthHeader from "@/components/ui/AuthHeader";
 import MainPageNavbar from "@/components/ui/MainPageNavbar";
+import { useState } from "react";
 
 export default function AuthDashboardLayout({
   children,
@@ -20,7 +20,9 @@ export default function AuthDashboardLayout({
         {/* Item 2 */}
         <div className="flex flex-col lg:col-span-3 xl:col-span-4">
           <AuthHeader title="Dashboard" toggleNav={toggleNav} grid=""/>
-          {children} {/* Ensure children are rendered here */}
+          <div className="mt-20">
+            {children} {/* Ensure children are rendered here */}
+          </div>
         </div>
       </div>
     </div>

@@ -139,7 +139,7 @@ export default function Referrals() {
     if (!selectedType) {
       return { isValid: false, error: "Please select a withdrawal method." };
     }
-   
+
     return { isValid: true, error: "" };
   };
 
@@ -158,7 +158,7 @@ export default function Referrals() {
     setSelectedAccountDetails({ selectedAccount });
 
     // Call handleWithdrawal only if everything is valid
-  handleWithdrawal();
+    handleWithdrawal();
   };
 
   const handleWithdrawal = async () => {
@@ -242,32 +242,33 @@ export default function Referrals() {
               secondNumber={`$${currentBalance.toFixed(2)}`}
               label="Your Earnings"
               width="w-full lg:hidden"
-              showNumber = {true}
+              showNumber={true}
             />
           </section>
         </div>
 
-        <CardComponentFive
-          icon={<AiFillDollarCircle />}
-          label="Your Earnings"
-          number={`$${totalEarning.toFixed(2)}`}
-          secondLabel="Current Balance"
-          secondNumber={`$${currentBalance.toFixed(2)}`}
-          gapStyling="gap-x-60"
-          width="hidden lg:flex w-[605px]"
-          showNumber = {true}
-        />
-      </div>
-
-      {!showWithdrawalOptions && (
-        <div className="flex flex-end self-end justify-center mb-3 lg:justify-end lg:mr-8 gap-x- ">
-          <Button
-            ButtonText="Withdraw Earnings"
-            onClick={() => setShowWithdrawalOptions(true)}
-            className="bg-color-one rounded-[13px] text-xs font-medium w-[143px] h-[30px] flex items-center lg:rounded-[22px] lg:w-[132px] lg:h-[40px]"
-          ></Button>
+        <div className="lg:flex flex-col">
+          <CardComponentFive
+            icon={<AiFillDollarCircle />}
+            label="Your Earnings"
+            number={`$${totalEarning.toFixed(2)}`}
+            secondLabel="Current Balance"
+            secondNumber={`$${currentBalance.toFixed(2)}`}
+            gapStyling="gap-x-60"
+            width="hidden lg:flex w-[605px]"
+            showNumber={true}
+          />
+          {!showWithdrawalOptions && (
+            <div className="flex flex-end self-center justify-center mb-3 lg:mt-4 lg:justify-end lg:mr-8 ">
+              <Button
+                ButtonText="Withdraw Earnings"
+                onClick={() => setShowWithdrawalOptions(true)}
+                className="bg-color-one rounded-[13px] text-xs font-medium w-[143px] h-[30px] flex items-center lg:rounded-[22px] lg:w-[300px] lg:h-[40px]"
+              ></Button>
+            </div>
+          )}
         </div>
-      )}
+      </div>
 
       <hr className="lg:mr-8" />
 
