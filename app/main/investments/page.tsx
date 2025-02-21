@@ -24,7 +24,7 @@ export default function Investment() {
     fetchInvestments,
     investments,
     isLoading,
-    // error,
+    error,
     currentPage,
     totalPages,
     setCurrentPage,
@@ -65,6 +65,7 @@ export default function Investment() {
         }
       } catch (error) {
         toast.error("Oops!, something went wrong")
+        console.log(error)
       }
     };
 
@@ -72,6 +73,7 @@ export default function Investment() {
   }, [fetchInvestments, currentPage, router]);
 
   console.log(investments);
+  console.log(error)
   if (isLoading) {
     return (
       <div>
