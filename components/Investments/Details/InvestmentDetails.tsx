@@ -321,8 +321,53 @@ export default function InvestmentDetails() {
   };
 
   // Purchase Via Wallet
+// const handleMakePurchase = async () => {
+//   setApiError(null); // Clear previous error messages
+//   setIsLoading(true);
+
+//   try {
+//     const token = localStorage.getItem("accessToken");
+//     if (!token) {
+//       router.push("/auth/login/with-mail");
+//       return;
+//     }
+
+//     const purchaseResponse = await makePurchase(
+//       product.id,
+//       Number(noOfUnits),
+//       token
+//     );
+
+//     if (purchaseResponse.success && purchaseResponse.data) {
+//       setWalletPurchase(purchaseResponse.data);
+//       setCurrentModal("processed"); // Show success modal
+//     } else {
+//       const errorMessage =
+//         purchaseResponse.message || "An error occurred during the deposit.";
+
+//       // Show toast notification
+//       toast.error("Insufficient Balance.", { autoClose: 3000 });
+
+//       // Set error message & force modal close
+//       setApiError(errorMessage);
+//       setCurrentModal(null);
+//     }
+//   } catch (err) {
+//     // const errorMessage = err instanceof Error ? err.message : "Something went wrong.";
+
+//     // Show toast for error
+//     toast.error("Insufficient Balance.", { autoClose: 3000 });
+
+//     // Set error message & force modal close
+//     // setFormError(errorMessage);
+//     setCurrentModal(null);
+//   } finally {
+//     setIsLoading (false)
+//   }
+// };
+
 const handleMakePurchase = async () => {
-  setApiError(null); // Clear previous error messages
+  setApiError(null);
   setIsLoading(true);
 
   try {
@@ -340,31 +385,20 @@ const handleMakePurchase = async () => {
 
     if (purchaseResponse.success && purchaseResponse.data) {
       setWalletPurchase(purchaseResponse.data);
-      setCurrentModal("processed"); // Show success modal
+      setCurrentModal("processed");
     } else {
-      const errorMessage =
-        purchaseResponse.message || "An error occurred during the deposit.";
-
-      // Show toast notification
       toast.error("Insufficient Balance.", { autoClose: 3000 });
-
-      // Set error message & force modal close
-      setApiError(errorMessage);
+      setApiError(purchaseResponse.message || "An error occurred.");
       setCurrentModal(null);
     }
-  } catch (err) {
-    // const errorMessage = err instanceof Error ? err.message : "Something went wrong.";
-
-    // Show toast for error
+  } catch {
     toast.error("Insufficient Balance.", { autoClose: 3000 });
-
-    // Set error message & force modal close
-    // setFormError(errorMessage);
     setCurrentModal(null);
   } finally {
-    setIsLoading (false)
+    setIsLoading(false);
   }
 };
+
 
   const handlePaymentSelection = (method: "bank" | "crypto" | "wallet") => {
     setSelectedType(method);
