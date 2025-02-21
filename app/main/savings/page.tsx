@@ -4,7 +4,6 @@ import HistoryMobile from "@/components/Savings/History/HistoryMobile";
 import SavingsTargetDesktop from "@/components/Savings/Savings-Targets/Desktop";
 import SavingsTargetMobile from "@/components/Savings/Savings-Targets/Mobile";
 import CardComponentFive from "@/components/ui/CardComponentFive";
-import Icon from "@/components/ui/Icon";
 import Loading from "@/components/ui/Loading";
 import NoHistory from "@/components/ui/NoHistory";
 import PaginationComponent from "@/components/ui/PaginationComponent";
@@ -13,15 +12,12 @@ import Link from "next/dist/client/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { GoPlus } from "react-icons/go";
-import { IoIosSend } from "react-icons/io";
 import { TbTargetArrow } from "react-icons/tb";
 
 export default function Savings() {
   const [ledgerBalance, setLedgerBalance] = useState(0);
   const [availableBalance, setAvailableBalance] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [showNoHistory, setShowNoHistory] = useState(false);
   const router = useRouter();
   const {
     savingsTarget,
@@ -33,7 +29,7 @@ export default function Savings() {
   } = useSavingsTargetStore();
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page); // Update the page in the product store
+    setCurrentPage(page);
   };
 
   useEffect(() => {
@@ -68,23 +64,13 @@ export default function Savings() {
           console.error("Unexpected error:", error);
         }
       } finally {
-        setIsLoading(false); // Set loading to false after fetching data
+        setIsLoading(false);
       }
     };
 
     fetchPortfolio();
-    fetchSavingsTarget(); // Fetch savings targets here
+    fetchSavingsTarget();
   }, [router, fetchSavingsTarget]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (savingsTarget.length === 0) {
-        setShowNoHistory(true);
-      }
-    }, 1000); // Show the message after 1 second if data is still not available
-
-    return () => clearTimeout(timer);
-  }, [savingsTarget]);
 
   if (isLoading) {
     return (
@@ -98,22 +84,10 @@ export default function Savings() {
     return <p className="text-red-500 text-sm">{error}</p>;
   }
 
-  if (showNoHistory) {
-    return (
-      <div className="lg:mr-8">
-        <NoHistory
-          icon={<TbTargetArrow />}
-          text="No Savings Target History Yet."
-        />
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col pb-4 mt-6 lg:mr-8">
       <div className="lg:mr-8 lg:gap-4 xl:flex items-end lg:mb-6 ">
         <div className="flex gap-4 mt-4">
-          {/* Available Cash */}
           <CardComponentFive
             icon={
               <Image
@@ -128,8 +102,6 @@ export default function Savings() {
             classname="text-base font-semibold lg:font-extrabold lg:text-[32px]"
             width="lg:w-[378px] xl:w-[290px] 2xlg:w-[355px]"
           />
-
-          {/* Ledger Balance */}
           <CardComponentFive
             icon={
               <Image
@@ -145,79 +117,34 @@ export default function Savings() {
             width="lg:w-[378px] xl:w-[290px] 2xlg:w-[355px]"
           />
         </div>
-
-        {/* Actions */}
-        <section
-          className={`flex bg-light-grey shadow-sm rounded-common p-4 my-4 justify-center mx-auto gap-2 lg:gap-12 lg:w-[382px] lg:h-[103px] xl:my-0`}
-        >
-          <Link
-            href="/main/savings/withdraw-funds"
-            className="flex items-center justify-center text-color-one hover:text-green-400 duration-150 gap-1 lg:flex-col"
-          >
-            <Icon icon={<IoIosSend />} />
-            <p className="text-xs whitespace-nowrap">Withdraw</p>
-          </Link>
-
-          <Link
-            href="/main/savings/create-savings"
-            className="flex items-center justify-center text-color-one hover:text-green-400 duration-150 gap-1 lg:flex-col"
-          >
-            <Icon icon={<TbTargetArrow />} />
-            <p className="text-xs whitespace-nowrap">Create Savings</p>
-          </Link>
-
-          <Link
-            href="/main/savings/fund-wallet"
-            className="flex items-center justify-center text-color-one hover:text-green-400 duration-150 gap-1 lg:flex-col"
-          >
-            <Icon icon={<GoPlus />} />
-            <p className="text-xs whitespace-nowrap">Fund Wallet</p>
-          </Link>
-        </section>
       </div>
-
+      <h1 className="text-base font-semibold mt-4 text-color-zero">Savings Target</h1>
       {savingsTarget.length === 0 ? (
         <div className="lg:mr-8">
-          <NoHistory
-            icon={<TbTargetArrow />}
-            text="No Savings Target History Yet."
-          />
+          <NoHistory icon={<TbTargetArrow />} text="No Savings Target History Yet." />
         </div>
       ) : (
-        <div>
-          <div>
-            <h1 className="text-base font-semibold mt-4 text-color-zero">
-              Savings Target
-            </h1>
-
-            <SavingsTargetMobile savingsTarget={savingsTarget} />
-            <SavingsTargetDesktop savingsTarget={savingsTarget} />
-            {savingsTarget.length !== 0 && (
-              <div className="mt-4">
-                <PaginationComponent
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={handlePageChange}
-                />
-              </div>
-            )}
-            <hr />
-            <div className="flex justify-between my-4 lg:mr-8">
-              <p className="text-base font-semibold text-color-zero">
-                Recent Transactions
-              </p>
-              <Link
-                href="/main/savings/savings-history"
-                className="text-sm text-color-one"
-              >
-                View All
-              </Link>
-            </div>
-            <HistoryDesktop />
-            <HistoryMobile />
+        <>
+          <SavingsTargetMobile savingsTarget={savingsTarget} />
+          <SavingsTargetDesktop savingsTarget={savingsTarget} />
+          <div className="mt-4">
+            <PaginationComponent
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
           </div>
-        </div>
+        </>
       )}
+      <hr />
+      <div className="flex justify-between my-4 lg:mr-8">
+        <p className="text-base font-semibold text-color-zero">Recent Transactions</p>
+        <Link href="/main/savings/savings-history" className="text-sm text-color-one">
+          View All
+        </Link>
+      </div>
+      <HistoryDesktop />
+      <HistoryMobile />
     </div>
   );
 }

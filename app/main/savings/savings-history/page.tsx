@@ -9,7 +9,7 @@ const savingsHistory = [
 ];
 export default function SavingsHistory() {
   return (
-    <div>
+    <div className="mt-[8.5rem] sm:mt-[1rem] lg:mt-[6rem]">
       <Navigator currentStep={1} steps={savingsHistory} />
       <>
         <AllHistoryMobile />
