@@ -274,10 +274,10 @@ export default function Referrals() {
               containerSize="w-[49.5px] h-[49.5px] rounded-[18.5px]"
               iconSize="w-[30px] h-[30px]"
             />
-            <p className="text-color-form text-sm font-bold lg:mt-6">
+            <p className="text-color-zero text-sm font-bold lg:mt-6">
             {referralTerms?.referralterms?.title || "Hello World"}
             </p>
-            <p className="text-color-zero text-sm text-center font-semibold lg:text-start">
+            <p className="text-color-form text-xs text-center font-semibold lg:mt-3 lg:text-start">
             {referralTerms?.referralterms?.body || "Welcome to the future"}.
             </p>
           </div>
