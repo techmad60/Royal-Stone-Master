@@ -39,7 +39,7 @@ export default function CryptoFunding({
 
   return (
     <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-[100]">
-      <div className="bg-white flex flex-col rounded-[20px] h-[599px] w-full lg:max-w-[621px] lg:h-[585px]">
+      <div className="bg-white flex flex-col rounded-[20px] h-[484px] w-full lg:max-w-[621px] lg:h-[484px]">
         <div className="flex justify-center items-center mt-4 lg:hidden">
           <hr className="w-[51px] h-[5px] rounded-[40px] bg-[#D9D9D9]" />
         </div>
@@ -95,8 +95,8 @@ export default function CryptoFunding({
           </div>
         )}
         {isLoading && <Loading />}
-        <hr className="mt-8" />
-        <div className="mt-12 mx-6 lg:mt-8">
+        {/* <hr className="mt-8" /> */}
+        <div className="my-3 mx-6 lg:mt-7">
           <Button
             ButtonText={
               isLoading ? "Processing..." : "I have made the transfer"

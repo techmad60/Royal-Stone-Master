@@ -22,7 +22,7 @@ export default function PurchaseViaBankDetails({
 
   return (
     <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-[100]">
-      <div className="flex flex-col bg-white rounded-[20px] w-full h-[600px] lg:max-w-[621px] lg:h-[500px] xl:h-[600px]">
+      <div className="flex flex-col bg-white rounded-[20px] w-full h-[600px] lg:max-w-[621px] lg:h-[484px] xl:h-[600px]">
         <div className="flex justify-center items-center mt-4 lg:hidden">
           <hr className="w-[51px] h-[5px] rounded-[40px] bg-[#D9D9D9]" />
         </div>

@@ -40,7 +40,7 @@ export default function BankFunding({
 
   return (
     <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-[100]">
-      <div className="bg-white flex flex-col rounded-[20px] h-[640px] w-full lg:max-w-[621px] lg:h-[640px]">
+      <div className="flex flex-col rounded-t-[20px] bg-white h-[600px] w-full lg:rounded-[20px] lg:max-w-[621px] lg:h-[540px]">
         <div className="flex justify-center items-center mt-4 lg:hidden">
           <hr className="w-[51px] h-[5px] rounded-[40px] bg-[#D9D9D9]" />
         </div>
@@ -89,12 +89,12 @@ export default function BankFunding({
             valueClass="text-color-six text-sm"
             paddingStyle="py-1"
           />
-          <StatRow
+          {/* <StatRow
             label="Bank Address"
             value={bankDetails.bankAddress}
             valueClass="text-color-six text-sm"
             paddingStyle="py-1"
-          />
+          /> */}
           <StatRow
             label="IBAN/Swift Code"
             value={bankDetails.swiftCode}
@@ -106,14 +106,15 @@ export default function BankFunding({
             value={bankDetails.routingNumber}
             valueClass="text-color-six text-sm"
             paddingStyle="py-1"
+            isLast={true}
           />
-          <StatRow
+          {/* <StatRow
             label="Beneficiary Adddress"
             value={bankDetails.beneficiaryAddress}
             valueClass="text-color-six text-sm"
             paddingStyle="py-1"
             isLast={true}
-          />
+          /> */}
         </section>
         {error && ( // Display error message conditionally
           <p className="text-red-600 p-3 rounded ml-4 text-sm">{error}</p>
@@ -128,8 +129,8 @@ export default function BankFunding({
             <Loading />
           </div>
         )}
-        <hr className="hidden mt-3 lg:flex" />
-        <div className="mt-4 mx-6 lg:mt-6">
+        {/* <hr className="hidden mt-3 lg:flex" /> */}
+        <div className="mt-4 mx-6 lg:mt-4">
           <Button
             ButtonText={
               isLoading ? "Processing..." : "I have made the transfer"
