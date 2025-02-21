@@ -17,7 +17,7 @@ import { BsFileBarGraphFill } from "react-icons/bs";
 import { FaClock } from "react-icons/fa6";
 import { GoPlus } from "react-icons/go";
 import { IoIosSend } from "react-icons/io";
-
+import { toast } from "react-toastify";
 
 export default function Investment() {
   const {
@@ -29,7 +29,7 @@ export default function Investment() {
     totalPages,
     setCurrentPage,
   } = useInvestmentStore();
-  
+
   const [ledgerBalance, setLedgerBalance] = useState(0);
   const [availableBalance, setAvailableBalance] = useState(0);
   const router = useRouter();
@@ -37,8 +37,6 @@ export default function Investment() {
     setCurrentPage(page); // Update the page in the product store
   };
 
-
-  
   useEffect(() => {
     fetchInvestments("investment-purchase", currentPage);
     const fetchPortfolio = async () => {
@@ -66,12 +64,7 @@ export default function Investment() {
           console.error("Failed to fetch portfolio:", result.message);
         }
       } catch (error) {
-        // Handle the error object properly
-        if (error instanceof Error) {
-          console.error("Error fetching portfolio:", error.message);
-        } else {
-          console.error("Unexpected error:", error);
-        }
+        toast.error("Oops!, something went wrong")
       }
     };
 
@@ -83,21 +76,6 @@ export default function Investment() {
     return (
       <div>
         <Loading />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="text-center text-red-500 mt-6">
-        <p>Oops! Something went wrong.</p>
-        {error && (
-          <p>
-            {typeof error === "string"
-              ? error
-              : error.message || "Unable to fetch investments at the moment."}
-          </p>
-        )}
       </div>
     );
   }
@@ -138,33 +116,30 @@ export default function Investment() {
         <section
           className={`flex bg-light-grey shadow-sm rounded-common p-4 my-4 justify-center mx-auto gap-2 lg:gap-12 lg:w-[382px] xl:my-0 lg:h-[103px]`}
         >
-          <div className="flex items-center justify-center text-color-one hover:text-green-400 duration-150 gap-1 lg:flex-col ">
+          <Link
+            href={`/main/investments/withdraw-funds?availableBalance=${availableBalance}`}
+            className="flex items-center justify-center text-color-one hover:text-green-400 duration-150 gap-1 lg:flex-col "
+          >
             <Icon icon={<IoIosSend />} />
-            <Link
-              href={`/main/investments/withdraw-funds?availableBalance=${availableBalance}`}
-              className="text-xs whitespace-nowrap "
-            >
-              Withdraw
-            </Link>
-          </div>
-          <div className="flex items-center justify-center text-color-one hover:text-green-400 duration-150 gap-1 lg:flex-col ">
+            <p className="text-xs whitespace-nowrap ">Withdraw</p>
+          </Link>
+
+          <Link href={`/main/investments/make-investment`} className="flex items-center justify-center text-color-one hover:text-green-400 duration-150 gap-1 lg:flex-col ">
             <Icon icon={<BsFileBarGraphFill />} />
-            <Link
-              href={`/main/investments/make-investment`}
+            <p
               className="text-xs whitespace-nowrap "
             >
               Make Investment
-            </Link>
-          </div>
-          <div className="flex items-center justify-center text-color-one hover:text-green-400 duration-150 gap-1 lg:flex-col">
+            </p>
+          </Link>
+          <Link  href={"/main/investments/fund-wallet"} className="flex items-center justify-center text-color-one hover:text-green-400 duration-150 gap-1 lg:flex-col">
             <Icon icon={<GoPlus />} />
-            <Link
-              href="/main/investments/fund-wallet"
+            <p
               className="text-xs whitespace-nowrap "
             >
               Fund Wallet
-            </Link>
-          </div>
+            </p>
+          </Link>
         </section>
       </div>
       <hr />

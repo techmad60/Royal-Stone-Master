@@ -3,7 +3,7 @@ import { IoCopy } from "react-icons/io5";
 
 interface StatRowProps {
   label: string;
-  value: string;
+  value: string ;
   valueClass: string;
   isLast?: boolean;
   paddingStyle? : string;

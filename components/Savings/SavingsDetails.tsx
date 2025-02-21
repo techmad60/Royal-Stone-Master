@@ -375,7 +375,7 @@ export default function SavingsTarget() {
   console.log("Savings ID", savingsID);
   console.log("Savings Target ID :", target.id);
   return (
-    <div>
+    <div className="mt-[8.5rem] sm:mt-1">
       <div className="lg:flex lg:gap-10 xl:gap-36">
         <div>
           <Navigator currentStep={1} steps={targetSteps} />
@@ -433,7 +433,7 @@ export default function SavingsTarget() {
               </div>
               <div>
                 <p className="text-base font-semibold text-color-zero">
-                  ${target?.interest?.interest}
+                  %{target?.interest?.interest}
                 </p>
                 <p className="text-xs text-[rgba(15,28,57,0.7)]">Interest</p>
               </div>
@@ -444,11 +444,16 @@ export default function SavingsTarget() {
         <div>
           <section className="flex flex-col mt-4 bg-light-grey rounded-[10px] px-4 shadow-sm lg:mt-12 lg:w-[350px] xl:w-[471px]">
             <StatRow
-              label="Duration Type"
+              label="Savings Frequency"
               value={
                 target?.frequency?.type.charAt(0).toUpperCase() +
                 target?.frequency?.type.slice(1).toLowerCase()
               }
+              valueClass="text-color-six text-sm"
+            />
+            <StatRow
+              label="Savings Duration"
+              value={`${target?.duration?.toString()  || ""} days`}
               valueClass="text-color-six text-sm"
             />
             <StatRow

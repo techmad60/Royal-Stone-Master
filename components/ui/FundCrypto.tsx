@@ -2,9 +2,9 @@ import Button from "@/components/ui/Button";
 import Loading from "@/components/ui/Loading";
 import Timer from "@/components/ui/Timer";
 import { FundCryptoWalletDetails } from "@/types/Type";
+import { XCircleIcon } from "lucide-react";
 import { useEffect } from "react";
 import StatRow from "./StatRow";
-
 
 interface MyComponentProps {
   onClose: () => void;
@@ -16,7 +16,6 @@ interface MyComponentProps {
   successMessage: string | null;
   heading: string;
   transactionType: string;
-  
 }
 
 export default function CryptoFunding({
@@ -28,7 +27,7 @@ export default function CryptoFunding({
   amount,
   successMessage,
   heading,
-  transactionType
+  transactionType,
 }: MyComponentProps) {
   useEffect(() => {
     // Disable scrolling when the modal is open
@@ -38,20 +37,21 @@ export default function CryptoFunding({
     };
   }, []);
 
-
-
   return (
-    <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-50">
+    <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-[100]">
       <div className="bg-white flex flex-col rounded-[20px] h-[599px] w-full lg:max-w-[621px] lg:h-[585px]">
         <div className="flex justify-center items-center mt-4 lg:hidden">
           <hr className="w-[51px] h-[5px] rounded-[40px] bg-[#D9D9D9]" />
         </div>
         <div className="flex items-center border-b w-full pb-2 p-4">
-          <p onClick={onClose} className="text-color-form text-sm cursor-pointer">
-            Cancel
-          </p>
           <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
-           {heading}
+            {heading}
+          </p>
+          <p
+            onClick={onClose}
+            className="text-color-form text-sm cursor-pointer"
+          >
+            <XCircleIcon className="text-color-form"/>
           </p>
         </div>
         <p className="text-color-form text-sm mx-4 py-4">
@@ -63,7 +63,11 @@ export default function CryptoFunding({
           <Timer initialTime={3600} onTimeUp={onClose} />
         </section>
         <section className="flex flex-col mt-4 bg-light-grey mx-6 rounded-[10px] px-4 shadow-sm">
-          <StatRow label="Amount" value={`$${amount}`} valueClass="text-color-six text-sm" />
+          <StatRow
+            label="Amount"
+            value={`$${amount}`}
+            valueClass="text-color-six text-sm"
+          />
           <StatRow
             label="Network"
             value={walletDetails?.name || "BTC"}
@@ -85,7 +89,7 @@ export default function CryptoFunding({
             {successMessage}
           </p>
         )}
-         {isLoading && (
+        {isLoading && (
           <div>
             <Loading />
           </div>
@@ -93,7 +97,7 @@ export default function CryptoFunding({
         {isLoading && <Loading />}
         <hr className="mt-8" />
         <div className="mt-12 mx-6 lg:mt-8">
-        <Button
+          <Button
             ButtonText={
               isLoading ? "Processing..." : "I have made the transfer"
             }

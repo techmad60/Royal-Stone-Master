@@ -1,5 +1,6 @@
 "use client";
 import Button from "@/components/ui/Button";
+import { XCircleIcon } from "lucide-react";
 import { useEffect } from "react";
 import { TbTargetArrow } from "react-icons/tb";
 import Icon from "../ui/Icon";
@@ -10,7 +11,7 @@ interface MyComponentProps {
   selectedType: "bank" | "crypto" | "wallet" | null;
   name : string;
   targetAmount: number;
-  duration: number;
+  duration: number | string;
   currentAmount: number | string;
   startDate: string;
 }
@@ -33,20 +34,21 @@ export default function SavingsPreview({
   }, []);
 
   return (
-    <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-50">
-      <div className="flex flex-col bg-white rounded-[20px] w-full h-[505px] lg:max-w-[621px] lg:h-[562px]">
+    <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-[100]">
+      <div className="flex flex-col bg-white rounded-[20px] w-full h-[450px] lg:max-w-[621px] lg:h-[562px]">
         <div className="flex justify-center items-center mt-4 lg:hidden">
           <hr className="w-[51px] h-[5px] rounded-[40px] bg-[#D9D9D9]" />
         </div>
         <div className="flex items-center border-b w-full pb-2 p-4">
+         
+          <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
+            Preview
+          </p>
           <p
             onClick={onClose}
             className="text-color-form text-sm cursor-pointer"
           >
-            Cancel
-          </p>
-          <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
-            Preview
+            <XCircleIcon className="text-color-form"/>
           </p>
         </div>
 

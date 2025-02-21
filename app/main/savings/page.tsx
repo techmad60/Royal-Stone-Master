@@ -110,7 +110,7 @@ export default function Savings() {
   }
 
   return (
-    <div className="flex flex-col pb-4 lg:mr-8">
+    <div className="flex flex-col pb-4 mt-6 lg:mr-8">
       <div className="lg:mr-8 lg:gap-4 xl:flex items-end lg:mb-6 ">
         <div className="flex gap-4 mt-4">
           {/* Available Cash */}

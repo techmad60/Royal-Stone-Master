@@ -188,6 +188,8 @@ export default function WithdrawFundsPage() {
       selectedAccount: selectedAccount,
     });
   };
+
+  //Withdraw To Bank
   const handleWithdrawal = async () => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
@@ -205,7 +207,52 @@ export default function WithdrawFundsPage() {
         amount,
         beneficiaryID,
         token,
-        "investment"
+        "investment",
+        "bank"
+      );
+
+      if (result.success && result.data) {
+        setTransactionData(result.data); // Store response data
+        setSuccessMessage(result.message || "Withdrawal Successful!");
+        console.log("Request Response", result.data);
+        setTimeout(() => {
+          setSuccessMessage(null);
+          setCurrentModal("processed"); // Proceed to the next step
+        }, 2000);
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred.";
+      toast.error(errorMessage);
+      setTimeout(() => {
+        setError(null);
+        setCurrentModal(null); // Close the modal
+      }, 2000);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  //Withdrawl to Crypto
+  const handleWithdrawalCrypto = async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      setError("You must be logged in to proceed.");
+      return;
+    }
+
+    const beneficiaryID = selectedAccountDetails?.selectedAccount?.id || "";
+    setLoading(true);
+    setError(null);
+    setSuccessMessage(null);
+
+    try {
+      const result = await withdrawFunds(
+        amount,
+        beneficiaryID,
+        token,
+        "investment",
+        "crypto"
       );
 
       if (result.success && result.data) {
@@ -485,11 +532,14 @@ export default function WithdrawFundsPage() {
           loading={loading}
           successMessage={successMessage}
           error={error}
-          onProceed={handleWithdrawal}
+          onProceed={
+            selectedType === "bank" ? handleWithdrawal : handleWithdrawalCrypto
+          }
           selectedAccount={selectedAccountDetails.selectedAccount}
           amount={amount}
         />
       )}
+
       {currentModal === "processed" && (
         <Processed
           message={`Your withdrawal of $${amount} has successfully being processed!`}

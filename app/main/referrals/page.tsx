@@ -23,11 +23,28 @@ import { FaBitcoin } from "react-icons/fa6";
 import { RiBankLine } from "react-icons/ri";
 import { toast, ToastContainer } from "react-toastify";
 
+interface ReferralTerms {
+  referralterms: {
+    title: string;
+    body: string;
+    createdAt: string;
+    updatedAt: string;
+    id: string;
+  };
+  referralConfig: {
+    bonus: number;
+    threshold: number;
+    type: string;
+  };
+}
+
+
 export default function Referrals() {
   useLoadFullName();
   const router = useRouter();
   const referralCode = useUserStore((state) => state.referralCode);
   const [referrals, setReferrals] = useState([]);
+  const [referralTerms, setReferralTerms] = useState<ReferralTerms | null>(null);
   const [loading, setLoading] = useState(true);
   const [totalEarning, setTotalEarning] = useState(0);
   const [currentBalance, setCurrentBalance] = useState(0);
@@ -77,23 +94,30 @@ export default function Referrals() {
           return result;
         };
 
-        const [referralData, referralDashboardData, bankData, cryptoData] =
-          await Promise.all([
-            fetchWithToken(
-              "https://api-royal-stone.softwebdigital.com/api/referral"
-            ),
-            fetchWithToken(
-              "https://api-royal-stone.softwebdigital.com/api/referral/dashboard"
-            ),
-            fetchWithToken(
-              "https://api-royal-stone.softwebdigital.com/api/bank"
-            ),
-            fetchWithToken(
-              "https://api-royal-stone.softwebdigital.com/api/bank/crypto-wallet"
-            ),
-          ]);
+        const [
+          referralData,
+          referralTerms,
+          referralDashboardData,
+          bankData,
+          cryptoData,
+        ] = await Promise.all([
+          fetchWithToken(
+            "https://api-royal-stone.softwebdigital.com/api/referral"
+          ),
+          fetchWithToken(
+            "https://api-royal-stone.softwebdigital.com/api/referral/terms"
+          ),
+          fetchWithToken(
+            "https://api-royal-stone.softwebdigital.com/api/referral/dashboard"
+          ),
+          fetchWithToken("https://api-royal-stone.softwebdigital.com/api/bank"),
+          fetchWithToken(
+            "https://api-royal-stone.softwebdigital.com/api/bank/crypto-wallet"
+          ),
+        ]);
 
         setReferrals(referralData.data);
+        setReferralTerms(referralTerms.data);
         setTotalEarning(referralDashboardData.data.totalEarning || 0);
         setCurrentBalance(referralDashboardData.data.currentBalance || 0);
         setBankDetails(bankData.status ? bankData.data : []);
@@ -155,12 +179,18 @@ export default function Referrals() {
       toast.error(error);
       return;
     }
+
     setSelectedAccountDetails({ selectedAccount });
 
-    // Call handleWithdrawal only if everything is valid
-    handleWithdrawal();
+    // Call the appropriate withdrawal function based on the selected type
+    if (selectedType === "bank") {
+      handleWithdrawal();
+    } else {
+      handleWithdrawalCrypto();
+    }
   };
 
+  //Withdraw to Bank
   const handleWithdrawal = async () => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
@@ -175,7 +205,38 @@ export default function Referrals() {
         totalEarning,
         beneficiaryID,
         token,
-        "referral"
+        "referral",
+        "bank"
+      );
+      if (result.success) {
+        toast.success(result.message || "Withdrawal Successful!");
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred.";
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  //Withdraw to Crypto
+  const handleWithdrawalCrypto = async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      return;
+    }
+
+    const beneficiaryID = selectedAccountDetails?.selectedAccount?.id || "";
+    setLoading(true);
+
+    try {
+      const result = await withdrawFunds(
+        totalEarning,
+        beneficiaryID,
+        token,
+        "referral",
+        "crypto"
       );
       if (result.success) {
         toast.success(result.message || "Withdrawal Successful!");
@@ -205,21 +266,24 @@ export default function Referrals() {
   return (
     <div>
       <ToastContainer />
-      <div className="lg:flex lg:w-full items-end lg:my-6 lg:gap-12 lg:pr-8">
-        <div className="lg:space-y-4 lg:border-r lg:pr-16">
-          <div className="flex flex-col justify-center items-center my-6 gap-4 lg:justify-start lg:items-start lg:my-0">
+      <div className="lg:flex items-end lg:my-6 lg:mr-8 lg:justify-between lg:gap-8 xl:gap-4">
+        <div className="lg:space-y-4 lg:border-r lg:pr-16 lg:w-[400px]">
+          <div className="flex flex-col justify-center items-center my-6 gap-4 lg:gap-0 lg:justify-start lg:items-start lg:my-0 lg:w-full">
             <Icon
               icon={<BsPeopleFill className="text-color-one text-3xl" />}
               containerSize="w-[49.5px] h-[49.5px] rounded-[18.5px]"
               iconSize="w-[30px] h-[30px]"
             />
+            <p className="text-color-form text-sm font-bold lg:mt-6">
+            {referralTerms?.referralterms?.title || "Hello World"}
+            </p>
             <p className="text-color-zero text-sm text-center font-semibold lg:text-start">
-              Earn $5 on each transaction performed by a friend referred by you
+            {referralTerms?.referralterms?.body || "Welcome to the future"}.
             </p>
           </div>
 
           <section className="bg-light-grey rounded-common shadow-sm p-6 space-y-4 my-6 lg:bg-transparent lg:shadow-none lg:my-0 lg:p-0">
-            <div className="flex justify-between items-center lg:bg-light-grey lg:p-6 lg:shadow-sm lg:rounded-[35px]">
+            <div className="flex justify-between items-center lg:bg-light-grey lg:p-6 lg:shadow-sm lg:rounded-[35px] lg:w-full">
               <div>
                 <p className="text-sm text-[#6B7385] hidden lg:flex">
                   Referral code
@@ -255,7 +319,7 @@ export default function Referrals() {
             secondLabel="Current Balance"
             secondNumber={`$${currentBalance.toFixed(2)}`}
             gapStyling="lg:gap-x-24 xl:gap-x-60"
-            width="hidden lg:flex lg:w-[370px] xl:w-[510px] 2xlg:w-[605px]"
+            width="hidden lg:flex lg:w-[350px] xl:w-[500px] 2xlg:w-[600px]"
             showNumber={true}
           />
           {!showWithdrawalOptions && (

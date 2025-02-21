@@ -105,10 +105,11 @@ export async function withdrawFunds(
   amount: string | number,
   beneficiaryID: string,
   token: string,
-  type: "investment" | "savings" | "referral" // Specify type of withdrawal
+  type: "investment" | "savings" | "referral", // Type of withdrawal
+  method: "bank" | "crypto" // Withdrawal method
 ): Promise<WithdrawalResult> {
   const baseEndpoint = "https://api-royal-stone.softwebdigital.com/api/withdrawal";
-  const endpoint = `${baseEndpoint}/${type}/bank`; // Dynamically construct URL
+  const endpoint = `${baseEndpoint}/${type}/${method}`; // Dynamically construct URL
 
   try {
     const response = await fetch(endpoint, {
@@ -136,6 +137,7 @@ export async function withdrawFunds(
     throw new Error(errorMessage);
   }
 }
+
 
 
 export async function DepositFund(

@@ -73,10 +73,6 @@ export default function AuthHeader({ title, toggleNav, grid }: AuthHeaderProps) 
 
     fetchProfilePicture();
     fetchUnreadNotifications();
-
-    // Refresh unread notifications every 30 seconds
-    const interval = setInterval(fetchUnreadNotifications, 30000);
-    return () => clearInterval(interval);
   }, []);
 
   return (
