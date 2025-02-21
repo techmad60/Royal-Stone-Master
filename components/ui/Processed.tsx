@@ -24,7 +24,7 @@ export default function Processed({
   }, []);
 
   return ( 
-    <div className="fixed inset-0 flex bg-[#D9D9D9A6] bg-opacity-50 z-50  items-start justify-center lg:items-center lg:justify-center lg:bg-[#D9D9D9A6]">
+    <div className="fixed inset-0 flex bg-[#D9D9D9A6] bg-opacity-50 z-[100]  items-start justify-center lg:items-center lg:justify-center lg:bg-[#D9D9D9A6]">
       <div className="bg-color-one flex flex-col space-y-4 w-full max-w-md p-4 lg:mt-20 lg:rounded-2xl lg:mr-8">
         {/* Modal Header */}
         <div className="flex justify-between items-center relative">

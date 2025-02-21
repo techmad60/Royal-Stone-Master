@@ -1,3 +1,4 @@
+import { XCircleIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import Button from "../../ui/Button";
 
@@ -111,17 +112,18 @@ export default function AddCryptoInformation({
   };
 
   return (
-    <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end justify-end lg:items-center lg:justify-center z-50">
+    <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end justify-end lg:items-center lg:justify-center z-[100]">
       <div className="flex flex-col bg-white rounded-t-[15px] w-full h-[400px] lg:rounded-[20px] lg:max-w-[621px]">
         <div className="flex items-center border-b w-full pb-2 p-4">
+          
+          <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
+            Add Crypto Details
+          </p>
           <p
             onClick={onClose}
             className="text-color-form text-sm cursor-pointer"
           >
-            Cancel
-          </p>
-          <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
-            Add Crypto Details
+            <XCircleIcon className="text-color-form"/>
           </p>
         </div>
         <div className="flex flex-col bg-white">

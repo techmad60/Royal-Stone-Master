@@ -50,7 +50,7 @@ export default function TransactionDetails() {
     : 0; // Default to 0 if maturityDate is undefined
 
   return (
-    <div>
+    <div className="mt-32 sm:mt-8 lg:mt-24">
       <Navigator currentStep={1} steps={investmentSteps} />
       <div className="lg:flex justify-between mr-8">
         <div>

@@ -63,14 +63,14 @@ export default function InvestmentDesktop({
         <>
           {/* Header Row */}
           <div className="hidden lg:grid grid-cols-8 items-center bg-light-grey rounded-common py-4 px-8 shadow-sm mt-4">
-            <p className="text-xs text-slate-400 col-span-3">
+            <p className="text-xs text-color-zero col-span-3">
               Product Image & Name
             </p>
-            <p className="text-xs text-slate-400">Amount</p>
-            <p className="text-xs text-slate-400">ROI</p>
-            <p className="text-xs text-slate-400">Status</p>
-            <p className="text-xs text-slate-400">Maturity Date</p>
-            <p className="text-xs text-slate-400">Actions</p>
+            <p className="text-xs text-color-zero">Amount</p>
+            <p className="text-xs text-color-zero">ROI</p>
+            <p className="text-xs text-color-zero">Status</p>
+            <p className="text-xs text-color-zero">Maturity Date</p>
+            <p className="text-xs text-color-zero">Actions</p>
           </div>
 
           {/* Investment Rows */}

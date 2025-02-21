@@ -3,7 +3,8 @@ import Processed from "@/components/ui/Processed";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { RiStockFill } from "react-icons/ri";
-import BuyStockForm from "./ui/BuyStockForm";
+import { toast } from "react-toastify";
+import BuyStockForm from "../../../components/Stocks/ui/BuyStockForm";
 
 // Define interface for form data
 interface FormData {
@@ -63,17 +64,18 @@ export default function StocksPage() {
 
     // API call to submit the form data
     try {
-      const response = await fetch("https://api-royal-stone.softwebdigital.com/api/bank", {
+      const response = await fetch("https://api-royal-stone.softwebdigital.com/api/stock", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          name: formData.name,
+          fullname: formData.name,
           email: formData.email,
-          accountName: formData.phoneNumber, // Map phoneNumber to accountName
-          type: formData.type || "", 
+          phone: formData.phoneNumber, // Map phoneNumber to accountName
+          type: formData.type, 
+          amount: formData.amount
         }),
       });
 
@@ -82,8 +84,9 @@ export default function StocksPage() {
 
       if (response.ok) {
         setCurrentModal("processed")
+        console.log("Buy successful")
       } else {
-        setCurrentModal("processed")
+        toast.error("Request not made")
       }
       if (response.status === 401) {
         router.push("/auth/login/with-mail")

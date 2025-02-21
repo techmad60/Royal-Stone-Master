@@ -254,8 +254,8 @@ export default function Referrals() {
             number={`$${totalEarning.toFixed(2)}`}
             secondLabel="Current Balance"
             secondNumber={`$${currentBalance.toFixed(2)}`}
-            gapStyling="gap-x-60"
-            width="hidden lg:flex w-[605px]"
+            gapStyling="lg:gap-x-24 xl:gap-x-60"
+            width="hidden lg:flex lg:w-[370px] xl:w-[510px] 2xlg:w-[605px]"
             showNumber={true}
           />
           {!showWithdrawalOptions && (

@@ -68,7 +68,7 @@ export default function HistoryMobile() {
     const groupByDate = (transactions: Savings[]) => {
       const grouped: { [key: string]: Savings[] } = {};
       transactions.forEach((transaction) => {
-        const dateKey = new Date(transaction.createdAt).toLocaleDateString();
+        const dateKey = new Date(transaction.createdAt).toISOString().split("T")[0];
         if (!grouped[dateKey]) {
           grouped[dateKey] = [];
         }

@@ -1,9 +1,8 @@
 import Icon from "@/components/ui/Icon";
 import { MakeInvestmentResponse } from "@/types/Type";
+import { XCircleIcon } from "lucide-react";
 import { useEffect } from "react";
 import { BsFileBarGraphFill } from "react-icons/bs";
-// import { FaBitcoin } from "react-icons/fa";
-// import { RiBankLine } from "react-icons/ri";
 
 interface MyComponentProps {
   onClose?: () => void;
@@ -22,20 +21,21 @@ export default function PurchaseDetails({
   }, []);
 
   return (
-    <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-50">
+    <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-[100]">
       <div className="flex flex-col bg-white rounded-[20px] w-full h-[505px] lg:max-w-[621px] lg:h-[484px]">
         <div className="flex justify-center items-center mt-4 lg:hidden">
           <hr className="w-[51px] h-[5px] rounded-[40px] bg-[#D9D9D9]" />
         </div>
         <div className="flex items-center border-b w-full pb-2 p-4">
+          
+          <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
+            Transaction Details
+          </p>
           <p
             onClick={onClose}
             className="text-color-form text-sm cursor-pointer"
           >
-            Cancel
-          </p>
-          <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
-            Transaction Details
+            <XCircleIcon className="text-color-form"/>
           </p>
         </div>
 

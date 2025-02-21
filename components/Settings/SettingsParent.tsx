@@ -116,7 +116,7 @@ export default function SettingsParent() {
       <div className="">
         {/* <ToastContainer /> */}
         {/* Account Settings and Profile Settings */}
-        <div className="lg:grid grid-cols-2 gap-4 xl:gap-16">
+        <div className="lg:grid grid-cols-2 gap-4 xl:gap-8">
           <div
             className={`${
               activeSetting && !isDesktop ? "hidden" : "lg:border-r lg:pr-20"

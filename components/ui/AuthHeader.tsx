@@ -80,13 +80,14 @@ export default function AuthHeader({ title, toggleNav, grid }: AuthHeaderProps) 
   }, []);
 
   return (
-    <div className={`flex flex-col space-y-4 fixed z-50 w-full bg-white px-4 sm:px-12 lg:px-0 lg:pr-8 ${grid}`}>
+    <div className={`flex flex-col space-y-4 fixed z-50 w-full bg-white px-4 py-4 sm:px-12 lg:p-0 lg:pr-[270px] xl:pr-[320px] ${grid}`}>
       {/* Logo Img */}
       <Link href="/" className="flex">
         <Image className="logo lg:hidden" src={"/images/logo.svg"} alt="Royal-Stone Logo" width={106.75} height={20} />
       </Link>
 
-      <div className="flex gap-28 items-center border-y py-4 lxs:gap-[17rem] sm:gap-[30rem] xl:gap-[52rem] lg:border-y-0 lg:border-b">
+      <div className="flex items-center border-y py-4 justify-between lg:border-y-0 lg:border-b">
+        {/* Header and Nav */}
         <div className="flex gap-4 items-center">
           {showMenu && <FaBars className="lg:hidden" onClick={toggleNav} />}
           <h1 className="font-semibold text-base text-color-zero lg:text-[22px]">{title}</h1>
@@ -108,7 +109,7 @@ export default function AuthHeader({ title, toggleNav, grid }: AuthHeaderProps) 
                 {/* Red Badge for Unread Notifications */}
                 {unreadCount > 0 && (
                   <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs  w-5 h-5 flex items-center justify-center rounded-full">
-                    {unreadCount > 99 ? "99+" : unreadCount}
+                    {unreadCount > 9 ? "9+" : unreadCount}
                   </span>
                 )}
               </Link>

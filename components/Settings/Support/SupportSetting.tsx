@@ -40,7 +40,7 @@ export default function Support() {
                   <p className="text-sm text-color-zero font-medium">
                     Chat with us on whatsapp
                   </p>
-                  <p className="text-xs text-color-form">09010201223</p>
+                  <p className="text-xs text-color-form">+1 (350) 203-4750</p>
                 </div>
               </div>
             </section>
@@ -56,7 +56,7 @@ export default function Support() {
                   <p className="text-sm text-color-zero font-medium">
                     Call an Agent
                   </p>
-                  <p className="text-xs text-color-form">09010201223</p>
+                  <p className="text-xs text-color-form">+1 (350) 203-4750</p>
                 </div>
               </div>
             </section>
@@ -71,7 +71,7 @@ export default function Support() {
                     Send a Mail
                   </p>
                   <p className="text-xs text-color-form">
-                    Support@royalstone.com
+                    INFO@ROYALSTONECAPITAL.COM
                   </p>
                 </div>
               </div>

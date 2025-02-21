@@ -5,7 +5,6 @@ import ProductDesktop from "@/components/Product/ProductDesktop";
 import ProductMobile from "@/components/Product/ProductMobile";
 import CardComponentFive from "@/components/ui/CardComponentFive";
 import Loading from "@/components/ui/Loading";
-// import { useKycStore } from "@/store/kycStore";
 import useProductStore from "@/store/productStore";
 import useUserStore, { useLoadFullName } from "@/store/userStore";
 import Link from "next/link";
@@ -27,7 +26,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState("");
   const [recentTransactions, setRecentTransactions] = useState([]);
-  // const { isBankProvided, isKycProvided } = useKycStore();
+  const [transactionsLoading, setTransactionsLoading] = useState(true); // New loading state for transactions
   const router = useRouter();
 
   const capitalizeFirstLetter = (name: string): string =>
@@ -103,6 +102,7 @@ export default function Dashboard() {
         }
 
         // Fetch Transactions
+        setTransactionsLoading(true); // Start loading state for transactions
         const transactionsResponse = await fetch(
           "https://api-royal-stone.softwebdigital.com/api/transaction",
           {
@@ -125,6 +125,8 @@ export default function Dashboard() {
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
         setApiError("An error occurred while fetching dashboard data.");
+      } finally {
+        setTransactionsLoading(false); // End loading state for transactions
       }
     };
 
@@ -163,8 +165,11 @@ export default function Dashboard() {
       </div>
 
       {/* Transactions Section */}
-      {recentTransactions.length === 0 ? (
-        // No Transactions UI
+      {transactionsLoading ? ( // Show loading state while fetching transactions
+        <div className="flex justify-center items-center my-8">
+          <Loading />
+        </div>
+      ) : recentTransactions.length === 0 ? ( // Show "No Transactions UI" only after data is fetched and empty
         <div className="flex flex-col justify-center items-center space-y-4 my-8 py-6 shadow-sm bg-light-grey rounded-common lg:w-[765px]">
           <div
             className={`w-7 h-7 shadow-sm flex items-center justify-center transform rotate-45 rounded-[9px] bg-white`}
@@ -185,7 +190,7 @@ export default function Dashboard() {
           </Link>
         </div>
       ) : (
-        // Recent Transactions UI
+        // Show Recent Transactions UI
         <>
           <p className="text-lg font-semibold my-4">Recent Transactions</p>
           <HistoryMobile transactions={recentTransactions} />

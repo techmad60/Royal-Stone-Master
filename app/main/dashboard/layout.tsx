@@ -14,18 +14,16 @@ export default function DashboardLayout({
   const toggleNav = () => setIsNavOpen((prev) => !prev);
   return (
     <div className="flex flex-col bg-white">
-      <div
-        className={`p-4 sm:p-8 lg:grid lg:p-0 lg:grid-cols-4 xl:grid-cols-5 xl:gap-44 2xlg:gap-0`}
-      >
-        <MainPageNavbar isNavOpen={isNavOpen} toggleNav={toggleNav} />
-        {/* Item 2 */}
-        <div className="flex flex-col lg:col-span-3 xl:col-span-4">
-          <AuthHeader title="Dashboard" toggleNav={toggleNav} grid="" />
-          <div className="mt-20">
-            {children} {/* Ensure children are rendered here */}
-          </div>
+      {/* Fixed Navbar */}
+      <MainPageNavbar isNavOpen={isNavOpen} toggleNav={toggleNav} />
+      {/* Item 2 */}
+      <div className="lg:ml-[260px] xl:ml-[300px] 2xlg:ml-[300px]">
+        <AuthHeader title="Dashboard" toggleNav={toggleNav} grid="" />
+        <div className="mt-[5rem] px-4 sm:p-12 lg:p-0">
+          {children} {/* Ensure children are rendered here */}
         </div>
       </div>
     </div>
+   
   );
 }

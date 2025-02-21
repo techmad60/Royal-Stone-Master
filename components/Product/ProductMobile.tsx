@@ -73,9 +73,9 @@ export default function ProductMobile({
                 : `${product.availableUnits} Units Available`}
             </p>
             <p className="text-sm text-colour-five tracking-tight">
-              {product.description?.length > 50
-                ? `${product.description.substring(0, 50)}...`
-                : product.description || "No description available"}
+              {product.name?.length > 50
+                ? `${product.name.substring(0, 50)}...`
+                : product.name || "No name available."}
             </p>
             <div className="flex items-center justify-between">
               <button

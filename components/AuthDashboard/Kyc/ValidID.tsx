@@ -1,3 +1,4 @@
+import { XCircleIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -12,13 +13,18 @@ interface ValidIdInfoProps {
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
-export default function ValidIdInformation({ onClose, onValidIdStatus }: ValidIdInfoProps) {
+export default function ValidIdInformation({
+  onClose,
+  onValidIdStatus,
+}: ValidIdInfoProps) {
   const [selectedId, setSelectedId] = useState("Passport");
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
-  const [feedbackType, setFeedbackType] = useState<"success" | "error" | null>(null);
+  const [feedbackType, setFeedbackType] = useState<"success" | "error" | null>(
+    null
+  );
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
 
@@ -49,7 +55,10 @@ export default function ValidIdInformation({ onClose, onValidIdStatus }: ValidId
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
-      if (file.size > MAX_FILE_SIZE || !["image/jpeg", "image/png"].includes(file.type)) {
+      if (
+        file.size > MAX_FILE_SIZE ||
+        !["image/jpeg", "image/png"].includes(file.type)
+      ) {
         setFeedbackType("error");
         setFeedbackMessage("File must be a JPG/PNG and less than 5MB.");
         return;
@@ -80,7 +89,7 @@ export default function ValidIdInformation({ onClose, onValidIdStatus }: ValidId
 
       const accessToken = localStorage.getItem("accessToken");
       if (!accessToken) {
-        router.push("/auth/login/with-mail")
+        router.push("/auth/login/with-mail");
         return;
       }
 
@@ -176,17 +185,20 @@ export default function ValidIdInformation({ onClose, onValidIdStatus }: ValidId
   };
 
   return (
-    <div className="fixed inset-0 bg-[#D9D9D9A6] flex items-end lg:items-center justify-end lg:justify-center z-50">
+    <div className="fixed inset-0 bg-[#D9D9D9A6] flex items-end lg:items-center justify-end lg:justify-center z-[100]">
       <div className="flex flex-col bg-white rounded-t-[15px] w-full h-auto sm:h-[580px] lg:rounded-[20px] lg:max-w-[621px] lg:h-auto">
         <div className="flex justify-center items-center mt-4 lg:hidden">
           <hr className="w-[51px] h-[5px] rounded-[40px] bg-[#D9D9D9]" />
         </div>
         <div className="flex items-center border-b w-full pb-2 p-4 sm:p-8 lg:p-4">
-          <p onClick={onClose} className="text-color-form text-sm cursor-pointer">
-            Cancel
-          </p>
           <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
             Valid Identification
+          </p>
+          <p
+            onClick={onClose}
+            className="text-color-form text-sm cursor-pointer"
+          >
+            <XCircleIcon className="text-color-form" />
           </p>
         </div>
         <div className="flex flex-col p-4 sm:p-8 lg:p-4">
@@ -208,7 +220,9 @@ export default function ValidIdInformation({ onClose, onValidIdStatus }: ValidId
             </div>
           </div>
           <section className="mt-4">
-            <p className="text-color-form text-sm">Provide a picture of the ID</p>
+            <p className="text-color-form text-sm">
+              Provide a picture of the ID
+            </p>
             <div
               className={`flex flex-col justify-center items-center space-y-4 my-4 py-6 shadow-sm bg-light-grey rounded-common w-full pr-8`}
             >

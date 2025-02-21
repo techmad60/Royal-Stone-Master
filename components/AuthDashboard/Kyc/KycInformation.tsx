@@ -1,4 +1,5 @@
 import { useKycStore } from "@/store/kycStore"; // Import Zustand store
+import { XCircleIcon } from "lucide-react";
 import { useEffect } from "react";
 import { BsPersonCheck } from "react-icons/bs";
 import { IoPeople } from "react-icons/io5";
@@ -15,8 +16,7 @@ export default function KycInformation({
   onClose,
   onClickValidId,
   onClickNextOfKin,
-}:
-KycInformationProps) {
+}: KycInformationProps) {
   const { isValidIdProvided, isNextOfKinProvided } = useKycStore(); // Access KYC status from Zustand store
 
   // Prevent background scroll when modal is open
@@ -28,20 +28,20 @@ KycInformationProps) {
   }, []);
 
   return (
-    <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-50">
+    <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-[100]">
       <div className="flex flex-col bg-white rounded-t-[15px] w-full h-[400px] sm:h-[500px] lg:rounded-[20px] lg:max-w-[621px] lg:h-[330px]">
         <div className="flex justify-center items-center mt-4 lg:hidden">
           <hr className="w-[51px] h-[5px] rounded-[40px] bg-[#D9D9D9]" />
         </div>
         <div className="flex items-center border-b w-full pb-2 p-4 sm:p-8 lg:p-4">
+          <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
+            Kyc Information
+          </p>
           <p
             onClick={onClose}
             className="text-color-form text-sm cursor-pointer"
           >
-            Cancel
-          </p>
-          <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
-            Kyc Information
+            <XCircleIcon className="text-color-form" />
           </p>
         </div>
         <div className="border-t flex-col space-y-3 p-4 sm:p-8 lg:p-4">

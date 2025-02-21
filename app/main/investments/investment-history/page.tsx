@@ -62,7 +62,7 @@ export default function InvestmentHistory() {
   // const noHistoryCondition = investments.length === 0 && currentPage === 1;
 
   return (
-    <div>
+    <div className="mt-32 sm:mt-8 lg:mt-24">
       <Navigator currentStep={1} steps={historySteps} />
       <h1 className="text-base font-semibold mt-6 pb-2 lg:text-xl">
         Investments History

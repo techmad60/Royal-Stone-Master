@@ -82,7 +82,7 @@ export default function LogOut({ onClose }: LogOutProps) {
   };
 
   return (
-    <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-50">
+    <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-[100]">
       <div className="flex flex-col bg-white rounded-t-[15px] w-full h-[260px] lg:rounded-[20px] lg:max-w-[433px] lg:h-[250px]">
         <div className="flex justify-center items-center mt-4 lg:hidden">
           <hr className="w-[51px] h-[5px] rounded-[40px] bg-[#D9D9D9]" />
@@ -95,7 +95,7 @@ export default function LogOut({ onClose }: LogOutProps) {
 
         <div className="flex flex-col items-center gap-4 my-1 p-4">
           <p className="text-color-form text-sm text-center">
-            Are you sure you want to log out 🤔? <br />
+            Are you sure you want to log out 🤔 ? <br />
           </p>
         </div>
 

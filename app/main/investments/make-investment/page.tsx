@@ -33,9 +33,9 @@ export default function MakeInvestment() {
   }
 
   return (
-    <div className="lg:h-screen">
+    <div className="mt-32 sm:mt-8 lg:mt-24 lg:h-screen">
       <Navigator currentStep={1} steps={createInvestment} />
-      <div className="space-y-2 mt-4">
+      <div className="space-y-4 mt-6">
         <h1 className="text-base font-semibold text-color-zero">
           Make Investment
         </h1>

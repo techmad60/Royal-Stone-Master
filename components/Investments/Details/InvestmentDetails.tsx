@@ -13,6 +13,7 @@ import {
   FundCryptoWalletDetails,
   MakeInvestmentBankResponse,
   MakeInvestmentCryptoResponse,
+  MakeInvestmentResponse,
   MakeTransactionResponse,
 } from "@/types/Type";
 import Image from "next/image";
@@ -25,6 +26,7 @@ import Loading from "../../ui/Loading";
 import BankTransfer from "../Payment-Method/BankTransfer";
 import CryptoTransfer from "../Payment-Method/CryptoTransfer";
 import ReceiptModal from "../Receipt/PaymentReceipt";
+import PurchaseDetails from "../TransactionDetails/Purchase";
 import PurchaseViaBankDetails from "../TransactionDetails/PurchaseViaBank";
 
 export default function InvestmentDetails() {
@@ -37,6 +39,7 @@ export default function InvestmentDetails() {
     | "cryptoTransfer"
     | "receipt"
     | "transactionDetails"
+    | "walletPurchase"
     | "processed"
     | null
   >(null);
@@ -55,6 +58,9 @@ export default function InvestmentDetails() {
   const [investmentId, setInvestmentId] = useState<string | null>(null);
   const [transactionData, setTransactionData] =
     useState<MakeTransactionResponse | null>(null);
+  const [walletPurchase, setWalletPurchase] = useState<
+    MakeInvestmentResponse["data"] | null
+  >(null);
 
   useEffect(() => {
     if (products.length === 0) {
@@ -177,7 +183,7 @@ export default function InvestmentDetails() {
       setFormError(error);
       return;
     }
-    
+
     // Handle payment type
     if (selectedType === "bank") {
       setCurrentModal("bankTransfer");
@@ -188,12 +194,11 @@ export default function InvestmentDetails() {
       setCurrentModal("investPreview"); // Show invest preview modal
       return;
     }
-  
+
     // If everything is valid and no errors, open investPreview
     setFormError(""); // Clear any lingering errors
     setCurrentModal("investPreview");
   };
-  
 
   // Update the amount whenever the number of units is changed
   const handleNoOfUnitsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -222,46 +227,6 @@ export default function InvestmentDetails() {
     }
   };
 
-  // Purchase Via Wallet
-  const handleMakePurchase = async () => {
-    setApiError(null); // Clear previous error messages
-    try {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        router.push("/auth/login/with-mail");
-        return;
-      }
-      const purchaseResponse = await makePurchase(
-        product.id,
-        Number(noOfUnits),
-        token
-      );
-      // Handle the response (success or error)
-      if (purchaseResponse.success && purchaseResponse.data) {
-        const transactionParams = new URLSearchParams(
-          purchaseResponse.data
-        ).toString();
-
-        // Redirect with transactionData in the URL
-        router.push(`/main/investments?success=true&${transactionParams}`);
-      } else {
-        const errorMessage =
-          purchaseResponse.message || "An error occurred during the deposit.";
-        setApiError(errorMessage); // Set error message
-
-        // Timeout to clear error message after 3 seconds
-        setTimeout(() => {
-          setApiError(null);
-        }, 2000);
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        setFormError(err.message || "Something went wrong.");
-      } else {
-        setFormError("Something went wrong.");
-      }
-    }
-  };
   // Type guard to check if the response is from a Bank
   function isBankResponse(
     response: MakeTransactionResponse
@@ -321,7 +286,7 @@ export default function InvestmentDetails() {
           // Show receipt modal for Bank
           setCurrentModal("receipt");
         } else if (isCryptoResponse(response)) {
-          setTransactionData(response); 
+          setTransactionData(response);
           const url = response.url;
           if (url) {
             window.location.href = url; // Redirect to Crypto payment URL
@@ -354,12 +319,50 @@ export default function InvestmentDetails() {
     }
   };
 
+  // Purchase Via Wallet
+  const handleMakePurchase = async () => {
+    setApiError(null); // Clear previous error messages
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        router.push("/auth/login/with-mail");
+        return;
+      }
+      const purchaseResponse = await makePurchase(
+        product.id,
+        Number(noOfUnits),
+        token
+      );
+      // Handle the response (success or error)
+      if (purchaseResponse.success && purchaseResponse.data) {
+        setWalletPurchase(purchaseResponse.data);
+        setCurrentModal("processed");
+        // Redirect with transactionData in the URL
+      } else {
+        const errorMessage =
+          purchaseResponse.message || "An error occurred during the deposit.";
+        setApiError(errorMessage); // Set error message
+
+        // Timeout to clear error message after 3 seconds
+        setTimeout(() => {
+          setApiError(null);
+        }, 2000);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        setFormError(err.message || "Something went wrong.");
+      } else {
+        setFormError("Something went wrong.");
+      }
+    }
+  };
+
   const handlePaymentSelection = (method: "bank" | "crypto" | "wallet") => {
     setSelectedType(method);
     setFormError("");
   };
   return (
-    <div>
+    <div className="mt-[8.2rem] sm:mt-[2rem] lg:mt-24">
       <Navigator currentStep={3} steps={investmentSteps} />
 
       <p className="text-color-zero mt-2 text-base font-semibold py-2 lg:text-lg">
@@ -573,8 +576,17 @@ export default function InvestmentDetails() {
       )}
       {currentModal === "processed" && (
         <Processed
-          onClose={() => setCurrentModal(null)}
-          onConfirm={() => setCurrentModal("transactionDetails")}
+          onClose={() => {
+            setCurrentModal(null);
+            router.push("/main/investments");
+          }}
+          onConfirm={() =>
+            setCurrentModal(
+              selectedType === "wallet"
+                ? "walletPurchase"
+                : "transactionDetails"
+            )
+          }
           message="Your investment has been created successfully!"
         />
       )}
@@ -585,6 +597,15 @@ export default function InvestmentDetails() {
             onClose={() => setCurrentModal(null)}
           />
         )}
+      {currentModal === "walletPurchase" && selectedType === "wallet" && (
+        <PurchaseDetails
+          transactionData={walletPurchase}
+          onClose={() => {
+            setCurrentModal(null);
+            router.push("/main/investments");
+          }}
+        />
+      )}
     </div>
   );
 }

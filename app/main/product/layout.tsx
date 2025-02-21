@@ -14,18 +14,17 @@ export default function ProductLayout({
   const toggleNav = () => setIsNavOpen((prev) => !prev);
   return (
     <div className="flex flex-col bg-white">
-      <div
-        className={`p-4 sm:p-8 lg:grid lg:p-0 lg:grid-cols-4 xl:grid-cols-5 xl:gap-44 2xlg:gap-0`}
-      >
-        <MainPageNavbar isNavOpen={isNavOpen} toggleNav={toggleNav} />
-        {/* Item 2 */}
-        <div className="flex flex-col lg:col-span-3 xl:col-span-4">
-          <AuthHeader title="Products" toggleNav={toggleNav} grid="" />
-          <div className="mt-20">
-            {children} {/* Ensure children are rendered here */}
-          </div>
+      {/* Fixed Navbar */}
+      <MainPageNavbar isNavOpen={isNavOpen} toggleNav={toggleNav} />
+      {/* Main Content Area */}
+      <div className="lg:ml-[260px] xl:ml-[300px] 2xlg:ml-[300px]">
+        <AuthHeader title="Products" toggleNav={toggleNav} grid="" />
+        <div className="mt-[7rem] px-4 sm:p-12 sm:mt-[5rem] lg:p-0 lg:mt-20">
+          {children} {/* Ensure children are rendered here */}
         </div>
       </div>
     </div>
+
+   
   );
 }

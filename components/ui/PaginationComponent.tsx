@@ -61,7 +61,7 @@ export default function PaginationComponent({
       <div className="flex items-center gap-2">
         {/* Previous Page Button */}
         <button
-          className={`w-[32px] h-[32px] rounded-[4px] border shadow-sm flex items-center justify-center pl-1 ${
+          className={`w-[22px] h-[22px] rounded-[4px] border shadow-sm flex items-center justify-center pl-1 ${
             currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
           }`}
           onClick={() => onPageChange(currentPage - 1)}

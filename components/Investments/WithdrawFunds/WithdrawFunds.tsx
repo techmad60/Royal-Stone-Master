@@ -308,7 +308,7 @@ export default function WithdrawFundsPage() {
   };
 
   return (
-    <div>
+    <div className="mt-[8.2rem] sm:mt-[2rem] lg:mt-[6rem]">
       <Navigator currentStep={1} steps={fundSteps} />
 
       <p className="text-color-zero text-base font-semibold py-4 lg:text-lg">
