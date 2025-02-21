@@ -5,7 +5,6 @@ import InvestmentDesktop from "@/components/Investments/ui/InvestmentDesktop";
 import InvestmentMobile from "@/components/Investments/ui/InvestmentMobile";
 import CardComponentFive from "@/components/ui/CardComponentFive";
 import Icon from "@/components/ui/Icon";
-import Loading from "@/components/ui/Loading";
 import NoHistory from "@/components/ui/NoHistory";
 import PaginationComponent from "@/components/ui/PaginationComponent";
 import useInvestmentStore from "@/store/investmentStore";
@@ -23,7 +22,7 @@ export default function Investment() {
   const {
     fetchInvestments,
     investments,
-    isLoading,
+    // isLoading,
     error,
     currentPage,
     totalPages,
@@ -74,13 +73,6 @@ export default function Investment() {
 
   console.log(investments);
   console.log(error)
-  if (isLoading) {
-    return (
-      <div>
-        <Loading />
-      </div>
-    );
-  }
 
   return (
     <div className="mt-[9rem] sm:mt-[1rem] lg:mt-[6rem]">

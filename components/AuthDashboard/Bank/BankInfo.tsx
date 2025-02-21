@@ -21,7 +21,7 @@ export default function BankInfo({onClose, onClickAddBankDetails, onClickAddCryp
   }, []);
   return (
     <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-[100]">
-      <div className="flex flex-col bg-white rounded-t-[15px] w-full h-[350px] sm:h-[500px] lg:rounded-[20px] lg:max-w-[621px] lg:h-[400px]">
+      <div className="flex flex-col bg-white rounded-t-[15px] w-full h-[350px] sm:h-[500px] lg:rounded-[20px] lg:max-w-[621px] lg:h-[300px]">
         <div className="flex justify-center items-center mt-4 lg:hidden">
           <hr className="w-[51px] h-[5px] rounded-[40px] bg-[#D9D9D9]" />
         </div>
@@ -65,7 +65,7 @@ export default function BankInfo({onClose, onClickAddBankDetails, onClickAddCryp
             onClick={isCryptoDetailsProvided ? undefined : onClickAddCryptoDetails} // Triggers modal when clicked
           />
         </div>
-        <p className="text-colour-five mt-8 px-4 text-sm">NB: You can choose to provide just one or both of them.</p>
+        <p className="text-colour-five mt-2 px-4 text-sm">NB: You can choose to provide just one or both of them.</p>
       </div>
     </div>
   );

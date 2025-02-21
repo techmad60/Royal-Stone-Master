@@ -58,6 +58,21 @@ export default function WithdrawFundsPage() {
   const selectedType = useBankCryptoStore((state) => state.selectedType);
   const setSelectedType = useBankCryptoStore((state) => state.setSelectedType);
 
+  // Reset all states on mount
+  useEffect(() => {
+    setFormError("");
+    setAmount("");
+    setLoading(false);
+    setError(null);
+    setSuccessMessage(null);
+    setTransactionData(null);
+    setSelectedAccountDetails({ selectedAccount: null });
+    setSelectedBankId(null);
+    setSelectedCryptoId(null);
+    setSelectedType(null);
+  }, [setSelectedBankId, setSelectedCryptoId, setSelectedType]);
+
+
   // Fetch data
   useEffect(() => {
     async function fetchData() {

@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { BiSolidBank } from "react-icons/bi";
 import { FaBitcoin } from "react-icons/fa";
 import { RiBankLine } from "react-icons/ri";
+import { toast } from "react-toastify";
 
 const fundSteps = [
   { label: "Savings", href: "/main/savings" },
@@ -57,6 +58,20 @@ export default function WithdrawFundsPage() {
   const selectedType = useBankCryptoStore((state) => state.selectedType);
   const setSelectedType = useBankCryptoStore((state) => state.setSelectedType);
 
+  // Reset all states on mount
+  useEffect(() => {
+    setFormError("");
+    setAmount("");
+    setLoading(false);
+    setError(null);
+    setSuccessMessage(null);
+    setTransactionData(null);
+    setSelectedAccountDetails({ selectedAccount: null });
+    setSelectedBankId(null);
+    setSelectedCryptoId(null);
+    setSelectedType(null);
+  }, [setSelectedBankId, setSelectedCryptoId, setSelectedType]);
+
   // Fetch data
   useEffect(() => {
     async function fetchData() {
@@ -95,7 +110,6 @@ export default function WithdrawFundsPage() {
         }
       } catch (err: unknown) {
         if (err instanceof Error) {
-          
           setError(
             err.message || "Failed to fetch data. Please try again later."
           );
@@ -128,9 +142,9 @@ export default function WithdrawFundsPage() {
     setFormError("");
   };
 
-  if (error) {
-    return <p className="text-red-500">{error}</p>;
-  }
+  // if (error) {
+  //   return <p className="text-red-500">{error}</p>;
+  // }
 
   const validateInputs = (
     selectedAccount: BankDetails | CryptoWallet | null
@@ -178,7 +192,8 @@ export default function WithdrawFundsPage() {
 
     const { isValid, error } = validateInputs(selectedAccount);
     if (!isValid) {
-      setFormError(error);
+      toast.error(error);
+      // setFormError(error);
       return;
     }
 
@@ -223,7 +238,8 @@ export default function WithdrawFundsPage() {
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred.";
-      setError(errorMessage);
+      toast.error(errorMessage);
+      // setError(errorMessage);
       setTimeout(() => {
         setError(null);
         setCurrentModal(null); // Close the modal
@@ -268,6 +284,7 @@ export default function WithdrawFundsPage() {
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred.";
       setError(errorMessage);
+      toast.error(errorMessage);
       setTimeout(() => {
         setError(null);
         setCurrentModal(null); // Close the modal
@@ -545,8 +562,8 @@ export default function WithdrawFundsPage() {
           message={`Your withdrawal of $${amount} has successfully being processed!`}
           onClose={() => {
             setCurrentModal(null);
-            router.push("/main/savings")
-          } }
+            router.push("/main/savings");
+          }}
           onConfirm={() => setCurrentModal("transactionDetails")}
         />
       )}
@@ -554,8 +571,8 @@ export default function WithdrawFundsPage() {
         <WithdrawalDetails
           transactionData={transactionData}
           onClose={() => {
-            router.push("/main/savings")
-          } }
+            router.push("/main/savings");
+          }}
         />
       )}
       {currentModal === "addBank" && (

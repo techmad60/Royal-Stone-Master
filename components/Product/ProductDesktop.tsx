@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { MdArrowForwardIos } from "react-icons/md";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface Product {
@@ -54,7 +54,7 @@ export default function ProductDesktop({
     <div>
       {/* Table Header */}
       {/* grid-cols-[50px_3fr_1fr_1fr_1fr_1fr_1fr] */}
-      <ToastContainer position="top-right" autoClose={3000} />
+      {/* <ToastContainer position="top-right" autoClose={3000} /> */}
       {products.length !== 0 && (
         <div className="hidden lg:grid grid-cols-[35px_3fr_1fr_1fr_1fr_1fr] items-center bg-light-grey rounded-common py-4 px-8 shadow-sm mt-4">
           <p className="text-xs text-color-form">S/N</p>

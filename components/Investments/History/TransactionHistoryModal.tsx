@@ -55,8 +55,8 @@ export default function TransactionHistoryModal({
       <div
         className={`flex flex-col bg-white rounded-t-[15px] w-full lg:rounded-[20px] ${
           investment.type !== "investment-purchase"
-            ? "h-[410px] lg:h-[450px]"
-            : "h-[530px] lg:h-[560px]"
+            ? "h-[410px] lg:h-[400px]"
+            : "h-[530px] lg:h-[510px]"
         } lg:max-w-[621px] `}
       >
         <div className="flex justify-center items-center mt-4 lg:hidden">

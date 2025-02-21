@@ -5,7 +5,7 @@ import HistoryDesktop from "@/components/Portolio/History/HistoryDesktop";
 import HistoryMobile from "@/components/Portolio/History/HistoryMobile";
 import CardComponentFive from "@/components/ui/CardComponentFive";
 import Icon from "@/components/ui/Icon";
-import Loading from "@/components/ui/Loading";
+// import Loading from "@/components/ui/Loading";
 import NoHistory from "@/components/ui/NoHistory";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -21,7 +21,7 @@ export default function Portfolio() {
     totalInvestmentBalance: 0,
   });
   const [recentTransactions, setRecentTransactions] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [activeModal, setActiveModal] = useState<string | null>(null); // Tracks active modal: 'withdraw', 'fund', or null
   const router = useRouter();
 
@@ -92,20 +92,20 @@ export default function Portfolio() {
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
 
     fetchPortfolioData();
   }, [router]);
 
-  if (loading) {
-    return (
-      <div>
-        <Loading />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div>
+  //       <Loading />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div>

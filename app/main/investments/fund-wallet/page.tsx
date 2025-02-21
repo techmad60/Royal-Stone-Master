@@ -365,7 +365,7 @@ function isCryptoResponse(
       )}
       {currentModal === "processed" && (
         <Processed
-          message={`Your wallet has successfully been funded with $${amount}`}
+          message={`Your transaction is awaiting approval from the Admin.`}
           onClose={() => {
             setCurrentModal(null);
             router.push("/main/investments")

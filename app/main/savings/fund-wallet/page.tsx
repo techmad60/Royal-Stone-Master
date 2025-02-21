@@ -227,7 +227,7 @@ export default function FundWalletPage() {
   };
 
   return (
-    <div>
+    <div className="mt-[8.2rem] sm:mt-[0rem] lg:mt-[6rem]">
       <Navigator currentStep={1} steps={fundSteps} />
 
       <p className="text-color-zero text-base font-semibold py-4 lg:text-lg">
@@ -349,7 +349,7 @@ export default function FundWalletPage() {
 
       {currentModal === "processed" && (
         <Processed
-          message={`Your wallet has successfully been funded with $${amount}`}
+          message={`Your transaction is awaiting approval from the Admin.`}
           onClose={() => setCurrentModal(null)}
           onConfirm={() => setCurrentModal("transactionDetails")}
         />

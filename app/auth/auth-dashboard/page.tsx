@@ -7,7 +7,6 @@ import NextOfKinInformation from "@/components/AuthDashboard/Kyc/NextOfKin";
 import ValidIdInformation from "@/components/AuthDashboard/Kyc/ValidID";
 import CardVerification from "@/components/AuthDashboard/ui/CardVerification";
 import CardComponentFive from "@/components/ui/CardComponentFive";
-import Loading from "@/components/ui/Loading";
 import { useKycStore } from "@/store/kycStore";
 import useUserStore, { useLoadFullName } from "@/store/userStore";
 import { useRouter } from "next/navigation";
@@ -20,7 +19,7 @@ export default function Dashboard() {
   const fullName = useUserStore((state) => state.fullName);
   useLoadFullName();
   const router = useRouter(); // Initialize useRouter
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   // Zustand store hooks
   const {
     //Bank/Crypto Info Provided
@@ -175,11 +174,12 @@ export default function Dashboard() {
     const userId = localStorage.getItem("userId");
     if (userId && isKycProvided) {
       // Show the loading UI for 2 seconds
-      setTimeout(() => {
-        router.push("/main/dashboard"); // Redirect after 2 seconds
-      }, 2000); // 2 seconds delay
+      router.push("/main/dashboard");
+      // setTimeout(() => {
+      //   router.push("/main/dashboard"); // Redirect after 2 seconds
+      // }, 2000); // 2 seconds delay
     } else {
-      setLoading(false); // Hide loading UI immediately if conditions are not met
+      // setLoading(false); // Hide loading UI immediately if conditions are not met
     }
   }, [isKycProvided, router]);
 
@@ -217,13 +217,13 @@ export default function Dashboard() {
     return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
   };
 
-  if (loading) {
-    return (
-      <div>
-        <Loading />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div>
+  //       <Loading />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex flex-col lg:pr-8">

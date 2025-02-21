@@ -1,7 +1,7 @@
 "use client";
 // import PortfolioNavigator from "@/components/Portolio/ui/PortfolioNavigator";
 import Icon from "@/components/ui/Icon";
-import Loading from "@/components/ui/Loading";
+// import Loading from "@/components/ui/Loading";
 import NoHistory from "@/components/ui/NoHistory";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -17,7 +17,7 @@ interface Notification {
 
 export default function Notification() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   // Fetch initial notifications
@@ -41,7 +41,7 @@ export default function Notification() {
       } catch (error) {
         console.error("Error fetching notifications:", error);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
 
@@ -108,13 +108,13 @@ export default function Notification() {
     }
   };
 
-  if (loading) {
-    return (
-      <div>
-        <Loading />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div>
+  //       <Loading />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="lg:mt-24">

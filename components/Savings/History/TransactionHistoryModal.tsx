@@ -1,4 +1,5 @@
 import { Savings } from "@/types/Type";
+import { XCircleIcon } from "lucide-react";
 import { useEffect } from "react";
 import { GoPlus } from "react-icons/go";
 import { IoIosSend } from "react-icons/io";
@@ -24,26 +25,23 @@ export default function TransactionHistoryModal({
 
 
   return (
-    <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-50">
+    <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-[500]">
       <div
-        className={`flex flex-col bg-white rounded-t-[15px] w-full lg:rounded-[20px] ${
-          savings.type !== "savings-purchase"
-            ? "h-[410px] lg:h-[450px]"
-            : "h-[530px] lg:h-[560px]"
-        } lg:max-w-[621px] `}
+        className={`flex flex-col bg-white rounded-t-[15px] w-full lg:rounded-[20px] h-[410px] lg:h-[400px] lg:max-w-[621px] `}
       >
         <div className="flex justify-center items-center mt-4 lg:hidden">
           <hr className="w-[51px] h-[5px] rounded-[40px] bg-[#D9D9D9]" />
         </div>
         <div className="flex items-center border-b w-full pb-2 p-4">
+         
+          <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
+            Transaction Details
+          </p>
           <p
             onClick={closeModal}
             className="text-color-form text-sm cursor-pointer"
           >
-            Cancel
-          </p>
-          <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
-            Transaction Details
+            <XCircleIcon className="text-color-form"/>
           </p>
         </div>
 

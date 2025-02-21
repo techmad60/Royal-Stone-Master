@@ -113,7 +113,7 @@ export default function AddCryptoInformation({
 
   return (
     <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end justify-end lg:items-center lg:justify-center z-[100]">
-      <div className="flex flex-col bg-white rounded-t-[15px] w-full h-[400px] lg:rounded-[20px] lg:max-w-[621px]">
+      <div className="flex flex-col bg-white rounded-t-[15px] w-full h-[370px] lg:rounded-[20px] lg:max-w-[621px]">
         <div className="flex items-center border-b w-full pb-2 p-4">
           
           <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
@@ -182,7 +182,7 @@ export default function AddCryptoInformation({
             <Button
               ButtonText={isSubmitting ? "Saving..." : "Save"}
               className={`py-3 ${
-                isSubmitting ? "bg-gray-400" : "bg-color-one hover:bg-green-700"
+                isSubmitting ? "bg-inactive hover:bg-inactive" : "bg-color-one hover:bg-green-700"
               } w-full`}
               type="submit"
               disabled={isSubmitting}

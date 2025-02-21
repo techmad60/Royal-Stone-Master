@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { MdArrowForwardIos } from "react-icons/md";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 interface Product {
   id: string;
@@ -43,7 +43,7 @@ export default function ProductMobile({
 
   return (
     <div>
-      <ToastContainer position="top-right" autoClose={3000} />
+      {/* <ToastContainer position="top-right" autoClose={3000} /> */}
       {products.map((product) => (
         <section
           key={product.id}

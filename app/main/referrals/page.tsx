@@ -8,7 +8,7 @@ import Button from "@/components/ui/Button";
 import CardComponentFive from "@/components/ui/CardComponentFive";
 import CircleToggle from "@/components/ui/CircleToggle";
 import Icon from "@/components/ui/Icon";
-import Loading from "@/components/ui/Loading";
+// import Loading from "@/components/ui/Loading";
 import NoHistory from "@/components/ui/NoHistory";
 import { withdrawFunds } from "@/Services/apiService";
 import useBankCryptoStore from "@/store/bankCryptoStore";
@@ -45,7 +45,7 @@ export default function Referrals() {
   const referralCode = useUserStore((state) => state.referralCode);
   const [referrals, setReferrals] = useState([]);
   const [referralTerms, setReferralTerms] = useState<ReferralTerms | null>(null);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [totalEarning, setTotalEarning] = useState(0);
   const [currentBalance, setCurrentBalance] = useState(0);
   const [showWithdrawalOptions, setShowWithdrawalOptions] = useState(false);
@@ -71,6 +71,16 @@ export default function Referrals() {
     selectedAccount: BankDetails | CryptoWallet | null;
   }>({ selectedAccount: null });
 
+  // Reset all states on mount
+  useEffect(() => {
+    setShowWithdrawalOptions(false);
+    setCurrentModal(null);
+    setSelectedAccountDetails({ selectedAccount: null });
+    setSelectedBankId(null);
+    setSelectedCryptoId(null);
+    setSelectedType(null);
+  }, [setSelectedBankId, setSelectedCryptoId, setSelectedType]);
+
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("accessToken");
@@ -78,7 +88,7 @@ export default function Referrals() {
         router.push("/auth/login/with-mail");
         return;
       }
-      setLoading(true);
+      // setLoading(true);
 
       try {
         const fetchWithToken = async (url: string) => {
@@ -126,7 +136,7 @@ export default function Referrals() {
         toast.error(err instanceof Error ? err.message : "An error occurred");
         console.error("Error fetching data:", err);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
 
@@ -198,7 +208,7 @@ export default function Referrals() {
     }
 
     const beneficiaryID = selectedAccountDetails?.selectedAccount?.id || "";
-    setLoading(true);
+    // setLoading(true);
 
     try {
       const result = await withdrawFunds(
@@ -216,7 +226,7 @@ export default function Referrals() {
         error instanceof Error ? error.message : "An unknown error occurred.";
       toast.error(errorMessage);
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
@@ -228,7 +238,7 @@ export default function Referrals() {
     }
 
     const beneficiaryID = selectedAccountDetails?.selectedAccount?.id || "";
-    setLoading(true);
+    // setLoading(true);
 
     try {
       const result = await withdrawFunds(
@@ -246,7 +256,7 @@ export default function Referrals() {
         error instanceof Error ? error.message : "An unknown error occurred.";
       toast.error(errorMessage);
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
@@ -261,7 +271,7 @@ export default function Referrals() {
     }
   };
 
-  if (loading) return <Loading />;
+  // if (loading) return <Loading />;
 
   return (
     <div>

@@ -1,7 +1,7 @@
 "use client";
 import ProductDesktop from "@/components/Product/ProductDesktop";
 import ProductMobile from "@/components/Product/ProductMobile";
-import Loading from "@/components/ui/Loading";
+// import Loading from "@/components/ui/Loading";
 import PaginationComponent from "@/components/ui/PaginationComponent";
 import useProductStore from "@/store/productStore"; // Import your Zustand store
 import { useEffect } from "react";
@@ -11,7 +11,7 @@ export default function Products() {
   const {
     products,
     fetchProducts,
-    isLoading,
+    // isLoading,
     error,
     currentPage,
     totalPages,
@@ -26,13 +26,13 @@ export default function Products() {
     fetchProducts(currentPage); // Fetch data for the current page
   }, [currentPage, fetchProducts]);
 
-  if (isLoading) {
-    return (
-      <div>
-        <Loading />
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div>
+  //       <Loading />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex flex-col pb-4 lg:pr-8 h-screen">

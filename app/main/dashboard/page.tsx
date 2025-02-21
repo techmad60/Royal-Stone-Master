@@ -23,7 +23,7 @@ export default function Dashboard() {
     totalSavingsTarget: 0,
     totalInvestments: 0,
   });
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState("");
   const [recentTransactions, setRecentTransactions] = useState([]);
   const [transactionsLoading, setTransactionsLoading] = useState(true); // New loading state for transactions
@@ -34,7 +34,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      setLoading(true); // Start loading state
+      // setLoading(true); // Start loading state
 
       const token = localStorage.getItem("accessToken");
       if (!token) {
@@ -56,7 +56,7 @@ export default function Dashboard() {
 
         if (!data.status) {
           setApiError("Failed to fetch profile data.");
-          setLoading(false);
+          // setLoading(false);
           return;
         }
 
@@ -78,7 +78,7 @@ export default function Dashboard() {
         console.error("Error fetching profile:", error);
         setApiError("An error occurred while fetching profile data.");
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
 
@@ -134,13 +134,13 @@ export default function Dashboard() {
     fetchProducts();
   }, [fetchProducts, router]);
 
-  if (loading) {
-    return (
-      <div>
-        <Loading />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div>
+  //       <Loading />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex flex-col lg:p-0 lg:pr-8">

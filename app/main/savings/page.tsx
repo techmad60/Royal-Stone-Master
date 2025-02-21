@@ -5,7 +5,6 @@ import SavingsTargetDesktop from "@/components/Savings/Savings-Targets/Desktop";
 import SavingsTargetMobile from "@/components/Savings/Savings-Targets/Mobile";
 import CardComponentFive from "@/components/ui/CardComponentFive";
 import Icon from "@/components/ui/Icon";
-import Loading from "@/components/ui/Loading";
 import NoHistory from "@/components/ui/NoHistory";
 import PaginationComponent from "@/components/ui/PaginationComponent";
 import { useSavingsTargetStore } from "@/store/savingsTargetStore";
@@ -20,7 +19,7 @@ import { TbTargetArrow } from "react-icons/tb";
 export default function Savings() {
   const [ledgerBalance, setLedgerBalance] = useState(0);
   const [availableBalance, setAvailableBalance] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const {
     savingsTarget,
@@ -67,7 +66,7 @@ export default function Savings() {
           console.error("Unexpected error:", error);
         }
       } finally {
-        setIsLoading(false);
+        // setIsLoading(false);
       }
     };
 
@@ -75,13 +74,13 @@ export default function Savings() {
     fetchSavingsTarget();
   }, [router, fetchSavingsTarget]);
 
-  if (isLoading) {
-    return (
-      <div>
-        <Loading/>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div>
+  //       <Loading/>
+  //     </div>
+  //   );
+  // }
 
   if (error) {
     return <p className="text-red-500 text-sm">{error}</p>;

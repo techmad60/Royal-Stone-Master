@@ -130,7 +130,7 @@ export default function AddBankInformation({ onClose, onBankDetailStatus = () =>
   };
   return (
     <div className="fixed inset-0 flex items-end bg-[#D9D9D9A6] justify-end lg:items-center lg:justify-center z-[100]">
-      <div className="flex flex-col bg-white rounded-t-[15px] w-full h-[620px] lg:h-[600px] lg:rounded-[20px] lg:max-w-[621px]">
+      <div className="flex flex-col bg-white rounded-t-[15px] w-full h-[560px] lg:h-[575px] lg:rounded-[20px] lg:max-w-[621px]">
         <div className="flex items-center border-b w-full p-4">
          
           <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
@@ -144,7 +144,7 @@ export default function AddBankInformation({ onClose, onBankDetailStatus = () =>
           </p>
         </div>
         <div className="flex flex-col bg-white">
-          <p className="text-color-form text-sm px-4 py-2">
+          <p className="text-color-form text-sm px-4 pt-1">
             Provide your bank account details
           </p>
           <form
@@ -238,7 +238,7 @@ export default function AddBankInformation({ onClose, onBankDetailStatus = () =>
             </div>
 
             {/* Beneficiary Address */}
-            <div className="flex flex-col gap-1">
+            {/* <div className="flex flex-col gap-1">
               <label className="text-color-form text-sm">Beneficiary Address</label>
               <input
                 type="text"
@@ -250,7 +250,7 @@ export default function AddBankInformation({ onClose, onBankDetailStatus = () =>
                 placeholder="30 New Lane, Alabama"
               />
               {errors.beneficiaryAddress && <p className="text-red-500 text-xs">{errors.beneficiaryAddress}</p>}
-            </div>
+            </div> */}
             {feedbackMessage && (
             <div
               className={`my-1 text-sm ${
