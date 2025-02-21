@@ -22,6 +22,7 @@ import { useEffect, useState } from "react";
 import { BiSolidBank } from "react-icons/bi";
 import { FaBitcoin } from "react-icons/fa";
 import { IoWallet } from "react-icons/io5";
+import { toast } from "react-toastify";
 import Loading from "../../ui/Loading";
 import BankTransfer from "../Payment-Method/BankTransfer";
 import CryptoTransfer from "../Payment-Method/CryptoTransfer";
@@ -320,42 +321,50 @@ export default function InvestmentDetails() {
   };
 
   // Purchase Via Wallet
-  const handleMakePurchase = async () => {
-    setApiError(null); // Clear previous error messages
-    try {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        router.push("/auth/login/with-mail");
-        return;
-      }
-      const purchaseResponse = await makePurchase(
-        product.id,
-        Number(noOfUnits),
-        token
-      );
-      // Handle the response (success or error)
-      if (purchaseResponse.success && purchaseResponse.data) {
-        setWalletPurchase(purchaseResponse.data);
-        setCurrentModal("processed");
-        // Redirect with transactionData in the URL
-      } else {
-        const errorMessage =
-          purchaseResponse.message || "An error occurred during the deposit.";
-        setApiError(errorMessage); // Set error message
+const handleMakePurchase = async () => {
+  setApiError(null); // Clear previous error messages
+  setIsLoading(true);
 
-        // Timeout to clear error message after 3 seconds
-        setTimeout(() => {
-          setApiError(null);
-        }, 2000);
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        setFormError(err.message || "Something went wrong.");
-      } else {
-        setFormError("Something went wrong.");
-      }
+  try {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      router.push("/auth/login/with-mail");
+      return;
     }
-  };
+
+    const purchaseResponse = await makePurchase(
+      product.id,
+      Number(noOfUnits),
+      token
+    );
+
+    if (purchaseResponse.success && purchaseResponse.data) {
+      setWalletPurchase(purchaseResponse.data);
+      setCurrentModal("processed"); // Show success modal
+    } else {
+      const errorMessage =
+        purchaseResponse.message || "An error occurred during the deposit.";
+
+      // Show toast notification
+      toast.error("Insufficient Balance.", { autoClose: 3000 });
+
+      // Set error message & force modal close
+      setApiError(errorMessage);
+      setCurrentModal(null);
+    }
+  } catch (err) {
+    // const errorMessage = err instanceof Error ? err.message : "Something went wrong.";
+
+    // Show toast for error
+    toast.error("Insufficient Balance.", { autoClose: 3000 });
+
+    // Set error message & force modal close
+    // setFormError(errorMessage);
+    setCurrentModal(null);
+  } finally {
+    setIsLoading (false)
+  }
+};
 
   const handlePaymentSelection = (method: "bank" | "crypto" | "wallet") => {
     setSelectedType(method);
@@ -531,6 +540,7 @@ export default function InvestmentDetails() {
           noOfUnits={noOfUnits}
           amount={amount}
           product={product}
+          isLoading={isLoading}
         />
       )}
       {currentModal === "bankTransfer" && (

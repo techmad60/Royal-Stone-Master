@@ -4,14 +4,17 @@ import HistoryMobile from "@/components/Savings/History/HistoryMobile";
 import SavingsTargetDesktop from "@/components/Savings/Savings-Targets/Desktop";
 import SavingsTargetMobile from "@/components/Savings/Savings-Targets/Mobile";
 import CardComponentFive from "@/components/ui/CardComponentFive";
+import Icon from "@/components/ui/Icon";
 import Loading from "@/components/ui/Loading";
 import NoHistory from "@/components/ui/NoHistory";
 import PaginationComponent from "@/components/ui/PaginationComponent";
 import { useSavingsTargetStore } from "@/store/savingsTargetStore";
-import Link from "next/dist/client/link";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { GoPlus } from "react-icons/go";
+import { IoIosSend } from "react-icons/io";
 import { TbTargetArrow } from "react-icons/tb";
 
 export default function Savings() {
@@ -117,6 +120,20 @@ export default function Savings() {
             width="lg:w-[378px] xl:w-[290px] 2xlg:w-[355px]"
           />
         </div>
+        <section className="flex bg-light-grey shadow-sm rounded-common p-4 my-4 justify-center mx-auto gap-2 lg:gap-12 lg:w-[382px] lg:h-[103px] xl:my-0">
+          <Link href="/main/savings/withdraw-funds" className="flex items-center justify-center text-color-one hover:text-green-400 duration-150 gap-1 lg:flex-col">
+            <Icon icon={<IoIosSend />} />
+            <p className="text-xs whitespace-nowrap">Withdraw</p>
+          </Link>
+          <Link href="/main/savings/create-savings" className="flex items-center justify-center text-color-one hover:text-green-400 duration-150 gap-1 lg:flex-col">
+            <Icon icon={<TbTargetArrow />} />
+            <p className="text-xs whitespace-nowrap">Create Savings</p>
+          </Link>
+          <Link href="/main/savings/fund-wallet" className="flex items-center justify-center text-color-one hover:text-green-400 duration-150 gap-1 lg:flex-col">
+            <Icon icon={<GoPlus />} />
+            <p className="text-xs whitespace-nowrap">Fund Wallet</p>
+          </Link>
+        </section>
       </div>
       <h1 className="text-base font-semibold mt-4 text-color-zero">Savings Target</h1>
       {savingsTarget.length === 0 ? (

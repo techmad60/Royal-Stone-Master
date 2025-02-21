@@ -2,6 +2,7 @@ import Button from "@/components/ui/Button";
 import Loading from "@/components/ui/Loading";
 import Timer from "@/components/ui/Timer";
 import { FundBankDetails } from "@/types/Type";
+import { XCircleIcon } from "lucide-react";
 import { useEffect } from "react";
 import StatRow from "../../ui/StatRow";
 
@@ -41,20 +42,21 @@ export default function BankTransfer({
   }
 
   return (
-    <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-50">
-      <div className="bg-white flex flex-col rounded-[20px] h-[640px] w-full lg:max-w-[621px] lg:h-[640px]">
+    <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-[100]">
+      <div className="bg-white flex flex-col rounded-[20px] h-[580px] w-full lg:max-w-[621px] lg:h-[540px]">
         <div className="flex justify-center items-center mt-4 lg:hidden">
           <hr className="w-[51px] h-[5px] rounded-[40px] bg-[#D9D9D9]" />
         </div>
         <div className="flex items-center border-b w-full pb-2 p-4">
+        
+          <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
+            Make Investment
+          </p>
           <p
             onClick={onClose}
             className="text-color-form text-sm cursor-pointer"
           >
-            Cancel
-          </p>
-          <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
-            Make Investment
+            <XCircleIcon className="text-color-form"/>
           </p>
         </div>
         <p className="text-color-form text-sm mx-4 py-4">
@@ -91,12 +93,12 @@ export default function BankTransfer({
             valueClass="text-color-six text-sm"
             paddingStyle="py-1"
           />
-          <StatRow
+          {/* <StatRow
             label="Bank Address"
             value={bankDetails.bankAddress}
             valueClass="text-color-six text-sm"
             paddingStyle="py-1"
-          />
+          /> */}
           <StatRow
             label="IBAN/Swift Code"
             value={bankDetails.swiftCode}
@@ -108,14 +110,15 @@ export default function BankTransfer({
             value={bankDetails.routingNumber}
             valueClass="text-color-six text-sm"
             paddingStyle="py-1"
+            isLast={true}
           />
-          <StatRow
+          {/* <StatRow
             label="Beneficiary Adddress"
             value={bankDetails.beneficiaryAddress}
             valueClass="text-color-six text-sm"
             paddingStyle="py-1"
             isLast={true}
-          />
+          /> */}
         </section>
         {isLoading && (
           <div><Loading/></div>
@@ -126,8 +129,8 @@ export default function BankTransfer({
         {successMessage && (
           <p className="text-green-500 text-sm text-center mx-4 mt-2">{successMessage}</p>
         )}
-        <hr className="hidden mt-3 lg:flex" />
-        <div className="mt-4 mx-6 lg:mt-6">
+        {/* <hr className="hidden mt-3 lg:flex" /> */}
+        <div className="mt-4 mx-6 lg:mt-3">
           <Button
             ButtonText={
               isLoading ? "Processing..." : "I have made the transfer"

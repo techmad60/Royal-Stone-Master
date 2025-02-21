@@ -1,3 +1,4 @@
+import Loading from "@/components/ui/Loading";
 import { XCircleIcon } from "lucide-react";
 import Image from "next/image";
 import { useEffect } from "react";
@@ -14,6 +15,7 @@ interface MyComponentProps {
     costPerUnit: number;
     images: string[];
   };
+  isLoading: boolean;
 }
 
 export default function InvestPreview({
@@ -22,6 +24,7 @@ export default function InvestPreview({
   noOfUnits,
   amount,
   product,
+  isLoading,
 }: MyComponentProps) {
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -87,8 +90,20 @@ export default function InvestPreview({
             </div>
           </div>
         </section>
+        {isLoading && (
+          <div><Loading/></div>
+        )}
         <div className="mt-8 mx-6">
-          <Button ButtonText="Proceed" className="bg-color-one w-full" onClick={onProceed}/>
+        <Button
+            ButtonText={
+              isLoading ? "Processing..." : "Proceed"
+            }
+            className={`${
+              isLoading ? "bg-inactive hover:bg-inactive" : "bg-color-one"
+            }  w-full text-center`}
+            onClick={onProceed}
+            disabled={isLoading}
+          />
         </div>
       </div>
     </div>
