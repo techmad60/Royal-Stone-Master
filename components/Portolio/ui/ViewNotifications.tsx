@@ -68,8 +68,8 @@ export default function ViewNotification() {
   }
 
   return (
-    <div>
-      <PortfolioNavigator currentStep={2} />
+    <div className="mt-[8.3rem] sm:mt-0 lg:mt-24">
+      <PortfolioNavigator currentStep={1} />
       <div className="my-3 mt-7 flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:items-center lg:gap-32 lg:mt-12">
         <h1 className="text-base text-color-zero font-semibold lg:text-[18px]">
           {notification.title}

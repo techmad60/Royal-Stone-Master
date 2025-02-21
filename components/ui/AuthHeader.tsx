@@ -103,7 +103,7 @@ export default function AuthHeader({ title, toggleNav, grid }: AuthHeaderProps) 
             )}
 
             {!isAuthDashboard && (
-              <Link href="/main/portfolio/notifications" className="relative flex-shrink-0">
+              <Link href="/main/notifications" className="relative flex-shrink-0">
                 <Image src={"/images/notification.svg"} alt="Notification Icon" width={30} height={30} />
                 
                 {/* Red Badge for Unread Notifications */}

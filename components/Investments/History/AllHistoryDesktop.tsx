@@ -83,7 +83,7 @@ export default function AllHistoryDesktop({
 
   return (
     <div className="hidden mt-7 lg:grid">
-      <TableHeader/>
+      <TableHeader />
       {error && <p className="text-red-500">{error}</p>}
       {investments.map((investment) => (
         <section
@@ -91,7 +91,7 @@ export default function AllHistoryDesktop({
           className="grid grid-cols-7 px-3 mr-8 border-b py-4 my-4"
         >
           <div className="flex items-center gap-3 col-span-2">
-          <Icon
+            <Icon
               icon={
                 investment.type === "investment-wallet-funding" ? (
                   <GoPlus className="text-color-one" />
@@ -126,14 +126,21 @@ export default function AllHistoryDesktop({
             className={`text-sm ${
               investment.status === "pending"
                 ? "text-yellow-500"
-                : investment.status === "successful"
+                : investment.status === "ongoing"
+                ? "text-blue-500"
+                : investment.status === "matured" ||
+                  investment.status === "successful"
                 ? "text-green-500"
-                : "text-red-500"
+                : investment.status === "canceled" ||
+                  investment.status === "failed"
+                ? "text-red-500"
+                : "text-gray-500"
             }`}
           >
             {investment.status.charAt(0).toUpperCase() +
               investment.status.slice(1)}
           </p>
+
           <button
             onClick={() =>
               fetchInvestmentDetails(investment.id, investment.type)

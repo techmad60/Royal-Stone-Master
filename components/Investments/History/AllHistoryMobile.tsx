@@ -178,12 +178,18 @@ export default function AllHistoryMobile({ investments }: HistoryMobileProps) {
                           )}
                       </p>
                       <p
-                        className={`text-xs ${
+                        className={`text-sm ${
                           investment.status === "pending"
                             ? "text-yellow-500"
-                            : investment.status === "successful"
+                            : investment.status === "ongoing"
+                            ? "text-blue-500"
+                            : investment.status === "matured" ||
+                              investment.status === "successful"
                             ? "text-green-500"
-                            : "text-red-500"
+                            : investment.status === "canceled" ||
+                              investment.status === "failed"
+                            ? "text-red-500"
+                            : "text-gray-500"
                         }`}
                       >
                         {investment.status.charAt(0).toUpperCase() +

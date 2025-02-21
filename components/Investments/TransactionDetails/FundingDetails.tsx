@@ -1,5 +1,6 @@
 import Icon from "@/components/ui/Icon";
 import { DepositBankResponse } from "@/types/Type";
+import { XCircleIcon } from "lucide-react";
 import { useEffect } from "react";
 import { GoPlus } from "react-icons/go";
 
@@ -26,14 +27,15 @@ export default function FundingDetails({
           <hr className="w-[51px] h-[5px] rounded-[40px] bg-[#D9D9D9]" />
         </div>
         <div className="flex items-center border-b w-full pb-2 p-4">
+         
+          <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
+            Transaction Details
+          </p>
           <p
             onClick={onClose}
             className="text-color-form text-sm cursor-pointer"
           >
-            Cancel
-          </p>
-          <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
-            Transaction Details
+            <XCircleIcon className="text-color-form"/>
           </p>
         </div>
 

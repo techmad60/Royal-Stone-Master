@@ -168,6 +168,22 @@ export default function HistoryDesktop() {
             className={`text-sm ${
               investment.status === "pending"
                 ? "text-yellow-500"
+                : investment.status === "ongoing"
+                ? "text-blue-500"
+                : investment.status === "matured"
+                ? "text-green-500"
+                : investment.status === "canceled"
+                ? "text-red-700"
+                : "text-gray-500" // Default color
+            }`}
+          >
+            {investment.status.charAt(0).toUpperCase() +
+              investment.status.slice(1)}
+          </p>
+          {/* <p
+            className={`text-sm ${
+              investment.status === "pending"
+                ? "text-yellow-500"
                 : investment.status === "successful"
                 ? "text-green-500"
                 : "text-red-500"
@@ -175,7 +191,7 @@ export default function HistoryDesktop() {
           >
             {investment.status.charAt(0).toUpperCase() +
               investment.status.slice(1)}
-          </p>
+          </p> */}
           <button
             onClick={() =>
               fetchInvestmentDetails(investment.id, investment.type)

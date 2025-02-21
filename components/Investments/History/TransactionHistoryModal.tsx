@@ -54,14 +54,15 @@ export default function TransactionHistoryModal({
     <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-[100]">
       <div
         className={`flex flex-col bg-white rounded-t-[15px] w-full lg:rounded-[20px] ${
-          investment.type !== "investment-purchase" ? "h-[410px] lg:h-[450px]" : "h-[530px] lg:h-[560px]"
+          investment.type !== "investment-purchase"
+            ? "h-[410px] lg:h-[450px]"
+            : "h-[530px] lg:h-[560px]"
         } lg:max-w-[621px] `}
       >
         <div className="flex justify-center items-center mt-4 lg:hidden">
           <hr className="w-[51px] h-[5px] rounded-[40px] bg-[#D9D9D9]" />
         </div>
         <div className="flex items-center border-b w-full pb-2 p-4">
-          
           <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
             Transaction Details
           </p>
@@ -69,7 +70,7 @@ export default function TransactionHistoryModal({
             onClick={closeModal}
             className="text-color-form text-sm cursor-pointer"
           >
-            <XCircleIcon className="text-color-form"/>
+            <XCircleIcon className="text-color-form" />
           </p>
         </div>
 
@@ -88,7 +89,7 @@ export default function TransactionHistoryModal({
           />
 
           <div className="flex flex-col gap-1">
-               {/* Conditional for investment-purchase and others*/}
+            {/* Conditional for investment-purchase and others*/}
             {investment.type === "investment-purchase" ? (
               <>
                 <p className="text-color-zero font-medium text-sm lg:text-base">
@@ -98,11 +99,17 @@ export default function TransactionHistoryModal({
                   {investment.productID?.ROI?.value || "N/A"}% ROI -{" "}
                   <span
                     className={`text-xs ${
-                      investment.status?.toLowerCase() === "successful"
-                        ? "text-green-500"
-                        : investment.status?.toLowerCase() === "pending"
+                      investment.status?.toLowerCase() === "pending"
                         ? "text-yellow-500"
-                        : "text-red-500"
+                        : investment.status?.toLowerCase() === "ongoing"
+                        ? "text-blue-500"
+                        : investment.status?.toLowerCase() === "matured" ||
+                          investment.status?.toLowerCase() === "successful"
+                        ? "text-green-500"
+                        : investment.status?.toLowerCase() === "canceled" ||
+                          investment.status?.toLowerCase() === "failed"
+                        ? "text-red-500"
+                        : "text-gray-500"
                     }`}
                   >
                     {investment.status?.toUpperCase() || "N/A"}
@@ -131,7 +138,13 @@ export default function TransactionHistoryModal({
         </div>
 
         <section className="self-center grid grid-cols-2 bg-light-grey rounded-[10px] shadow-sm mx-6 mt-4 p-[15px] text-sm w-[345px] h-[218px] lg:p-5 lg:w-[572px] lg:h-[228px]">
-          <div className={`flex flex-col ${investment.type !== "investment-purchase" ? "space-y-8" : "space-y-3"}`}>
+          <div
+            className={`flex flex-col ${
+              investment.type !== "investment-purchase"
+                ? "space-y-8"
+                : "space-y-3"
+            }`}
+          >
             <div className="flex flex-col">
               <p className="text-color-form">Amount</p>
               <p className="text-color-six">${investment.amount}</p>
@@ -185,7 +198,13 @@ export default function TransactionHistoryModal({
               </>
             )}
           </div>
-          <div className={`flex flex-col ${investment.type !== "investment-purchase" ? "space-y-8" : "space-y-3"}`}>
+          <div
+            className={`flex flex-col ${
+              investment.type !== "investment-purchase"
+                ? "space-y-8"
+                : "space-y-3"
+            }`}
+          >
             <div className="flex flex-col">
               <p className="text-color-form">Transaction ID</p>
               <p className="text-color-six break-words">#{investment.id}</p>
@@ -227,12 +246,18 @@ export default function TransactionHistoryModal({
                 <div className="flex justify-between items-center lg:gap-20">
                   <div className="flex flex-col gap-1">
                     <p
-                      className={`text-[0.65rem] ${
-                        investment.status?.toLowerCase() === "successful"
-                          ? "text-green-500"
-                          : investment.status?.toLowerCase() === "pending"
+                      className={`text-[0.65rem] text-color-one ${
+                        investment.status?.toLowerCase() === "pending"
                           ? "text-yellow-500"
-                          : "text-red-500"
+                          : investment.status?.toLowerCase() === "ongoing"
+                          ? "text-blue-500"
+                          : investment.status?.toLowerCase() === "matured" ||
+                            investment.status?.toLowerCase() === "successful"
+                          ? "text-green-500"
+                          : investment.status?.toLowerCase() === "canceled" ||
+                            investment.status?.toLowerCase() === "failed"
+                          ? "text-red-700"
+                          : "text-gray-500"
                       }`}
                     >
                       {investment.status?.toUpperCase() || "N/A"}

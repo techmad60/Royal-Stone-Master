@@ -5,6 +5,7 @@ import SavingsTargetDesktop from "@/components/Savings/Savings-Targets/Desktop";
 import SavingsTargetMobile from "@/components/Savings/Savings-Targets/Mobile";
 import CardComponentFive from "@/components/ui/CardComponentFive";
 import Icon from "@/components/ui/Icon";
+import Loading from "@/components/ui/Loading";
 import NoHistory from "@/components/ui/NoHistory";
 import PaginationComponent from "@/components/ui/PaginationComponent";
 import { useSavingsTargetStore } from "@/store/savingsTargetStore";
@@ -19,6 +20,8 @@ import { TbTargetArrow } from "react-icons/tb";
 export default function Savings() {
   const [ledgerBalance, setLedgerBalance] = useState(0);
   const [availableBalance, setAvailableBalance] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showNoHistory, setShowNoHistory] = useState(false);
   const router = useRouter();
   const {
     savingsTarget,
@@ -64,6 +67,8 @@ export default function Savings() {
         } else {
           console.error("Unexpected error:", error);
         }
+      } finally {
+        setIsLoading(false); // Set loading to false after fetching data
       }
     };
 
@@ -71,8 +76,37 @@ export default function Savings() {
     fetchSavingsTarget(); // Fetch savings targets here
   }, [router, fetchSavingsTarget]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (savingsTarget.length === 0) {
+        setShowNoHistory(true);
+      }
+    }, 1000); // Show the message after 1 second if data is still not available
+
+    return () => clearTimeout(timer);
+  }, [savingsTarget]);
+
+  if (isLoading) {
+    return (
+      <div>
+        <Loading/>
+      </div>
+    );
+  }
+
   if (error) {
     return <p className="text-red-500 text-sm">{error}</p>;
+  }
+
+  if (showNoHistory) {
+    return (
+      <div className="lg:mr-8">
+        <NoHistory
+          icon={<TbTargetArrow />}
+          text="No Savings Target History Yet."
+        />
+      </div>
+    );
   }
 
   return (

@@ -49,8 +49,9 @@ export default function InvestmentDesktop({
 
   const statusStyles = {
     pending: "bg-yellow-100 text-yellow-700",
-    successful: "bg-green-100 text-green-700",
-    failed: "bg-red-100 text-red-700",
+    ongoing: "bg-blue-100 text-blue-700",
+    matured: "bg-green-100 text-green-700",
+    canceled: "bg-red-100 text-red-700",
   };
 
   return (
@@ -63,12 +64,13 @@ export default function InvestmentDesktop({
         <>
           {/* Header Row */}
           <div className="hidden lg:grid grid-cols-8 items-center bg-light-grey rounded-common py-4 px-8 shadow-sm mt-4">
-            <p className="text-xs text-color-zero col-span-3">
+            <p className="text-xs text-color-zero col-span-2">
               Product Image & Name
             </p>
             <p className="text-xs text-color-zero">Amount</p>
             <p className="text-xs text-color-zero">ROI</p>
             <p className="text-xs text-color-zero">Status</p>
+            <p className="text-xs text-color-zero">Start Date</p>
             <p className="text-xs text-color-zero">Maturity Date</p>
             <p className="text-xs text-color-zero">Actions</p>
           </div>
@@ -83,7 +85,7 @@ export default function InvestmentDesktop({
                 }`}
               >
                 {/* Product Image & Name */}
-                <div className="flex items-center col-span-3 gap-2">
+                <div className="flex items-center col-span-2 gap-2">
                   <div className="w-[40px] h-[40px] rounded-[5px] overflow-hidden">
                     <Image
                       src={
@@ -145,6 +147,12 @@ export default function InvestmentDesktop({
                   </span>
                 </div>
 
+                {/* Start Date */}
+                <div>
+                  <p className="text-xs text-color-zero">
+                    {formatDate(investment.createdAt)}
+                  </p>
+                </div>
                 {/* Maturity Date */}
                 <div>
                   <p className="text-xs text-color-zero">

@@ -113,7 +113,7 @@ export default function SettingsParent() {
   
 
     return (
-      <div className="">
+      <div className="mt-36 sm:mt-0">
         {/* <ToastContainer /> */}
         {/* Account Settings and Profile Settings */}
         <div className="lg:grid grid-cols-2 gap-4 xl:gap-8">
@@ -124,7 +124,7 @@ export default function SettingsParent() {
           >
             <div>
               <div
-                className="relative flex justify-start mt-8 cursor-pointer"
+                className="relative flex justify-start mt-8 sm:mt-2 cursor-pointer"
                 onClick={handleChangeAvatarModal}
               >
                 <div className="transform rotate-45 w-10 h-10 rounded-[16.66px] overflow-hidden">

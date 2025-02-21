@@ -46,8 +46,7 @@ export default function InvestmentMobile({
           <div className="w-[100px] h-[77px] rounded-[12px] overflow-hidden">
             <Image
               src={
-                investment.productID?.images?.[0] ||
-                "/images/default.png" // Default image if no images are provided
+                investment.productID?.images?.[0] || "/images/default.png" // Default image if no images are provided
               }
               alt={investment.productID?.name || "Investment"}
               width={100}
@@ -63,9 +62,13 @@ export default function InvestmentMobile({
               className={`text-[10px] ${
                 investment.status === "pending"
                   ? "text-yellow-500"
-                  : investment.status === "successful"
+                  : investment.status === "ongoing"
+                  ? "text-blue-500"
+                  : investment.status === "matured"
                   ? "text-green-500"
-                  : "text-red-700"
+                  : investment.status === "canceled"
+                  ? "text-red-700"
+                  : "text-gray-500" // Default color
               }`}
             >
               {investment.status.toUpperCase()}
@@ -86,7 +89,7 @@ export default function InvestmentMobile({
                 {/* ROI */}
                 {investment.productID?.ROI && (
                   <p className="text-[10px] font-medium text-color-one tracking-tight">
-                    ROI: {investment.productID.ROI.value}% 
+                    ROI: {investment.productID.ROI.value}%
                   </p>
                 )}
               </div>

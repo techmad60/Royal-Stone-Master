@@ -2,9 +2,9 @@ import Button from "@/components/ui/Button";
 import Loading from "@/components/ui/Loading";
 import Timer from "@/components/ui/Timer";
 import { FundBankDetails } from "@/types/Type";
+import { XCircleIcon } from "lucide-react";
 import { useEffect } from "react";
 import StatRow from "./StatRow";
-
 
 interface MyComponentProps {
   onClose: () => void;
@@ -27,8 +27,6 @@ export default function BankFunding({
   successMessage,
   transactionType,
 }: MyComponentProps) {
-  
-
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -41,20 +39,20 @@ export default function BankFunding({
   }
 
   return (
-    <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-50">
+    <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-[100]">
       <div className="bg-white flex flex-col rounded-[20px] h-[640px] w-full lg:max-w-[621px] lg:h-[640px]">
         <div className="flex justify-center items-center mt-4 lg:hidden">
           <hr className="w-[51px] h-[5px] rounded-[40px] bg-[#D9D9D9]" />
         </div>
         <div className="flex items-center border-b w-full pb-2 p-4">
+          <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
+            Fund Via Bank Transfer
+          </p>
           <p
             onClick={onClose}
             className="text-color-form text-sm cursor-pointer"
           >
-            Cancel
-          </p>
-          <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
-            Fund Via Bank Transfer
+            <XCircleIcon className="text-color-form"/>
           </p>
         </div>
         <p className="text-color-form text-sm mx-4 py-4">
@@ -97,7 +95,7 @@ export default function BankFunding({
             valueClass="text-color-six text-sm"
             paddingStyle="py-1"
           />
-           <StatRow
+          <StatRow
             label="IBAN/Swift Code"
             value={bankDetails.swiftCode}
             valueClass="text-color-six text-sm"
@@ -125,7 +123,7 @@ export default function BankFunding({
             {successMessage}
           </p>
         )}
-         {isLoading && (
+        {isLoading && (
           <div>
             <Loading />
           </div>

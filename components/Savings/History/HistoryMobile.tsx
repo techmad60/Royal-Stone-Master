@@ -1,10 +1,10 @@
 import Icon from "@/components/ui/Icon";
-import Loading from "@/components/ui/Loading";
 import NoHistory from "@/components/ui/NoHistory";
 import { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { IoIosSend } from "react-icons/io";
 import { TbTargetArrow } from "react-icons/tb";
+import { toast } from "react-toastify";
 import TransactionHistoryModal from "./TransactionHistoryModal";
 
 interface Savings {
@@ -16,9 +16,7 @@ interface Savings {
 }
 
 export default function HistoryMobile() {
-  const [loading, setLoading] = useState(false);
   const [savings, setSavings] = useState<Savings[]>([]);
-  const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [latestTransactions, setLatestTransactions] = useState<Savings[]>([]);
   const [latestDateLabel, setLatestDateLabel] = useState<string>("");
@@ -28,9 +26,6 @@ export default function HistoryMobile() {
   const fetchSavings = useCallback(async () => {
     const token = localStorage.getItem("accessToken");
     try {
-      setLoading(true);
-      setError(null);
-
       const response = await fetch(
         `https://api-royal-stone.softwebdigital.com/api/savings/transactions`,
         {
@@ -44,17 +39,15 @@ export default function HistoryMobile() {
 
       const data = await response.json();
       if (!data.status) {
-        throw new Error("Failed to fetch transactions.");
+        toast.error("Failed to fetch transactions")
       }
       setSavings(data.data.data);
     } catch (err: unknown) {
-      setError(
+      toast.error(
         err instanceof Error
           ? err.message
           : "An unknown error occurred. Please try again later."
       );
-    } finally {
-      setLoading(false);
     }
   }, []);
 
@@ -116,24 +109,15 @@ export default function HistoryMobile() {
   const handleTransactionClick = (id: string) => {
     const transaction = savings.find((s) => s.id === id);
     if (!transaction) {
-      setError("Transaction not found.");
+      toast.error("Transaction not found.");
       return;
     }
     setSelectedSavings(transaction);
     setShowModal(true);
   };
 
-  if (loading) {
-    return (
-      <div>
-        <Loading />
-      </div>
-    );
-  }
-
   return (
     <div className="lg:hidden">
-      {error && <p className="text-red-500 text-center mb-4">{error}</p>}
       {latestTransactions.length > 0 ? (
         <section>
           <div>

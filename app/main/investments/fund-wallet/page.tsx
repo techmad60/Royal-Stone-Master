@@ -366,7 +366,10 @@ function isCryptoResponse(
       {currentModal === "processed" && (
         <Processed
           message={`Your wallet has successfully been funded with $${amount}`}
-          onClose={() => setCurrentModal(null)}
+          onClose={() => {
+            setCurrentModal(null);
+            router.push("/main/investments")
+          } }
           onConfirm={() => setCurrentModal("transactionDetails")}
           showButton={selectedType !== "crypto"} // Hide button if crypto is selected
         />
@@ -375,7 +378,10 @@ function isCryptoResponse(
       {currentModal === "transactionDetails" && isBankResponse(transactionData) && (
         <FundingDetails
           transactionData={transactionData}
-          onClose={() => setCurrentModal(null)}
+          onClose={() => {
+            setCurrentModal(null);
+            router.push("/main/investments")
+          } }
         />
       )}
     </div>

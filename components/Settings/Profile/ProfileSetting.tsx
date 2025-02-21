@@ -4,7 +4,6 @@ import { useMediaQuery } from "@/hooks/useMediaQuery";
 import useUserStore from "@/store/userStore";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { IoIosArrowDown } from "react-icons/io";
 import Button from "../../ui/Button";
 import CustomAlert from "../../ui/CustomAlert";
 import NavigatorTwo from "../../ui/NavigatorTwo";
@@ -271,9 +270,9 @@ export default function ProfileSettings() {
                   className="rounded-sm text-color-zero py-1"
                   placeholder="Nigeria"
                 />
-                <div className="absolute top-3 right-3">
+                {/* <div className="absolute top-3 right-3">
                   <IoIosArrowDown />
-                </div>
+                </div> */}
               </div>
             </div>
 
@@ -290,9 +289,9 @@ export default function ProfileSettings() {
                   className="rounded-sm text-color-zero py-1"
                   placeholder="Lagos"
                 />
-                <div className="absolute top-3 right-3">
+                {/* <div className="absolute top-3 right-3">
                   <IoIosArrowDown />
-                </div>
+                </div> */}
               </div>
             </div>
 

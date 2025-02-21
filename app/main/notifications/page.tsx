@@ -1,5 +1,5 @@
 "use client";
-import PortfolioNavigator from "@/components/Portolio/ui/PortfolioNavigator";
+// import PortfolioNavigator from "@/components/Portolio/ui/PortfolioNavigator";
 import Icon from "@/components/ui/Icon";
 import Loading from "@/components/ui/Loading";
 import NoHistory from "@/components/ui/NoHistory";
@@ -101,7 +101,7 @@ export default function Notification() {
 
       // Navigate to notification details page
       router.push(
-        `/main/portfolio/notifications/view-notification?notificationId=${notificationId}`
+        `/main/notifications/view-notification?notificationId=${notificationId}`
       );
     } catch (error) {
       console.error("Error marking notification as read:", error);
@@ -117,8 +117,8 @@ export default function Notification() {
   }
 
   return (
-    <div>
-      <PortfolioNavigator currentStep={1} />
+    <div className="lg:mt-24">
+      {/* <PortfolioNavigator currentStep={1} /> */}
       <p className="font-semibold text-base my-4">Notifications</p>
 
       {notifications.length === 0 ? (

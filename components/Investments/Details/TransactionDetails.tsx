@@ -11,8 +11,7 @@ import { useEffect } from "react";
 export default function TransactionDetails() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
-  const { investments, fetchInvestments, error } =
-    useInvestmentStore();
+  const { investments, fetchInvestments, error } = useInvestmentStore();
 
   useEffect(() => {
     if (investments.length === 0) {
@@ -59,14 +58,20 @@ export default function TransactionDetails() {
           </h1>
           <p
             className={`text-[10px] text-color-one ${
-              investment.status === "pending"
+              investment.status?.toLowerCase() === "pending"
                 ? "text-yellow-500"
-                : investment.status === "successful"
-                ? "text-color-one"
-                : "text-red-700"
+                : investment.status?.toLowerCase() === "ongoing"
+                ? "text-blue-500"
+                : investment.status?.toLowerCase() === "matured" ||
+                  investment.status?.toLowerCase() === "successful"
+                ? "text-green-500"
+                : investment.status?.toLowerCase() === "canceled" ||
+                  investment.status?.toLowerCase() === "failed"
+                ? "text-red-700"
+                : "text-gray-500"
             }`}
           >
-            {investment.status.toUpperCase() || 0}
+            {investment.status?.toUpperCase() || "N/A"}
           </p>
         </div>
         <div className="lg:flex items-center hidden">
@@ -78,22 +83,31 @@ export default function TransactionDetails() {
       <section className="flex overflow-scroll hide-scrollbar gap-2 my-4 sm:hidden">
         {investment.productID?.images &&
         investment.productID?.images.length > 0 ? (
-          Array.from({ length: 5 }).map((_, index) => (
-            <div
-              key={index}
-              className="w-[110px] h-[111px] flex-shrink-0 rounded-[12px] overflow-hidden"
-            >
-              <Image
-                src={
-                  investment.productID?.images[0] || "/placeholder-image.png"
-                } // Reuse the first image or fallback to a placeholder
-                alt={`Investment Image ${index + 1}`} // Dynamic alt text for accessibility
-                width={110}
-                height={111}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          ))
+          (() => {
+            const images = investment.productID.images;
+            const length = images.length;
+
+            // Ensure we have exactly 5 images
+            const repeatedImages =
+              length < 5
+                ? [...images, ...Array(5 - length).fill(images[0])]
+                : images;
+
+            return repeatedImages.map((image, index) => (
+              <div
+                key={index}
+                className="w-[110px] h-[111px] flex-shrink-0 rounded-[12px] overflow-hidden"
+              >
+                <Image
+                  src={image || "/placeholder-image.png"}
+                  alt={`Investment Image ${index + 1}`}
+                  width={110}
+                  height={111}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ));
+          })()
         ) : (
           <div className="text-center text-gray-500">No images available</div>
         )}
@@ -103,22 +117,31 @@ export default function TransactionDetails() {
       <section className="hidden overflow-scroll hide-scrollbar gap-2 my-4 sm:flex">
         {investment.productID?.images &&
         investment.productID?.images.length > 0 ? (
-          Array.from({ length: 6 }).map((_, index) => (
-            <div
-              key={index}
-              className="w-[231px] h-[148px] flex-shrink-0 rounded-[12px] overflow-hidden"
-            >
-              <Image
-                src={
-                  investment.productID?.images[0] || "/placeholder-image.png"
-                } // Reuse the first image or fallback to a placeholder
-                alt={`Investment Image ${index + 1}`} // Dynamic alt text for accessibility
-                width={231}
-                height={148}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          ))
+          (() => {
+            const images = investment.productID.images;
+            const length = images.length;
+
+            // Ensure we have exactly 5 images for large screens
+            const repeatedImages =
+              length < 5
+                ? [...images, ...Array(5 - length).fill(images[0])]
+                : images;
+
+            return repeatedImages.map((image, index) => (
+              <div
+                key={index}
+                className="w-[231px] h-[148px] flex-shrink-0 rounded-[12px] overflow-hidden"
+              >
+                <Image
+                  src={image || "/placeholder-image.png"}
+                  alt={`Investment Image ${index + 1}`}
+                  width={231}
+                  height={148}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ));
+          })()
         ) : (
           <div className="text-center text-gray-500">No images available</div>
         )}

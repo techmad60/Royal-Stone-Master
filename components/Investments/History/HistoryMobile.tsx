@@ -68,16 +68,20 @@ export default function HistoryMobile() {
     const groupByDate = (investments: Investments[]) => {
       const grouped: { [key: string]: Investments[] } = {};
       investments.forEach((investment) => {
-        const dateKey = new Date(investment.createdAt).toISOString().split("T")[0]; // Fix here
+        const dateKey = new Date(investment.createdAt)
+          .toISOString()
+          .split("T")[0]; // Fix here
         if (!grouped[dateKey]) {
           grouped[dateKey] = [];
         }
         grouped[dateKey].push(investment);
       });
-    
+
       return Object.entries(grouped)
         .map(([date, items]) => ({ date, items }))
-        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        .sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
     };
 
     // Group and find the latest transactions
@@ -208,12 +212,16 @@ export default function HistoryMobile() {
                       .replace(/\b\w/g, (char: string) => char.toUpperCase())}
                   </p>
                   <p
-                    className={`text-xs ${
+                    className={`text-[10px] ${
                       investment.status === "pending"
                         ? "text-yellow-500"
-                        : investment.status === "successful"
+                        : investment.status === "ongoing"
+                        ? "text-blue-500"
+                        : investment.status === "matured"
                         ? "text-green-500"
-                        : "text-red-500"
+                        : investment.status === "canceled"
+                        ? "text-red-700"
+                        : "text-gray-500" // Default color
                     }`}
                   >
                     {investment.status.charAt(0).toUpperCase() +

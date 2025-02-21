@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import { BiSolidBank } from "react-icons/bi";
 import { FaBitcoin } from "react-icons/fa";
 import { RiBankLine } from "react-icons/ri";
-
+import { toast } from "react-toastify";
 
 const fundSteps = [
   { label: "Investments", href: "/main/investments" },
@@ -201,7 +201,12 @@ export default function WithdrawFundsPage() {
     setSuccessMessage(null);
 
     try {
-      const result = await withdrawFunds(amount, beneficiaryID, token, "investment");
+      const result = await withdrawFunds(
+        amount,
+        beneficiaryID,
+        token,
+        "investment"
+      );
 
       if (result.success && result.data) {
         setTransactionData(result.data); // Store response data
@@ -215,7 +220,7 @@ export default function WithdrawFundsPage() {
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred.";
-      setError(errorMessage);
+      toast.error(errorMessage);
       setTimeout(() => {
         setError(null);
         setCurrentModal(null); // Close the modal
@@ -241,7 +246,11 @@ export default function WithdrawFundsPage() {
                 bankImage={<RiBankLine className="text-color-one" />}
                 bankName={bank.bankName}
                 accNumber={bank.accountNumber}
-                accName={bank.accountName}
+                accName={
+                  bank.accountName.length > 10
+                    ? bank.accountName.slice(0, 10) + "..."
+                    : bank.accountName
+                }
                 // style="h-[105px]"
                 flexStyling="flex gap-2 space-y-0"
                 icon={
@@ -404,12 +413,10 @@ export default function WithdrawFundsPage() {
             <p
               className="text-color-one border-color-one border-b w-fit text-sm hover hover:text-green-700 hover:border-green-700 duration-150 cursor-pointer hidden lg:flex"
               onClick={() => {
-                if (selectedType === "bank" ) {
+                if (selectedType === "bank") {
                   // Open the Add Bank modal
                   setCurrentModal("addBank");
-                } else if (
-                  selectedType === "crypto" 
-                ) {
+                } else if (selectedType === "crypto") {
                   // Open the Add Crypto modal
                   setCurrentModal("addCrypto");
                 }
@@ -419,7 +426,7 @@ export default function WithdrawFundsPage() {
                 ? "Add"
                 : selectedType === "crypto" && cryptoWallets.length === 0
                 ? "Add"
-                :"Use a new"}{" "}
+                : "Use a new"}{" "}
               {selectedType === "bank"
                 ? "bank account"
                 : selectedType === "crypto"
@@ -434,17 +441,15 @@ export default function WithdrawFundsPage() {
         <div className="mt-6 flex flex-col gap-6">
           {renderWithdrawalOptions()}
           {/* Show only on mobile */}
-          <hr className="lg:hidden"/>
+          <hr className="lg:hidden" />
           {selectedType && (
             <p
               className="text-color-one border-color-one border-b w-fit text-sm hover hover:text-green-700 hover:border-green-700 duration-150 cursor-pointer flex lg:hidden"
               onClick={() => {
-                if (selectedType === "bank" ) {
+                if (selectedType === "bank") {
                   // Open the Add Bank modal
                   setCurrentModal("addBank");
-                } else if (
-                  selectedType === "crypto" 
-                ) {
+                } else if (selectedType === "crypto") {
                   // Open the Add Crypto modal
                   setCurrentModal("addCrypto");
                 }
@@ -454,7 +459,7 @@ export default function WithdrawFundsPage() {
                 ? "Add"
                 : selectedType === "crypto" && cryptoWallets.length === 0
                 ? "Add"
-                :"Use a new"}{" "}
+                : "Use a new"}{" "}
               {selectedType === "bank"
                 ? "bank account"
                 : selectedType === "crypto"
@@ -463,7 +468,6 @@ export default function WithdrawFundsPage() {
               .
             </p>
           )}
-
         </div>
 
         {/* Error message */}
@@ -489,14 +493,20 @@ export default function WithdrawFundsPage() {
       {currentModal === "processed" && (
         <Processed
           message={`Your withdrawal of $${amount} has successfully being processed!`}
-          onClose={() => setCurrentModal(null)}
+          onClose={() => {
+            setCurrentModal(null);
+            router.push("/main/investments");
+          }}
           onConfirm={() => setCurrentModal("transactionDetails")}
         />
       )}
       {currentModal === "transactionDetails" && (
         <WithdrawalDetails
           transactionData={transactionData}
-          onClose={() => setCurrentModal(null)}
+          onClose={() => {
+            setCurrentModal(null);
+            router.push("/main/investments");
+          }}
         />
       )}
       {currentModal === "addBank" && (

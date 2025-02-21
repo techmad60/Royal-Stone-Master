@@ -31,7 +31,7 @@ export default function BuyStockForm({ onClose, onFormSubmit, loading, formData,
   }, []);
  
   return (
-    <div className="fixed inset-0 flex items-end bg-[#D9D9D9A6] justify-end lg:items-center lg:justify-center z-50">
+    <div className="fixed inset-0 flex items-end bg-[#D9D9D9A6] justify-end lg:items-center lg:justify-center z-[100]">
       <div className="flex flex-col bg-white rounded-t-[15px] w-full h-[550px] lg:h-[600px] lg:rounded-[20px] lg:max-w-[621px]">
         <div className="flex items-center border-b w-full p-4">
          

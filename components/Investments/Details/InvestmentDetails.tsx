@@ -594,7 +594,10 @@ export default function InvestmentDetails() {
         isBankResponse(transactionData) && (
           <PurchaseViaBankDetails
             transactionData={transactionData} // This will only be Bank Response
-            onClose={() => setCurrentModal(null)}
+            onClose={() => {
+              setCurrentModal(null);
+              router.push("/main/investments");
+            }}
           />
         )}
       {currentModal === "walletPurchase" && selectedType === "wallet" && (

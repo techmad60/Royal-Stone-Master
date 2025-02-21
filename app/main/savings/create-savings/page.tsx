@@ -5,52 +5,53 @@ import Loading from "@/components/ui/Loading";
 import Navigator from "@/components/ui/Navigator";
 import Processed from "@/components/ui/Processed";
 import EmptyBox from "@/components/ui/UncheckedBox";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { IoIosArrowDown } from "react-icons/io";
-
+import { toast } from "react-toastify";
 const createSavings = [
   { label: "Fixed Savings", href: "/main/savings" },
   { label: "Create Savings Target", href: "/main/savings/create-savings" },
 ];
 
 interface InterestRate {
-  minimumOfDays: number;
-  maximumOfDays: number;
+  duration: number;
   interest: number;
   id: string;
 }
 export default function CreateSavingsPage() {
   const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
-  // const [savingsPreviewOpen, setIsSavingsPreviewOpen] = useState(false);
-  // const [savingsTargetOpen, setIsSavingsTargetOpen] = useState(false);
   const [savingsProcessedOpen, setIsSavingsProcessedOpen] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [interestRates, setInterestRates] = useState<InterestRate[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [dateError, setDateError] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     savingsPlan: "",
     targetAmount: "",
     savingsFrequency: "",
     amount: "",
+    duration: "",
   });
+
+  const router = useRouter();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-  
+
     // If it's a select element, don't modify the value (keep it as is)
-    const formattedValue = name === 'savingsFrequency' ? value : value.charAt(0).toUpperCase() + value.slice(1);
-  
+    const formattedValue =
+      name === "savingsFrequency"
+        ? value
+        : value.charAt(0).toUpperCase() + value.slice(1);
+
     setFormData((prev) => ({ ...prev, [name]: formattedValue }));
   };
-  
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
@@ -67,7 +68,7 @@ export default function CreateSavingsPage() {
       target: Number(formData.targetAmount),
       recurringAmount: Number(formData.amount),
       startDate: startDate?.toISOString().split("T")[0], // Format as YYYY-MM-DD
-      maturityDate: endDate?.toISOString().split("T")[0], // Format as YYYY-MM-DD
+      duration: Number(formData.duration),
       frequency: formData.savingsFrequency,
     };
 
@@ -87,9 +88,7 @@ export default function CreateSavingsPage() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(
-          errorData.message || "Failed to create savings target."
-        );
+        toast.error(errorData.message);
       }
 
       // If successful, open the SavingsProcessed modal
@@ -100,27 +99,6 @@ export default function CreateSavingsPage() {
       );
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleStartDateChange = (date: Date | null) => {
-    setStartDate(date);
-
-    // Ensure start date is not later than the end date
-    if (date && endDate && date > endDate) {
-      setEndDate(null); // Reset end date if it's before the start date
-      setDateError("Start date cannot be later than the payout date.");
-    } else {
-      setDateError(null);
-    }
-  };
-
-  const handleEndDateChange = (date: Date | null) => {
-    if (date && startDate && date < startDate) {
-      setDateError("Payout date cannot be earlier than the start date.");
-    } else {
-      setDateError(null);
-      setEndDate(date);
     }
   };
 
@@ -142,7 +120,7 @@ export default function CreateSavingsPage() {
         );
 
         if (!response.ok) {
-          throw new Error("Failed to fetch savings interest rates.");
+          toast.error("Failed to fetch savings interest rates.");
         }
 
         const result = await response.json();
@@ -161,22 +139,6 @@ export default function CreateSavingsPage() {
     fetchInterestRates();
   }, []);
 
-  // const openSavingsPreview = () => {
-  //   if (validateForm()) {
-  //     setIsSavingsPreviewOpen(true);
-  //   }
-  // };
-
-  // const handleSavingsTargetOpen = () => {
-  //   setIsSavingsPreviewOpen(false);
-  //   setIsSavingsTargetOpen(true);
-  // };
-
-  // const handleSavingsProcessedOpen = () => {
-  //   setIsSavingsTargetOpen(false);
-  //   setIsSavingsProcessedOpen(true);
-  // };
-
   // Toggle the checkbox state
   const toggleCheckbox = () => {
     setIsChecked(!isChecked);
@@ -191,7 +153,7 @@ export default function CreateSavingsPage() {
   }
 
   return (
-    <div>
+    <div className="mt-[8.3rem] sm:mt-[1rem] lg:mt-[6rem]">
       <Navigator currentStep={1} steps={createSavings} />
 
       <p className="text-color-zero text-base font-semibold py-4 lg:text-lg">
@@ -213,9 +175,7 @@ export default function CreateSavingsPage() {
               key={rate.id}
               className="flex flex-col flex-shrink-0 bg-light-grey rounded-[10px] border-2 border-slate-100 p-4 mt-2 gap-4 w-[200px]"
             >
-              <p className="text-color-form text-sm">
-                {rate.minimumOfDays}-{rate.maximumOfDays} days
-              </p>
+              <p className="text-color-form text-sm">{rate.duration} days</p>
               <p className="text-color-six text-sm">
                 {rate.interest}% Interest Rate
               </p>
@@ -258,6 +218,33 @@ export default function CreateSavingsPage() {
           </div>
 
           <div className="flex flex-col gap-1">
+            <label className="text-color-form text-sm">Duration</label>
+            <div className="relative border-b border-slate-200 lg:w-[350px] xl:w-[528px]">
+              <select
+                className="rounded-sm text-sm placeholder:text-sm py-2 w-full appearance-none bg-transparent"
+                required
+                name="duration"
+                value={formData.duration}
+                onChange={handleChange}
+              >
+                <option value="" disabled>
+                  Select Duration
+                </option>
+                {interestRates.map((rate, index) => (
+                  <option key={index} value={rate.duration}>
+                    {rate.duration} days
+                  </option>
+                ))}
+              </select>
+              <div className="absolute top-3 right-3 pointer-events-none">
+                <IoIosArrowDown />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-4 lg:space-y-4 lg:mt-4">
+          <div className="flex flex-col gap-1">
             <label className="text-color-form text-sm">Savings Frequency</label>
             <div className="relative border-b border-slate-200 lg:w-[350px] xl:w-[528px]">
               <select
@@ -279,9 +266,6 @@ export default function CreateSavingsPage() {
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="space-y-4 lg:space-y-4 lg:mt-4">
           <div className="flex flex-col gap-1 ">
             <label className="text-color-form text-sm py-2 lg:py-0">
               Amount
@@ -300,25 +284,13 @@ export default function CreateSavingsPage() {
             <label className="text-color-form text-sm">Starting Pay Date</label>
             <DatePicker
               selected={startDate}
-              onChange={handleStartDateChange}
+              onChange={(date: Date | null) => setStartDate(date)}
               minDate={new Date()}
               placeholderText="Click to Set Date"
               className="rounded-sm border-b border-slate-200 cursor-pointer placeholder:text-sm py-2 w-full lg:w-[350px] xl:w-[528px]"
               required
             />
           </div>
-          <div className="flex flex-col gap-1 text-sm text-color-zero">
-            <label className="text-color-form text-sm">Payout Date</label>
-            <DatePicker
-              selected={endDate}
-              onChange={handleEndDateChange}
-              minDate={startDate || new Date()}
-              placeholderText="Click to Set Payout Date"
-              className="rounded-sm border-b border-slate-200 cursor-pointer placeholder:text-sm py-2 w-full lg:w-[350px] xl:w-[528px]"
-              required
-            />
-          </div>
-          {dateError && <p className="text-red-500 text-sm">{dateError}</p>}
         </div>
         {formError && <p className="text-red-500 text-sm">{formError}</p>}
       </form>
@@ -345,21 +317,12 @@ export default function CreateSavingsPage() {
           disabled={!isChecked}
         />
       </div>
-      {/* {savingsPreviewOpen && (
-        <SavingsPreview
-          onClose={() => setIsSavingsPreviewOpen(false)}
-          onProceed={handleSavingsTargetOpen}
-        />
-      )}
-      {savingsTargetOpen && (
-        <SavingsTarget
-          onClose={() => setIsSavingsTargetOpen(false)}
-          onProceed={handleSavingsProcessedOpen}
-        />
-      )} */}
       {savingsProcessedOpen && (
         <Processed
-          onClose={() => setIsSavingsProcessedOpen(false)}
+          onClose={() => {
+            setIsSavingsProcessedOpen(false);
+            router.push("/main/savings");
+          }}
           message={`Your ${formData.savingsPlan} Target has been funded successfully.`}
           showButton={false}
         />
