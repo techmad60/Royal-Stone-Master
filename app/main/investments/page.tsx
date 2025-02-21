@@ -24,7 +24,7 @@ export default function Investment() {
     fetchInvestments,
     investments,
     isLoading,
-    error,
+    // error,
     currentPage,
     totalPages,
     setCurrentPage,
