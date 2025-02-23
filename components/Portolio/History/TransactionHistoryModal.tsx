@@ -88,17 +88,6 @@ export default function TransactionHistoryModal({
                 {transaction.status?.toUpperCase() || "N/A"}
               </p>
             </p>
-            {/* <p
-              className={`text-xs ${
-                transaction?.status?.toLowerCase() === "successful"
-                  ? "text-green-500"
-                  : transaction?.status?.toLowerCase() === "pending"
-                  ? "text-yellow-500"
-                  : "text-red-500"
-              }`}
-            >
-              {transaction?.status?.toUpperCase() || "N/A"}
-            </p> */}
           </div>
         </div>
 
