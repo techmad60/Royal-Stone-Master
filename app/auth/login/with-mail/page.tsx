@@ -88,7 +88,7 @@ export default function WithMail() {
   };
 
   return (
-    <div className="flex flex-col lg:w-[420px] xl:w-[535px]">
+    <div className="flex flex-col mt-4 sm:mt-0 lg:w-[420px] xl:w-[535px]">
       <Navigator currentStep={1} steps={loginSteps} />
       <form onSubmit={handleSubmit} className="flex flex-col mt-8 space-y-8">
         {/* Email */}
@@ -127,7 +127,7 @@ export default function WithMail() {
           </div>
         </div>
         <Link
-          href="/auth/login/with-mail/with-mail/forgot-password"
+          href="/auth/login/with-mail/forgot-password"
           className="text-end text-sm text-color-one hover:text-green-700"
         >
           Forgot Password?

@@ -250,9 +250,23 @@ export interface Savings {
   status: string;
   accountID?: string;
   beneficiary?: string;
-  paymentMade?: string;
+  paymentMade?: boolean;
   updatedAt?: string;
   proofOfPayment?: string;
+}
+
+//Transactions
+export interface Transactions {
+  id: string;
+  type: string;
+  amount: number; // Keep it consistent across both components
+  createdAt: string;
+  status: string;
+  accountID?: string;
+  // beneficiary?: string;
+  paymentMade?: boolean;
+  updatedAt?: string;
+  // proofOfPayment?: string;
 }
 
 export interface StockPurchase {

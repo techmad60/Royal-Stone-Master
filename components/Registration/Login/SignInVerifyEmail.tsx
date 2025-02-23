@@ -131,7 +131,7 @@ export default function VerifyMail() {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mt-4 sm:mt-0">
       <Navigator currentStep={2} steps={loginSteps} />
       <section className="flex flex-col max-w-[417px]">
         <h1 className="text-colour-five text-base mt-8 lg:text-[18px]">

@@ -1,9 +1,9 @@
 "use client";
-import { useState, useEffect} from "react";
-import Navigator from "@/components/ui/Navigator";
 import Button from "@/components/ui/Button";
-import OtpInput from "../../ui/OtpInput";
+import Navigator from "@/components/ui/Navigator";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import OtpInput from "../../ui/OtpInput";
 
 const signupSteps = [
   { label: "Create Account", href: "/auth/signup" },
@@ -157,7 +157,7 @@ export default function VerifyMail() {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mt-4 sm:mt-0">
       <Navigator currentStep={2} steps={signupSteps} />
       <section className="flex flex-col max-w-[417px]">
         <h1 className="text-colour-five text-base mt-8 lg:text-[18px]">

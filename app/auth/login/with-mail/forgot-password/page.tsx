@@ -64,7 +64,7 @@ export default function ForgotPassword() {
     }
   };
   return (
-    <div className="flex flex-col lg:w-[417px] xl:w-[33.5rem]">
+    <div className="flex flex-col mt-4 sm:mt-0 lg:w-[417px] xl:w-[33.5rem]">
       <Navigator currentStep={2} steps={loginSteps} />
       <form className="flex flex-col mt-8" onSubmit={handleSubmit}>
         <label className="text-sm text-color-form mt-2">

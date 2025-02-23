@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const loginSteps = [
-  { label: "Sign in with", href: "/auth/login/with-mail" },
+  { label: "Sign in", href: "/auth/login/with-mail" },
   { label: "With Email", href: "/auth/login/with-mail/with-mail" },
   { label: "Forgot Password", href: "/auth/login/with-mail/with-mail/forgot-password" },
 ];
@@ -94,7 +94,7 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mt-4 sm:mt-0">
       <Navigator currentStep={2} steps={loginSteps} />
       <h1 className="text-colour-five text-base mt-8 lg:text-[18px]">Reset Password</h1>
       <p className="text-sm text-color-form mt-2">Provide your new password</p>

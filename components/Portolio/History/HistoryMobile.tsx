@@ -1,17 +1,20 @@
 "use client";
 import Icon from "@/components/ui/Icon";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { BsFileBarGraphFill } from "react-icons/bs";
 import { GoPlus } from "react-icons/go";
 import { IoIosSend } from "react-icons/io";
 import { TbTargetArrow } from "react-icons/tb";
+import TransactionHistoryModal from "./TransactionHistoryModal";
+// import Loading from "@/components/ui/Loading";
 
 interface Transactions {
   id: string;
   type: string;
   amount: number;
   createdAt: string;
+  paymentMade: boolean;
   status: string;
 }
 
@@ -26,12 +29,44 @@ export default function HistoryMobile({ transactions }: HistoryMobileProps) {
   const [latestDateLabel, setLatestDateLabel] = useState<string>("");
   const pathname = usePathname();
   const isDashboard = pathname === "/main/dashboard";
-  const router = useRouter();
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<Transactions | null>(null);
+  // const [loading, setLoading] = useState(false);
+
+  const handleTransactionClick = async (transactionID: string) => {
+    const token = localStorage.getItem("accessToken");
+    // setLoading(true);
+    try {
+      const res = await fetch(
+        `https://api-royal-stone.softwebdigital.com/api/transaction?transactionID=${transactionID}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!res.ok) throw new Error("Failed to fetch transaction details");
+
+      const data = await res.json();
+      setSelectedTransaction(data.data);
+    } catch (error) {
+      console.error("Error fetching transaction:", error);
+    }
+    // finally {
+    //   setLoading(false);
+    // }
+  };
+
+  // const router = useRouter();
 
   const groupByDate = (transactions: Transactions[]) => {
     const grouped: { [key: string]: Transactions[] } = {};
     transactions.forEach((transaction) => {
-      const dateKey = new Date(transaction.createdAt).toISOString().split("T")[0];
+      const dateKey = new Date(transaction.createdAt)
+        .toISOString()
+        .split("T")[0];
       if (!grouped[dateKey]) {
         grouped[dateKey] = [];
       }
@@ -55,7 +90,9 @@ export default function HistoryMobile({ transactions }: HistoryMobileProps) {
   useEffect(() => {
     if (groupedTransactions.length > 0) {
       const today = new Date().toISOString().split("T")[0];
-      const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
+      const yesterday = new Date(Date.now() - 86400000)
+        .toISOString()
+        .split("T")[0];
 
       const latestGroup = groupedTransactions[0];
       const latestDate = latestGroup.date;
@@ -98,13 +135,13 @@ export default function HistoryMobile({ transactions }: HistoryMobileProps) {
     }
   };
 
-  const handleTransactionClick = (type: string) => {
-    if (type.includes("investment")) {
-      router.push("/main/investments");
-    } else if (type.includes("savings")) {
-      router.push("/main/savings");
-    }
-  };
+  // const handleTransactionClick = (type: string) => {
+  //   if (type.includes("investment")) {
+  //     router.push("/main/investments");
+  //   } else if (type.includes("savings")) {
+  //     router.push("/main/savings");
+  //   }
+  // };
 
   return (
     <div className="lg:hidden">
@@ -118,7 +155,8 @@ export default function HistoryMobile({ transactions }: HistoryMobileProps) {
             <section
               key={transaction.id}
               className="flex justify-between bg-light-grey shadow-sm rounded-common p-4 my-4"
-              onClick={() => handleTransactionClick(transaction.type)}
+              onClick={() => handleTransactionClick(transaction.id)}
+              // onClick={() => handleTransactionClick(transaction.type)}
             >
               <div className="flex gap-4">
                 <Icon
@@ -134,11 +172,17 @@ export default function HistoryMobile({ transactions }: HistoryMobileProps) {
                   </p>
                   <p
                     className={`text-xs ${
-                      transaction.status === "pending"
+                      transaction.status?.toLowerCase() === "pending"
                         ? "text-yellow-500"
-                        : transaction.status === "successful"
+                        : transaction.status?.toLowerCase() === "ongoing"
+                        ? "text-blue-500"
+                        : transaction.status?.toLowerCase() === "matured" ||
+                          transaction.status?.toLowerCase() === "successful"
                         ? "text-green-500"
-                        : "text-red-500"
+                        : transaction.status?.toLowerCase() === "canceled" ||
+                          transaction.status?.toLowerCase() === "failed"
+                        ? "text-red-700"
+                        : "text-gray-500"
                     }`}
                   >
                     {transaction.status.charAt(0).toUpperCase() +
@@ -165,6 +209,12 @@ export default function HistoryMobile({ transactions }: HistoryMobileProps) {
         <p className="text-sm text-center text-gray-500 mt-4">
           No transactions available.
         </p>
+      )}
+      {selectedTransaction && (
+        <TransactionHistoryModal
+          transaction={selectedTransaction}
+          onClose={() => setSelectedTransaction(null)}
+        />
       )}
     </div>
   );

@@ -1,17 +1,20 @@
 "use client";
 import TableHeader from "@/components/ui/TableHeader";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { BsFileBarGraphFill } from "react-icons/bs";
 import { GoPlus } from "react-icons/go";
 import { IoIosArrowForward, IoIosSend } from "react-icons/io";
 import { TbTargetArrow } from "react-icons/tb";
 import Icon from "../../ui/Icon";
+import TransactionHistoryModal from "./TransactionHistoryModal";
 
 interface Transactions {
   id: string;
   type: string;
   amount: number;
   createdAt: string;
+  paymentMade: boolean;
   status: string;
 }
 
@@ -21,15 +24,10 @@ export default function HistoryDesktop({
   transactions: Transactions[];
 }) {
   const pathName = usePathname();
-  const router = useRouter();
+  // const router = useRouter();
 
-  const handleViewClick = (transaction: Transactions) => {
-    if (transaction.type.includes("savings")) {
-      router.push(`/main/savings?transactionId=${transaction.id}`);
-    } else if (transaction.type.includes("investment")) {
-      router.push(`/main/investments?transactionId=${transaction.id}`);
-    }
-  };
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<Transactions | null>(null);
 
   // Sort investments by createdAt in descending order and get the top 2
   const latestTransactions = transactions
@@ -54,6 +52,32 @@ export default function HistoryDesktop({
       default:
         return <BsFileBarGraphFill className="text-color-one" />; // Default fallback icon
     }
+  };
+
+  const handleTransactionClick = async (transactionID: string) => {
+    const token = localStorage.getItem("accessToken");
+    // setLoading(true);
+    try {
+      const res = await fetch(
+        `https://api-royal-stone.softwebdigital.com/api/transaction?transactionID=${transactionID}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!res.ok) throw new Error("Failed to fetch transaction details");
+
+      const data = await res.json();
+      setSelectedTransaction(data.data);
+    } catch (error) {
+      console.error("Error fetching transaction:", error);
+    }
+    // finally {
+    //   setLoading(false);
+    // }
   };
 
   return (
@@ -91,12 +115,18 @@ export default function HistoryDesktop({
             })}
           </p>
           <p
-            className={`text-sm ${
-              transaction.status === "pending"
+            className={`text-xs ${
+              transaction.status?.toLowerCase() === "pending"
                 ? "text-yellow-500"
-                : transaction.status === "successful"
+                : transaction.status?.toLowerCase() === "ongoing"
+                ? "text-blue-500"
+                : transaction.status?.toLowerCase() === "matured" ||
+                  transaction.status?.toLowerCase() === "successful"
                 ? "text-green-500"
-                : "text-red-500"
+                : transaction.status?.toLowerCase() === "canceled" ||
+                  transaction.status?.toLowerCase() === "failed"
+                ? "text-red-700"
+                : "text-gray-500"
             }`}
           >
             {transaction.status.charAt(0).toUpperCase() +
@@ -104,7 +134,7 @@ export default function HistoryDesktop({
           </p>
           <button
             className="flex items-center justify-center border rounded-[20px] gap-2 w-[78px] py-1 hover:border-green-700 hover:text-green-700 duration-150"
-            onClick={() => handleViewClick(transaction)}
+            onClick={() => handleTransactionClick(transaction.id)}
           >
             <>
               <p className="text-xs text-color-form hover:text-green-700">
@@ -115,6 +145,12 @@ export default function HistoryDesktop({
           </button>
         </section>
       ))}
+       {selectedTransaction && (
+        <TransactionHistoryModal
+          transaction={selectedTransaction}
+          onClose={() => setSelectedTransaction(null)}
+        />
+      )}
     </div>
   );
 }

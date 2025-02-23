@@ -185,7 +185,7 @@ export default function SignupWithMail() {
     isChecked;
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mt-4 sm:mt-0 ">
       <Navigator currentStep={1} steps={signupSteps} />
       <form
         onSubmit={handleSubmit}
