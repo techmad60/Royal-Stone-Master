@@ -1,6 +1,6 @@
 "use client";
 import { useNotificationStore } from "@/store/notificationStore";
-import { usePathname } from "next/navigation";
+// import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,10 +8,10 @@ import "react-toastify/dist/ReactToastify.css";
 export default function NotificationList() {
   const notifications = useNotificationStore((state) => state.notifications);
   const displayedNotifications = useRef(new Set()); // Track displayed notifications
-  const pathname = usePathname(); // Get current path
+  // const pathname = usePathname(); // Get current path
 
-  // Only render notifications inside /main
-  if (!pathname.startsWith("/main")) return null;
+  // // Only render notifications inside /main
+  // if (!pathname.startsWith("/main")) return null;
 
   useEffect(() => {
     notifications.forEach((notif) => {

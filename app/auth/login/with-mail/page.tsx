@@ -20,8 +20,7 @@ export default function WithMail() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
+  const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://api-royal-stone.softwebdigital.com/api";
 
   // Fetching setFullName from your Zustand store
   const setFullName = useUserStore((state) => state.setFullName);
