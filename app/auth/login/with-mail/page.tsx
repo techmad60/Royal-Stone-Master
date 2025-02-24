@@ -9,9 +9,9 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 
 const loginSteps = [
-  { label: "Sign in with", href: "/auth/login/with-mail/with-mail" },
-  { label: "With Email", href: "/auth/login/with-mail/with-mail" },
-  { label: "Forgot Password", href: "/auth/login/with-mail/with-mail/forgot-password" },
+  { label: "Sign in", href: "/auth/login/with-mail" },
+  { label: "With Email", href: "/auth/login/with-mail" },
+  { label: "Forgot Password", href: "/auth/login/with-mail/forgot-password" },
 ];
 
 export default function WithMail() {
@@ -20,6 +20,7 @@ export default function WithMail() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 
   // Fetching setFullName from your Zustand store
@@ -42,7 +43,7 @@ export default function WithMail() {
 
     try {
       const response = await fetch(
-        `https://api-royal-stone.softwebdigital.com/api/auth/login`,
+        `${API_URL}/auth/login`,
         {
           method: "POST",
           headers: {

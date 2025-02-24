@@ -24,10 +24,10 @@ export default function RootLayout({
         <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
       </head>
       <body>
-      <ToastContainer position="top-right" autoClose={3000} />
-        <NotificationList/>
-        <NotificationProvider />
         {children}
+        <ToastContainer position="top-right" autoClose={3000} />
+        <NotificationList />
+        <NotificationProvider />
         {/* <AuthWrapper>{children}</AuthWrapper> Wrap children in AuthWrapper */}
       </body>
     </html>

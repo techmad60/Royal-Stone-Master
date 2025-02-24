@@ -12,7 +12,7 @@ export default function Login() {
             icon="/images/mail-icon.svg"
             textStart="Sign in with"
             textEnd="Email"
-            href="/auth/login/with-mail/with-mail"
+            href="/auth/login/with-mail"
             className="lg:h-[83px]"
           />
 

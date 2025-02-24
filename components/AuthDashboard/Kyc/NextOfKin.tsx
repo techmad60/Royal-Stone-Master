@@ -1,5 +1,5 @@
+import { apiFetch } from "@/utils/apiHelper";
 import { XCircleIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Button from "../../ui/Button";
 
@@ -18,7 +18,7 @@ export default function NextOfKinInformation({ onClose, onNextOfKinStatus }: Nex
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
   const [feedbackType, setFeedbackType] = useState<"success" | "error" | null>(null);
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -48,18 +48,10 @@ export default function NextOfKinInformation({ onClose, onNextOfKinStatus }: Nex
       setIsSubmitting(true);
       setFeedbackMessage(null);
 
-      const accessToken = localStorage.getItem("accessToken");
-      if (!accessToken) {
-        setFeedbackType("error");
-        setFeedbackMessage("You are not authenticated. Please log in again.");
-        return;
-      }
-
-      const response = await fetch("https://api-royal-stone.softwebdigital.com/api/account/profile", {
+      const response = await apiFetch("/account/profile", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
           nextOfKin: {
@@ -72,11 +64,6 @@ export default function NextOfKinInformation({ onClose, onNextOfKinStatus }: Nex
       });
 
       const result = await response.json();
-     
-
-      if (response.status === 401 ) {
-        router.push("/auth/login/with-mail")
-      }
 
       if (response.ok) {
         setFeedbackType("success");
@@ -101,7 +88,7 @@ export default function NextOfKinInformation({ onClose, onNextOfKinStatus }: Nex
 
   return (
     <div className="fixed inset-0 bg-[#D9D9D9A6] flex items-end lg:items-center justify-end lg:justify-center z-[100]">
-      <div className="flex flex-col bg-white rounded-t-[15px] w-full h-[510px] sm:h-[580px] lg:rounded-[20px] lg:max-w-[621px] lg:h-[460px]">
+      <div className="flex flex-col bg-white rounded-t-[15px] w-full h-[510px] sm:h-[580px] lg:rounded-[20px] lg:max-w-[621px] lg:h-[490px]">
         <div className="flex justify-center items-center mt-4 lg:hidden">
           <hr className="w-[51px] h-[5px] rounded-[40px] bg-[#D9D9D9]" />
         </div>

@@ -24,8 +24,6 @@ export default function HistoryDesktop({
   transactions: Transactions[];
 }) {
   const pathName = usePathname();
-  // const router = useRouter();
-
   const [selectedTransaction, setSelectedTransaction] =
     useState<Transactions | null>(null);
 
@@ -56,7 +54,6 @@ export default function HistoryDesktop({
 
   const handleTransactionClick = async (transactionID: string) => {
     const token = localStorage.getItem("accessToken");
-    // setLoading(true);
     try {
       const res = await fetch(
         `https://api-royal-stone.softwebdigital.com/api/transaction?transactionID=${transactionID}`,
@@ -75,9 +72,6 @@ export default function HistoryDesktop({
     } catch (error) {
       console.error("Error fetching transaction:", error);
     }
-    // finally {
-    //   setLoading(false);
-    // }
   };
 
   return (
@@ -145,7 +139,7 @@ export default function HistoryDesktop({
           </button>
         </section>
       ))}
-       {selectedTransaction && (
+      {selectedTransaction && (
         <TransactionHistoryModal
           transaction={selectedTransaction}
           onClose={() => setSelectedTransaction(null)}

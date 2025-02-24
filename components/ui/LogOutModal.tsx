@@ -27,7 +27,7 @@ export default function LogOut({ onClose }: LogOutProps) {
 
     setTimeout(() => {
       // Show success toast after modal closes
-      toast.success("Logged out Successfully!");
+      toast.success("Logging out...");
 
       setTimeout(() => {
         // Get user data

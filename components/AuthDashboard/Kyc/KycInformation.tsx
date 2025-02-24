@@ -71,7 +71,7 @@ export default function KycInformation({
             onClick={isNextOfKinProvided ? undefined : onClickNextOfKin} // Triggers modal when clicked
           />
         </div>
-        <p className="text-colour-five mt-8 px-4 text-sm">
+        <p className="text-color-zero mt-8 px-4 text-sm">
           NB: Provide the Kyc information to be redirected to the main page.
         </p>
       </div>

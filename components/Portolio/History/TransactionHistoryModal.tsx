@@ -70,23 +70,23 @@ export default function TransactionHistoryModal({
           <div className="flex flex-col gap-1">
             <p className="text-color-zero font-medium text-sm lg:text-base">
               {transaction?.type?.toUpperCase()}
-              <p
-                className={`text-xs ${
-                  transaction.status?.toLowerCase() === "pending"
-                    ? "text-yellow-500"
-                    : transaction.status?.toLowerCase() === "ongoing"
-                    ? "text-blue-500"
-                    : transaction.status?.toLowerCase() === "matured" ||
-                      transaction.status?.toLowerCase() === "successful"
-                    ? "text-green-500"
-                    : transaction.status?.toLowerCase() === "canceled" ||
-                      transaction.status?.toLowerCase() === "failed"
-                    ? "text-red-700"
-                    : "text-gray-500"
-                }`}
-              >
-                {transaction.status?.toUpperCase() || "N/A"}
-              </p>
+            </p>
+            <p
+              className={`text-xs ${
+                transaction.status?.toLowerCase() === "pending"
+                  ? "text-yellow-500"
+                  : transaction.status?.toLowerCase() === "ongoing"
+                  ? "text-blue-500"
+                  : transaction.status?.toLowerCase() === "matured" ||
+                    transaction.status?.toLowerCase() === "successful"
+                  ? "text-green-500"
+                  : transaction.status?.toLowerCase() === "canceled" ||
+                    transaction.status?.toLowerCase() === "failed"
+                  ? "text-red-700"
+                  : "text-gray-500"
+              }`}
+            >
+              {transaction.status?.toUpperCase() || "N/A"}
             </p>
           </div>
         </div>

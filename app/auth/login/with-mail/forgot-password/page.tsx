@@ -6,9 +6,9 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const loginSteps = [
-  { label: "Sign in with", href: "/auth/login/with-mail" },
-  { label: "With Email", href: "/auth/login/with-mail/with-mail" },
-  { label: "Forgot Password", href: "/auth/login/with-mail/with-mail/forgot-password" },
+  { label: "Sign in", href: "/auth/login/with-mail" },
+  { label: "With Email", href: "/auth/login/with-mail" },
+  { label: "Forgot Password", href: "/auth/login/with-mail/forgot-password" },
 ];
 
 export default function ForgotPassword() {
@@ -16,6 +16,7 @@ export default function ForgotPassword() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,7 +34,7 @@ export default function ForgotPassword() {
     try {
       // Send GET request with email as a query parameter
       const response = await fetch(
-        `https://api-royal-stone.softwebdigital.com/api/auth/forgot-password?email=${encodeURIComponent(
+        `${API_URL}/auth/forgot-password?email=${encodeURIComponent(
           email
         )}`,
         {
@@ -49,7 +50,7 @@ export default function ForgotPassword() {
   
       // Navigate to the verification page with the email as a query parameter
       router.push(
-        `/auth/login/with-mail/with-mail/forgot-password/verify-email?email=${encodeURIComponent(
+        `/auth/login/with-mail/forgot-password/verify-email?email=${encodeURIComponent(
           email
         )}`
       );

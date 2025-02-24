@@ -65,7 +65,7 @@ export default function BankInfo({onClose, onClickAddBankDetails, onClickAddCryp
             onClick={isCryptoDetailsProvided ? undefined : onClickAddCryptoDetails} // Triggers modal when clicked
           />
         </div>
-        <p className="text-colour-five mt-2 px-4 text-sm">NB: You can choose to provide just one or both of them.</p>
+        <p className="text-color-zero mt-2 px-4 text-sm">NB: You can choose to provide just one or both of them.</p>
       </div>
     </div>
   );

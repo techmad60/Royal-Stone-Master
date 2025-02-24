@@ -1,6 +1,7 @@
 "use client";
 import { XCircleIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+import { apiFetch } from "@/utils/apiHelper";
 import { useEffect, useState } from "react";
 import Button from "../../ui/Button";
 
@@ -15,7 +16,7 @@ interface FormData {
   accountNumber: string;
   accountHolderName: string;
   bankAddress: string;
-  beneficiaryAddress: string;
+  // beneficiaryAddress: string;
   swiftCode: string;
   routingNumber: string;
 }
@@ -25,13 +26,15 @@ interface Errors {
   accountNumber?: string;
   accountHolderName?: string;
   bankAddress?: string;
-  beneficiaryAddress?: string;
+  // beneficiaryAddress?: string;
   swiftCode?: string;
   routingNumber?: string;
 }
 
-
-export default function AddBankInformation({ onClose, onBankDetailStatus = () => {} }: AddBankInformationProps) {
+export default function AddBankInformation({
+  onClose,
+  onBankDetailStatus = () => {},
+}: AddBankInformationProps) {
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -44,33 +47,39 @@ export default function AddBankInformation({ onClose, onBankDetailStatus = () =>
     accountNumber: "",
     accountHolderName: "",
     bankAddress: "",
-    beneficiaryAddress: "", //Optional
+    // beneficiaryAddress: "", //Optional
     swiftCode: "", // Optional
     routingNumber: "", // Optional
   });
 
   const [errors, setErrors] = useState<Errors>({});
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+  // const router = useRouter();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev: FormData) => ({ ...prev, [name]: value }));
     setErrors((prev: Errors) => ({ ...prev, [name]: "" })); // Clear error on change
   };
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
-  const [feedbackType, setFeedbackType] = useState<"success" | "error" | null>(null);
+  const [feedbackType, setFeedbackType] = useState<"success" | "error" | null>(
+    null
+  );
 
-  // Handle Form Submission
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent form submission
+    console.log("Form submitted"); // Add this line
+    console.log("Form data:", formData);
 
     // Basic validation for required fields
     const newErrors: Errors = {};
     if (!formData.bankName) newErrors.bankName = "Bank Name is required.";
-    if (!formData.accountNumber) newErrors.accountNumber = "Account Number is required.";
-    if (!formData.accountHolderName) newErrors.accountHolderName = "Account Holder Name is required.";
-    if (!formData.bankAddress) newErrors.bankAddress = "Bank Address is required.";
-    if (!formData.beneficiaryAddress) newErrors.beneficiaryAddress = "Beneficiary Address is required.";
+    if (!formData.accountNumber)
+      newErrors.accountNumber = "Account Number is required.";
+    if (!formData.accountHolderName)
+      newErrors.accountHolderName = "Account Holder Name is required.";
+    if (!formData.bankAddress)
+      newErrors.bankAddress = "Bank Address is required.";
+    // if (!formData.beneficiaryAddress) newErrors.beneficiaryAddress = "Beneficiary Address is required.";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors); // Set the error state
@@ -79,22 +88,11 @@ export default function AddBankInformation({ onClose, onBankDetailStatus = () =>
 
     setIsLoading(true);
 
-    // Retrieve the access token (assuming it's in localStorage)
-    const token = localStorage.getItem("accessToken");
-
-    if (!token) {
-      alert("You must be logged in to add bank details.");
-      setIsLoading(false);
-      return;
-    }
-
-    // API call to submit the form data
     try {
-      const response = await fetch("https://api-royal-stone.softwebdigital.com/api/bank", {
+      const result = await apiFetch("/bank", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           bankName: formData.bankName,
@@ -103,23 +101,17 @@ export default function AddBankInformation({ onClose, onBankDetailStatus = () =>
           bankAddress: formData.bankAddress,
           swiftCode: formData.swiftCode || "", // Send empty string if not provided
           routingNumber: formData.routingNumber || "", // Send empty string if not provided
-          beneficiaryAddress: formData.beneficiaryAddress || "", 
+          // beneficiaryAddress: formData.beneficiaryAddress || "",
         }),
       });
 
-      const result = await response.json();
-      console.log("API Response:", result);
-
-      if (response.ok) {
+      if (result) {
         onBankDetailStatus(); // Call onSave and pass true on success
         setFeedbackType("success");
         setFeedbackMessage("Bank Details Added successfully!");
         setTimeout(onClose, 1000); // Close modal after success
       } else {
-        alert(result.message || "An error occurred. Please try again.");
-      }
-      if (response.status === 401) {
-        router.push("/auth/login/with-mail")
+        alert("An error occurred. Please try again.");
       }
     } catch (error) {
       console.error("Error submitting bank details:", error);
@@ -128,11 +120,11 @@ export default function AddBankInformation({ onClose, onBankDetailStatus = () =>
       setIsLoading(false);
     }
   };
+
   return (
     <div className="fixed inset-0 flex items-end bg-[#D9D9D9A6] justify-end lg:items-center lg:justify-center z-[100]">
       <div className="flex flex-col bg-white rounded-t-[15px] w-full h-[560px] lg:h-[575px] lg:rounded-[20px] lg:max-w-[621px]">
         <div className="flex items-center border-b w-full p-4">
-         
           <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
             Add Bank Details
           </p>
@@ -140,7 +132,7 @@ export default function AddBankInformation({ onClose, onBankDetailStatus = () =>
             onClick={onClose}
             className="text-color-form text-sm cursor-pointer"
           >
-           <XCircleIcon className="text-color-form"/>
+            <XCircleIcon className="text-color-form" />
           </p>
         </div>
         <div className="flex flex-col bg-white">
@@ -163,7 +155,9 @@ export default function AddBankInformation({ onClose, onBankDetailStatus = () =>
                 className="rounded-sm border-b border-slate-200 text-color-zero"
                 placeholder="Citi Bank"
               />
-              {errors.bankName && <p className="text-red-500 text-xs">{errors.bankName}</p>}
+              {errors.bankName && (
+                <p className="text-red-500 text-xs">{errors.bankName}</p>
+              )}
             </div>
 
             {/* Account Number */}
@@ -178,12 +172,16 @@ export default function AddBankInformation({ onClose, onBankDetailStatus = () =>
                 className="rounded-sm border-b border-slate-200 text-color-zero"
                 placeholder="2010100191"
               />
-              {errors.accountNumber && <p className="text-red-500 text-xs">{errors.accountNumber}</p>}
+              {errors.accountNumber && (
+                <p className="text-red-500 text-xs">{errors.accountNumber}</p>
+              )}
             </div>
 
             {/* Account Holder Name */}
             <div className="flex flex-col gap-2">
-              <label className="text-color-form text-sm">Account Holder Name</label>
+              <label className="text-color-form text-sm">
+                Account Holder Name
+              </label>
               <input
                 type="text"
                 name="accountHolderName"
@@ -193,7 +191,11 @@ export default function AddBankInformation({ onClose, onBankDetailStatus = () =>
                 className="rounded-sm border-b border-slate-200 text-color-zero"
                 placeholder="Cooper Winterwind"
               />
-              {errors.accountHolderName && <p className="text-red-500 text-xs">{errors.accountHolderName}</p>}
+              {errors.accountHolderName && (
+                <p className="text-red-500 text-xs">
+                  {errors.accountHolderName}
+                </p>
+              )}
             </div>
 
             {/* Bank Address */}
@@ -208,12 +210,16 @@ export default function AddBankInformation({ onClose, onBankDetailStatus = () =>
                 className="rounded-sm border-b border-slate-200 text-color-zero"
                 placeholder="21 Old Lane, Wall Street"
               />
-              {errors.bankAddress && <p className="text-red-500 text-xs">{errors.bankAddress}</p>}
+              {errors.bankAddress && (
+                <p className="text-red-500 text-xs">{errors.bankAddress}</p>
+              )}
             </div>
 
             {/* IBAN/SWIFT Code */}
             <div className="flex flex-col gap-2">
-              <label className="text-color-form text-sm">IBAN/Swift Code (Optional)</label>
+              <label className="text-color-form text-sm">
+                IBAN/Swift Code (Optional)
+              </label>
               <input
                 type="text"
                 name="swiftCode"
@@ -226,7 +232,9 @@ export default function AddBankInformation({ onClose, onBankDetailStatus = () =>
 
             {/* Routing Number */}
             <div className="flex flex-col gap-2">
-              <label className="text-color-form text-sm">Routing Number (Optional)</label>
+              <label className="text-color-form text-sm">
+                Routing Number (Optional)
+              </label>
               <input
                 type="text"
                 name="routingNumber"
@@ -252,14 +260,14 @@ export default function AddBankInformation({ onClose, onBankDetailStatus = () =>
               {errors.beneficiaryAddress && <p className="text-red-500 text-xs">{errors.beneficiaryAddress}</p>}
             </div> */}
             {feedbackMessage && (
-            <div
-              className={`my-1 text-sm ${
-                feedbackType === "error" ? "text-red-500" : "text-green-500"
-              }`}
-            >
-              {feedbackMessage}
-            </div>
-          )}
+              <div
+                className={`my-1 text-sm ${
+                  feedbackType === "error" ? "text-red-500" : "text-green-500"
+                }`}
+              >
+                {feedbackMessage}
+              </div>
+            )}
             <Button
               ButtonText={isLoading ? "Saving..." : "Save"}
               className={`py-3 bg-color-one hover:bg-green-700`}

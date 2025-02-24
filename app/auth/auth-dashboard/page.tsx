@@ -19,7 +19,6 @@ export default function Dashboard() {
   const fullName = useUserStore((state) => state.fullName);
   useLoadFullName();
   const router = useRouter(); // Initialize useRouter
-  // const [loading, setLoading] = useState(false);
   // Zustand store hooks
   const {
     //Bank/Crypto Info Provided
@@ -93,15 +92,6 @@ export default function Dashboard() {
       setIsNextOfKinProvided(false);
       setIsProfilePictureProvided(false);
     }
-    const fullName = localStorage.getItem("fullName");
-
-    if (fullName !== null) {
-      // The 'fullName' exists in localStorage
-      console.log("Full name found:", fullName);
-    } else {
-      // The 'fullName' does not exist in localStorage
-      console.log("Full name not found in localStorage.");
-    }
   }, [
     setIsBankDetailsProvided,
     setIsCryptoDetailsProvided,
@@ -173,13 +163,7 @@ export default function Dashboard() {
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     if (userId && isKycProvided) {
-      // Show the loading UI for 2 seconds
       router.push("/main/dashboard");
-      // setTimeout(() => {
-      //   router.push("/main/dashboard"); // Redirect after 2 seconds
-      // }, 2000); // 2 seconds delay
-    } else {
-      // setLoading(false); // Hide loading UI immediately if conditions are not met
     }
   }, [isKycProvided, router]);
 
@@ -216,14 +200,6 @@ export default function Dashboard() {
   const capitalizeFirstLetter = (name: string): string => {
     return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
   };
-
-  // if (loading) {
-  //   return (
-  //     <div>
-  //       <Loading />
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="flex flex-col lg:pr-8">
@@ -274,16 +250,7 @@ export default function Dashboard() {
           style={isKycProvided ? "hover:bg-light-grey" : "hover:bg-slate-100"}
         />
 
-        {/* Biometrics Card
-        <CardVerification
-          iconImg={<LuScanFace className="text-xl text-color-one" />}
-          label="Enable Biometrics"
-          status="Not Set"
-          showArrow="hidden"
-          showSwitch="flex"
-        /> */}
-
-        <p className="text-colour-five mt-8 px-4 text-sm">
+        <p className="text-color-zero mt-8 px-4 text-sm">
           NB: Provide the Kyc information to be redirected to the main page.
         </p>
       </div>
@@ -294,7 +261,6 @@ export default function Dashboard() {
           onClickAddBankDetails={() => setCurrentModal("addBankInfo")}
           onClickAddCryptoDetails={() => setCurrentModal("addCryptoInfo")}
           onClose={() => setCurrentModal(null)}
-          // onSave={handleBankInfoSaved}
         />
       )}
 

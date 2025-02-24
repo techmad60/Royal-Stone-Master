@@ -44,7 +44,7 @@ export default function ForgotPassword() {
 
       // Navigate to the verification page with the email as a query parameter
       router.push(
-        `/auth/login/with-mail/with-mail/forgot-password/verify-email?email=${encodeURIComponent(
+        `/auth/login/with-mail/forgot-password/verify-email?email=${encodeURIComponent(
           email
         )}`
       );

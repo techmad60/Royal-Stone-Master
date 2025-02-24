@@ -14,7 +14,7 @@ interface FormData {
   accountNumber: string;
   accountHolderName: string;
   bankAddress: string;
-  beneficiaryAddress: string;
+  // beneficiaryAddress: string;
   swiftCode: string;
   routingNumber: string;
 }
@@ -24,7 +24,7 @@ interface Errors {
   accountNumber?: string;
   accountHolderName?: string;
   bankAddress?: string;
-  beneficiaryAddress?: string;
+  // beneficiaryAddress?: string;
   swiftCode?: string;
   routingNumber?: string;
 }
@@ -44,7 +44,7 @@ export default function AddBankInformation({
     accountNumber: "",
     accountHolderName: "",
     bankAddress: "",
-    beneficiaryAddress: "",
+    // beneficiaryAddress: "",
     swiftCode: "", // Optional
     routingNumber: "", // Optional
   });
@@ -109,7 +109,7 @@ export default function AddBankInformation({
             bankAddress: formData.bankAddress,
             swiftCode: formData.swiftCode || "", // Send empty string if not provided
             routingNumber: formData.routingNumber || "", // Send empty string if not provided
-            beneficiaryAddress: formData.beneficiaryAddress || "",
+            // beneficiaryAddress: formData.beneficiaryAddress || "",
           }),
         }
       );
@@ -140,10 +140,10 @@ export default function AddBankInformation({
   };
 
   return (
-    <div className="fixed inset-0 flex items-end justify-end bg-[#D9D9D9A6] lg:items-center lg:justify-center z-[100]">
-      <div className="flex flex-col bg-white rounded-t-[15px] w-full h-[620px] lg:h-[700px] lg:rounded-[20px] lg:max-w-[621px]">
+    <div className="fixed inset-0 flex items-end bg-[#D9D9D9A6] justify-end lg:items-center lg:justify-center z-[100]">
+      <div className="flex flex-col bg-white rounded-t-[15px] w-full h-[560px] lg:h-[575px] lg:rounded-[20px] lg:max-w-[621px]">
         <div className="flex items-center border-b w-full p-4">
-          
+         
           <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
             Add Bank Details
           </p>
@@ -151,15 +151,15 @@ export default function AddBankInformation({
             onClick={onClose}
             className="text-color-form text-sm cursor-pointer"
           >
-            <XCircleIcon className="text-color-form"/>
+           <XCircleIcon className="text-color-form"/>
           </p>
         </div>
         <div className="flex flex-col bg-white">
-          <p className="text-color-form text-sm px-4 py-2">
+          <p className="text-color-form text-sm px-4 pt-1">
             Provide your bank account details
           </p>
           <form
-            className="flex flex-col space-y-3 p-4 md:space-y-4"
+            className="flex flex-col space-y-3 p-4 md:space-y-3"
             onSubmit={handleFormSubmit}
           >
             {/* Bank Name */}
@@ -174,9 +174,7 @@ export default function AddBankInformation({
                 className="rounded-sm border-b border-slate-200 text-color-zero"
                 placeholder="Citi Bank"
               />
-              {errors.bankName && (
-                <p className="text-red-500 text-xs">{errors.bankName}</p>
-              )}
+              {errors.bankName && <p className="text-red-500 text-xs">{errors.bankName}</p>}
             </div>
 
             {/* Account Number */}
@@ -191,16 +189,12 @@ export default function AddBankInformation({
                 className="rounded-sm border-b border-slate-200 text-color-zero"
                 placeholder="2010100191"
               />
-              {errors.accountNumber && (
-                <p className="text-red-500 text-xs">{errors.accountNumber}</p>
-              )}
+              {errors.accountNumber && <p className="text-red-500 text-xs">{errors.accountNumber}</p>}
             </div>
 
             {/* Account Holder Name */}
             <div className="flex flex-col gap-2">
-              <label className="text-color-form text-sm">
-                Account Holder Name
-              </label>
+              <label className="text-color-form text-sm">Account Holder Name</label>
               <input
                 type="text"
                 name="accountHolderName"
@@ -210,11 +204,7 @@ export default function AddBankInformation({
                 className="rounded-sm border-b border-slate-200 text-color-zero"
                 placeholder="Cooper Winterwind"
               />
-              {errors.accountHolderName && (
-                <p className="text-red-500 text-xs">
-                  {errors.accountHolderName}
-                </p>
-              )}
+              {errors.accountHolderName && <p className="text-red-500 text-xs">{errors.accountHolderName}</p>}
             </div>
 
             {/* Bank Address */}
@@ -229,16 +219,12 @@ export default function AddBankInformation({
                 className="rounded-sm border-b border-slate-200 text-color-zero"
                 placeholder="21 Old Lane, Wall Street"
               />
-              {errors.bankAddress && (
-                <p className="text-red-500 text-xs">{errors.bankAddress}</p>
-              )}
+              {errors.bankAddress && <p className="text-red-500 text-xs">{errors.bankAddress}</p>}
             </div>
 
             {/* IBAN/SWIFT Code */}
             <div className="flex flex-col gap-2">
-              <label className="text-color-form text-sm">
-                IBAN/Swift Code (Optional)
-              </label>
+              <label className="text-color-form text-sm">IBAN/Swift Code (Optional)</label>
               <input
                 type="text"
                 name="swiftCode"
@@ -251,9 +237,7 @@ export default function AddBankInformation({
 
             {/* Routing Number */}
             <div className="flex flex-col gap-2">
-              <label className="text-color-form text-sm">
-                Routing Number (Optional)
-              </label>
+              <label className="text-color-form text-sm">Routing Number (Optional)</label>
               <input
                 type="text"
                 name="routingNumber"
@@ -265,36 +249,29 @@ export default function AddBankInformation({
             </div>
 
             {/* Beneficiary Address */}
-            <div className="flex flex-col gap-1">
-              <label className="text-color-form text-sm">
-                Beneficiary Address
-              </label>
+            {/* <div className="flex flex-col gap-1">
+              <label className="text-color-form text-sm">Beneficiary Address</label>
               <input
                 type="text"
                 name="beneficiaryAddress"
                 value={formData.beneficiaryAddress}
                 onChange={handleChange}
+                required
                 className="rounded-sm border-b border-slate-200 text-color-zero"
                 placeholder="30 New Lane, Alabama"
               />
-              {errors.beneficiaryAddress && (
-                <p className="text-red-500 text-xs">
-                  {errors.beneficiaryAddress}
-                </p>
-              )}
-            </div>
+              {errors.beneficiaryAddress && <p className="text-red-500 text-xs">{errors.beneficiaryAddress}</p>}
+            </div> */}
             {feedbackMessage && (
-              <div
-                className={`my-1 text-sm ${
-                  feedbackType === "error" ? "text-red-500" : "text-green-500"
-                }`}
-              >
-                {feedbackMessage}
-              </div>
-            )}
-            <p className="text-color-form text-sm">
-              The page will reload after you save
-            </p>
+            <div
+              className={`my-1 text-sm ${
+                feedbackType === "error" ? "text-red-500" : "text-green-500"
+              }`}
+            >
+              {feedbackMessage}
+            </div>
+          )}
+          <p className="text-color-one text-sm">NB: This page will reload after you submit.</p>
             <Button
               ButtonText={isLoading ? "Saving..." : "Save"}
               className={`py-3 bg-color-one hover:bg-green-700`}

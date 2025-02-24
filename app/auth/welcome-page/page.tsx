@@ -106,7 +106,7 @@ export default function WelcomePage() {
           </div>
         </div>
         <Link
-          href="/auth/login/with-mail/with-mail/forgot-password"
+          href="/auth/login/with-mail/forgot-password"
           className="text-end text-sm text-color-one hover:text-green-700"
         >
           Forgot Password?

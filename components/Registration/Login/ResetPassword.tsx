@@ -7,8 +7,8 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const loginSteps = [
   { label: "Sign in", href: "/auth/login/with-mail" },
-  { label: "With Email", href: "/auth/login/with-mail/with-mail" },
-  { label: "Forgot Password", href: "/auth/login/with-mail/with-mail/forgot-password" },
+  { label: "With Email", href: "/auth/login/with-mail" },
+  { label: "Forgot Password", href: "/auth/login/with-mail/forgot-password" },
 ];
 
 export default function ResetPassword() {
@@ -85,7 +85,7 @@ export default function ResetPassword() {
       }
 
       console.log("Password reset successful:", result);
-      router.push("/auth/login/with-mail/with-mail"); // Redirect to login page
+      router.push("/auth/login/with-mail"); // Redirect to login page
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "An unexpected error occurred.");
     } finally {

@@ -31,11 +31,9 @@ export default function HistoryMobile({ transactions }: HistoryMobileProps) {
   const isDashboard = pathname === "/main/dashboard";
   const [selectedTransaction, setSelectedTransaction] =
     useState<Transactions | null>(null);
-  // const [loading, setLoading] = useState(false);
 
   const handleTransactionClick = async (transactionID: string) => {
     const token = localStorage.getItem("accessToken");
-    // setLoading(true);
     try {
       const res = await fetch(
         `https://api-royal-stone.softwebdigital.com/api/transaction?transactionID=${transactionID}`,
@@ -54,13 +52,8 @@ export default function HistoryMobile({ transactions }: HistoryMobileProps) {
     } catch (error) {
       console.error("Error fetching transaction:", error);
     }
-    // finally {
-    //   setLoading(false);
-    // }
   };
-
-  // const router = useRouter();
-
+  
   const groupByDate = (transactions: Transactions[]) => {
     const grouped: { [key: string]: Transactions[] } = {};
     transactions.forEach((transaction) => {
@@ -135,14 +128,6 @@ export default function HistoryMobile({ transactions }: HistoryMobileProps) {
     }
   };
 
-  // const handleTransactionClick = (type: string) => {
-  //   if (type.includes("investment")) {
-  //     router.push("/main/investments");
-  //   } else if (type.includes("savings")) {
-  //     router.push("/main/savings");
-  //   }
-  // };
-
   return (
     <div className="lg:hidden">
       {displayedTransactions.length > 0 ? (
@@ -156,7 +141,6 @@ export default function HistoryMobile({ transactions }: HistoryMobileProps) {
               key={transaction.id}
               className="flex justify-between bg-light-grey shadow-sm rounded-common p-4 my-4"
               onClick={() => handleTransactionClick(transaction.id)}
-              // onClick={() => handleTransactionClick(transaction.type)}
             >
               <div className="flex gap-4">
                 <Icon

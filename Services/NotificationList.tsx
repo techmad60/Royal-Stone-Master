@@ -1,7 +1,7 @@
 "use client";
 import { useNotificationStore } from "@/store/notificationStore";
 import { useEffect, useRef } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const NotificationList = () => {
@@ -27,7 +27,7 @@ const NotificationList = () => {
     });
   }, [notifications]);
 
-  return <ToastContainer />;
+  // return <ToastContainer />;
 };
 
 const NotificationMessage = ({ title }: { title: string; }) => {

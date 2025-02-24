@@ -1,3 +1,4 @@
+import { apiFetch } from "@/utils/apiHelper";
 import { XCircleIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import Button from "../../ui/Button";
@@ -21,18 +22,17 @@ export default function AddCryptoInformation({
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
   const [feedbackType, setFeedbackType] = useState<"success" | "error" | null>(null);
 
-  const token = localStorage.getItem("accessToken");
+ 
 
   useEffect(() => {
     const fetchNetworks = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/crypto-network",
+        const response = await apiFetch(
+          "/crypto-network",
           {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
           }
@@ -54,7 +54,7 @@ export default function AddCryptoInformation({
     };
 
     fetchNetworks();
-  }, [token]);
+  },);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -79,13 +79,12 @@ export default function AddCryptoInformation({
         address: formData.walletAddress,
       };
 
-      const response = await fetch(
-        "https://api-royal-stone.softwebdigital.com/api/bank//crypto-wallet",
+      const response = await apiFetch(
+        "/bank//crypto-wallet",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(payload),
         }

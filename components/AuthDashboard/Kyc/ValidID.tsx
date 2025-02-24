@@ -1,3 +1,4 @@
+import { apiFetch } from "@/utils/apiHelper";
 import { XCircleIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -87,26 +88,15 @@ export default function ValidIdInformation({
       setIsUploading(true);
       setFeedbackMessage(null);
 
-      const accessToken = localStorage.getItem("accessToken");
-      if (!accessToken) {
-        router.push("/auth/login/with-mail");
-        return;
-      }
-
-      const signatureResponse = await fetch(
-        "https://api-royal-stone.softwebdigital.com/api/account/image-upload-signature",
+      const signatureResponse = await apiFetch(
+        "/account/image-upload-signature",
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
           },
         }
       );
-
-      if (signatureResponse.status === 401) {
-        router.push("/auth/login/with-mail");
-        return;
-      }
 
       const signatureData = await signatureResponse.json();
       if (!signatureResponse.ok) {
@@ -141,12 +131,12 @@ export default function ValidIdInformation({
         localStorage.setItem("uploadedImageURL", uploadedImageURL);
         setImagePreview(uploadedImageURL);
 
-        const kycResponse = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/kyc",
+        const kycResponse = await apiFetch(
+          "/kyc",
           {
             method: "POST",
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+              // Authorization: `Bearer ${accessToken}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
@@ -158,9 +148,7 @@ export default function ValidIdInformation({
           }
         );
         const kycData = await kycResponse.json();
-        if (kycResponse.ok) {
-          console.log("KYC Response:", kycData);
-        } else {
+        if (!kycResponse.ok) {
           throw new Error(kycData.message || "Failed to submit KYC");
         }
 
