@@ -121,6 +121,13 @@ export default function InvestmentDetails() {
     fetchAllDetails();
   }, [products, fetchProducts, router]);
 
+  // Reset all states on mount
+  useEffect(() => {
+    setCurrentModal(null);
+    setSelectedType(null);
+  }, [setSelectedType]);
+
+
   const product = products.find((product) => product.id === id);
 
   if (error)
@@ -319,52 +326,6 @@ export default function InvestmentDetails() {
       setIsLoading(false); // Stop loading spinner or indicator
     }
   };
-
-  // Purchase Via Wallet
-// const handleMakePurchase = async () => {
-//   setApiError(null); // Clear previous error messages
-//   setIsLoading(true);
-
-//   try {
-//     const token = localStorage.getItem("accessToken");
-//     if (!token) {
-//       router.push("/auth/login/with-mail");
-//       return;
-//     }
-
-//     const purchaseResponse = await makePurchase(
-//       product.id,
-//       Number(noOfUnits),
-//       token
-//     );
-
-//     if (purchaseResponse.success && purchaseResponse.data) {
-//       setWalletPurchase(purchaseResponse.data);
-//       setCurrentModal("processed"); // Show success modal
-//     } else {
-//       const errorMessage =
-//         purchaseResponse.message || "An error occurred during the deposit.";
-
-//       // Show toast notification
-//       toast.error("Insufficient Balance.", { autoClose: 3000 });
-
-//       // Set error message & force modal close
-//       setApiError(errorMessage);
-//       setCurrentModal(null);
-//     }
-//   } catch (err) {
-//     // const errorMessage = err instanceof Error ? err.message : "Something went wrong.";
-
-//     // Show toast for error
-//     toast.error("Insufficient Balance.", { autoClose: 3000 });
-
-//     // Set error message & force modal close
-//     // setFormError(errorMessage);
-//     setCurrentModal(null);
-//   } finally {
-//     setIsLoading (false)
-//   }
-// };
 
 const handleMakePurchase = async () => {
   setApiError(null);

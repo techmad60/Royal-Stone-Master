@@ -5,7 +5,7 @@ import { FundCryptoWalletDetails } from "@/types/Type";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaBitcoin } from "react-icons/fa";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import Button from "../../ui/Button";
 
 interface MyComponentProps {
@@ -76,7 +76,7 @@ export default function CryptoPreview({
 
   return (
     <div>
-    <ToastContainer />
+    {/* <ToastContainer /> */}
       <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-50">
         <div className="flex flex-col bg-white rounded-[20px] w-full h-[505px] lg:max-w-[621px] lg:h-[484px]">
           <div className="flex justify-center items-center mt-4 lg:hidden">
