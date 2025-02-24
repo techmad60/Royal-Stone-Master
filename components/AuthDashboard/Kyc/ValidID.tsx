@@ -1,7 +1,6 @@
 import { apiFetch } from "@/utils/apiHelper";
 import { XCircleIcon } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { FaRegImage } from "react-icons/fa6";
 import { TiTimes } from "react-icons/ti";
@@ -27,7 +26,7 @@ export default function ValidIdInformation({
     null
   );
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
