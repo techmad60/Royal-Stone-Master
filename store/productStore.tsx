@@ -23,17 +23,23 @@ interface ProductStore {
   totalPages: number;
   isLoading: boolean;
   error: string | null;
-  fetchProducts: (page? : number) => Promise<void>;
+  fetchProducts: (page? : number, forceRefresh?: boolean) => Promise<void>;
   setCurrentPage: (page: number) => void;
 }
 
-const useProductStore = create<ProductStore>((set) => ({
+const useProductStore = create<ProductStore>((set, get) => ({
   products: [],
   currentPage: 1,
   totalPages: 1,
   isLoading: false,
   error: null,
-  fetchProducts: async (page = 1) => {
+  fetchProducts: async (page = 1, forceRefresh = false) => {
+    const existingData = get().products[page];
+    if (existingData && !forceRefresh) {
+      // If products for this page exist and refresh isn't forced, don't refetch
+      set({ currentPage: page });
+      return;
+    }
     set({ isLoading: true, error: null }); // Start loading
     try {
       const response = await fetch(

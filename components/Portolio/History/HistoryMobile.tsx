@@ -9,13 +9,27 @@ import { TbTargetArrow } from "react-icons/tb";
 import TransactionHistoryModal from "./TransactionHistoryModal";
 // import Loading from "@/components/ui/Loading";
 
+// interface Transactions {
+//   id: string;
+//   type: string;
+//   amount: number;
+//   createdAt: string;
+//   paymentMade: boolean;
+//   status: string;
+// }
 interface Transactions {
   id: string;
-  type: string;
+  accountID: string;
   amount: number;
-  createdAt: string;
-  paymentMade: boolean;
+  type: string;
   status: string;
+  paymentMade?: boolean;
+  beneficiary?: string;
+  beneficiaryType?: string;
+  beneficiaryID?: string;
+  createdAt: string;
+  updatedAt: string;
+  proofOfPayment?: string;
 }
 
 interface HistoryMobileProps {

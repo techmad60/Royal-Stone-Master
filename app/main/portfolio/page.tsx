@@ -7,6 +7,7 @@ import CardComponentFive from "@/components/ui/CardComponentFive";
 import Icon from "@/components/ui/Icon";
 // import Loading from "@/components/ui/Loading";
 import NoHistory from "@/components/ui/NoHistory";
+import useTransactionStore from "@/store/transactionStore";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BsFileBarGraphFill } from "react-icons/bs";
@@ -14,16 +15,17 @@ import { FaClock } from "react-icons/fa6";
 import { GoPlus } from "react-icons/go";
 import { IoIosSend } from "react-icons/io";
 import { TbTargetArrow } from "react-icons/tb";
-
 export default function Portfolio() {
   const [portfolioData, setPortfolioData] = useState({
     totalSavingsBalance: 0,
     totalInvestmentBalance: 0,
   });
-  const [recentTransactions, setRecentTransactions] = useState([]);
+  
   // const [loading, setLoading] = useState(true);
   const [activeModal, setActiveModal] = useState<string | null>(null); // Tracks active modal: 'withdraw', 'fund', or null
   const router = useRouter();
+  const { transactions, fetchTransactions} = useTransactionStore();
+  // const [recentTransactions, setRecentTransactions] = useState([]);
 
   const openModal = (modalType: string) => {
     setActiveModal(modalType); // Set active modal type
@@ -69,35 +71,35 @@ export default function Portfolio() {
         }
 
         // Fetch recent transactions
-        const transactionsResponse = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/transaction",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const transactionsResult = await transactionsResponse.json();
+        // const transactionsResponse = await fetch(
+        //   "https://api-royal-stone.softwebdigital.com/api/transaction",
+        //   {
+        //     method: "GET",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //       Authorization: `Bearer ${token}`,
+        //     },
+        //   }
+        // );
+        // const transactionsResult = await transactionsResponse.json();
 
-        if (transactionsResult.status) {
-          setRecentTransactions(transactionsResult.data.data);
-        } else {
-          console.error(
-            "Failed to fetch recent transactions:",
-            transactionsResult.message
-          );
-        }
+        // if (transactionsResult.status) {
+        //   setRecentTransactions(transactionsResult.data.data);
+        // } else {
+        //   console.error(
+        //     "Failed to fetch recent transactions:",
+        //     transactionsResult.message
+        //   );
+        // }
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
         // setLoading(false);
       }
     };
-
+    fetchTransactions(); 
     fetchPortfolioData();
-  }, [router]);
+  }, [router, fetchTransactions]);
 
   // if (loading) {
   //   return (
@@ -148,7 +150,7 @@ export default function Portfolio() {
       </div>
 
       <hr />
-      {recentTransactions.length === 0 ? (
+      {transactions.length === 0 ? (
         <div className="lg:mr-8">
           <NoHistory
             icon={<FaClock />}
@@ -170,8 +172,8 @@ export default function Portfolio() {
           </div>
           {/* Recent Transactions */}
           <>
-            <HistoryDesktop transactions={recentTransactions} />
-            <HistoryMobile transactions={recentTransactions} />
+            <HistoryDesktop transactions={transactions} />
+            <HistoryMobile transactions={transactions} />
           </>
         </div>
       )}

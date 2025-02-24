@@ -46,7 +46,7 @@ export default function WalletDetails({
           <Icon
             icon={<TbTargetArrow className="text-color-one text-2xl" />}
             containerSize="w-[41px] h-[41px]"
-          />
+          /> ru
           <div className="flex flex-col gap-1">
             <p className="text-color-zero font-medium text-sm lg:text-base">
               {name}

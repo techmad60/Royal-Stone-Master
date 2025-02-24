@@ -4,8 +4,9 @@ import HistoryMobile from "@/components/Portolio/History/HistoryMobile";
 import ProductDesktop from "@/components/Product/ProductDesktop";
 import ProductMobile from "@/components/Product/ProductMobile";
 import CardComponentFive from "@/components/ui/CardComponentFive";
-import Loading from "@/components/ui/Loading";
+// import Loading from "@/components/ui/Loading";
 import useProductStore from "@/store/productStore";
+import useTransactionStore from "@/store/transactionStore";
 import useUserStore, { useLoadFullName } from "@/store/userStore";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -19,13 +20,14 @@ export default function Dashboard() {
   const { products, fetchProducts } = useProductStore();
   const fullName = useUserStore((state) => state.fullName);
   useLoadFullName();
+  const { transactions, fetchTransactions } = useTransactionStore();
   const [dashboardData, setDashboardData] = useState({
     totalSavingsTarget: 0,
     totalInvestments: 0,
   });
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState("");
-  const [recentTransactions, setRecentTransactions] = useState([]);
+  // const [recentTransactions, setRecentTransactions] = useState([]);
   const router = useRouter();
 
   const capitalizeFirstLetter = (name: string): string =>
@@ -33,7 +35,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true); // Start loading
+      // setLoading(true); // Start loading
 
       const token = localStorage.getItem("accessToken");
       if (!token) {
@@ -56,7 +58,7 @@ export default function Dashboard() {
 
         if (!profileData.status) {
           setApiError("Failed to fetch profile data.");
-          setLoading(false);
+          // setLoading(false);
           return;
         }
 
@@ -85,42 +87,22 @@ export default function Dashboard() {
         if (dashboardData.status) {
           setDashboardData(dashboardData.data);
         } else {
-          setApiError(dashboardData.message || "Failed to fetch dashboard data.");
-        }
-
-        // Fetch Transactions
-        const transactionsRes = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/transaction",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const transactionsData = await transactionsRes.json();
-
-        if (transactionsData.status) {
-          setRecentTransactions(transactionsData.data.data);
-        } else {
-          console.error(
-            "Failed to fetch recent transactions:",
-            transactionsData.message
+          setApiError(
+            dashboardData.message || "Failed to fetch dashboard data."
           );
         }
-
         // Fetch Products
         await fetchProducts();
       } catch (error) {
         console.error("Error fetching data:", error);
         setApiError("An error occurred while fetching data.");
       } finally {
-        setLoading(false); // Stop loading after all requests complete
+        // setLoading(false); // Stop loading after all requests complete
       }
     };
-
+    fetchTransactions();
     fetchData();
-  }, [fetchProducts, router]);
+  }, [fetchProducts, router, fetchTransactions]);
 
   return (
     <div className="flex flex-col lg:p-0 lg:pr-8">
@@ -128,9 +110,7 @@ export default function Dashboard() {
         Welcome, {fullName ? capitalizeFirstLetter(fullName) : "Guest"}! 👋🏻
       </p>
 
-      {loading ? (
-        <Loading />
-      ) : apiError ? (
+      {apiError ? (
         <p className="text-red-500">{apiError}</p>
       ) : (
         <>
@@ -151,11 +131,9 @@ export default function Dashboard() {
           </div>
 
           {/* Transactions Section */}
-          {recentTransactions.length === 0 ? (
+          {transactions.length === 0 ? (
             <div className="flex flex-col justify-center items-center space-y-4 my-8 py-6 shadow-sm bg-light-grey rounded-common lg:w-[765px]">
-              <div
-                className="w-7 h-7 shadow-sm flex items-center justify-center transform rotate-45 rounded-[9px] bg-white"
-              >
+              <div className="w-7 h-7 shadow-sm flex items-center justify-center transform rotate-45 rounded-[9px] bg-white">
                 <span className="text-color-one transform -rotate-45">
                   <FaClock />
                 </span>
@@ -172,9 +150,11 @@ export default function Dashboard() {
             </div>
           ) : (
             <>
-              <div className="text-lg font-semibold my-4">Recent Transactions</div>
-              <HistoryMobile transactions={recentTransactions} />
-              <HistoryDesktop transactions={recentTransactions} />
+              <div className="text-lg font-semibold my-4">
+                Recent Transactions
+              </div>
+              <HistoryMobile transactions={transactions} />
+              <HistoryDesktop transactions={transactions} />
             </>
           )}
 

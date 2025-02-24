@@ -1,4 +1,5 @@
 import Loading from "@/components/ui/Loading";
+import { XCircleIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -178,20 +179,21 @@ export default function ChangeAvatar({ onClose }: ProfilePictureInfoProps) {
     return <div><Loading/></div>
   }
   return (
-    <div className="fixed inset-0 bg-[#D9D9D9A6] flex items-end lg:items-center justify-end lg:justify-center z-50">
+    <div className="fixed inset-0 bg-[#D9D9D9A6] flex items-end lg:items-center justify-end lg:justify-center z-[100]">
       <div className="flex flex-col bg-white rounded-t-[15px] w-full h-[490px] sm:h-[580px] lg:rounded-[20px] lg:max-w-[621px] lg:h-auto">
         <div className="flex justify-center items-center mt-4 lg:hidden">
           <hr className="w-[51px] h-[5px] rounded-[40px] bg-[#D9D9D9]" />
         </div>
         <div className="flex items-center border-b w-full pb-2 p-4 sm:p-8 lg:p-4">
+         
+          <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
+            Change Profile Picture
+          </p>
           <p
             onClick={onClose}
             className="text-color-form text-sm cursor-pointer"
           >
-            Cancel
-          </p>
-          <p className="text-color-zero font-semibold text-lg mx-auto relative right-4">
-            Change Profile Picture
+            <XCircleIcon className="text-color-form"/>
           </p>
         </div>
         <div className="flex flex-col p-4 sm:p-8 lg:p-4">

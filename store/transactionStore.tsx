@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface Transaction {
+interface Transactions {
   id: string;
   accountID: string;
   amount: number;
@@ -16,17 +16,17 @@ interface Transaction {
 }
 
 interface TransactionStore {
-  transactions: Transaction[];
+  transactions: Transactions[];
   currentPage: number;
   totalPages: number;
   totalDocuments: number;
   isLoading: boolean;
   error: string | { message: string } | null;
-  fetchTransactions: (page?: number) => Promise<void>;
+  fetchTransactions: (page?: number, forceRefresh? : boolean) => Promise<void>;
   setCurrentPage: (page: number) => void;
 }
 
-const useTransactionStore = create<TransactionStore>((set) => ({
+const useTransactionStore = create<TransactionStore>((set, get) => ({
   transactions: [],
   currentPage: 1,
   totalPages: 1,
@@ -34,7 +34,13 @@ const useTransactionStore = create<TransactionStore>((set) => ({
   isLoading: false,
   error: null,
 
-  fetchTransactions: async (page = 1) => {
+  fetchTransactions: async (page = 1, forceRefresh = false) => {
+    const existingData = get().transactions[page];
+    if (existingData && !forceRefresh) {
+      // If transactions for this page exist and refresh isn't forced, don't refetch
+      set({ currentPage: page });
+      return;
+    }
     set({ isLoading: true, error: null }); // Start loading
     try {
       const token = localStorage.getItem("accessToken");
