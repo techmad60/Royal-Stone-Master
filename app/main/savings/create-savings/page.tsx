@@ -184,13 +184,13 @@ export default function CreateSavingsPage() {
       </div>
       <form
         id="savings-form"
-        className="flex flex-col mt-2 lg:flex-row lg:gap-12"
+        className="flex flex-col mt-2 lg:flex-row lg:gap-20"
         onSubmit={handleSubmit}
       >
         <div className="space-y-4 lg:space-y-4 lg:mt-4">
           <div className="flex flex-col gap-1">
             <label className="text-color-form text-sm">Savings Plan</label>
-            <div className="relative border-b border-slate-200 text-sm text-color-zero lg:w-[350px] xl:w-[528px]">
+            <div className="relative border-b border-slate-200 text-sm text-color-zero lg:w-[200px] xl:w-[350px]">
               <input
                 name="savingsPlan"
                 type="text"
@@ -210,7 +210,7 @@ export default function CreateSavingsPage() {
               name="targetAmount"
               type="number"
               required
-              className="rounded-sm border-b border-slate-200 text-sm text-color-zero placeholder:text-sm py-2 lg:w-[350px] xl:w-[528px]"
+              className="rounded-sm border-b border-slate-200 text-sm text-color-zero placeholder:text-sm py-2 lg:w-[200px] xl:w-[350px]"
               placeholder="$200"
               value={formData.targetAmount}
               onChange={handleChange}
@@ -219,7 +219,7 @@ export default function CreateSavingsPage() {
 
           <div className="flex flex-col gap-1">
             <label className="text-color-form text-sm">Duration</label>
-            <div className="relative border-b border-slate-200 lg:w-[350px] xl:w-[528px]">
+            <div className="relative border-b border-slate-200 lg:w-[200px] xl:w-[350px]">
               <select
                 className="rounded-sm text-sm placeholder:text-sm py-2 w-full appearance-none bg-transparent"
                 required
@@ -246,7 +246,7 @@ export default function CreateSavingsPage() {
         <div className="space-y-4 lg:space-y-4 lg:mt-4">
           <div className="flex flex-col gap-1">
             <label className="text-color-form text-sm">Savings Frequency</label>
-            <div className="relative border-b border-slate-200 lg:w-[350px] xl:w-[528px]">
+            <div className="relative border-b border-slate-200 lg:w-[300px] xl:w-[350px]">
               <select
                 className="rounded-sm text-sm placeholder:text-sm py-2 w-full appearance-none bg-transparent"
                 required
@@ -257,9 +257,10 @@ export default function CreateSavingsPage() {
                 <option value="" disabled>
                   Select Frequency
                 </option>
+                <option value="daily">Daily</option>
                 <option value="weekly">Weekly</option>
                 <option value="monthly">Monthly</option>
-                <option value="yearly">Yearly</option>
+                
               </select>
               <div className="absolute top-3 right-3 pointer-events-none">
                 <IoIosArrowDown />
@@ -274,7 +275,7 @@ export default function CreateSavingsPage() {
               type="number"
               name="amount"
               required
-              className="rounded-sm border-b border-slate-200 text-sm text-color-zero placeholder:text-sm py-2 lg:w-[350px] xl:w-[528px]"
+              className="rounded-sm border-b border-slate-200 text-sm text-color-zero placeholder:text-sm py-2 lg:w-[300px] xl:w-[350px]"
               placeholder="$20"
               value={formData.amount}
               onChange={handleChange}
@@ -287,7 +288,7 @@ export default function CreateSavingsPage() {
               onChange={(date: Date | null) => setStartDate(date)}
               minDate={new Date()}
               placeholderText="Click to Set Date"
-              className="rounded-sm border-b border-slate-200 cursor-pointer placeholder:text-sm py-2 w-full lg:w-[350px] xl:w-[528px]"
+              className="rounded-sm border-b border-slate-200 cursor-pointer placeholder:text-sm py-2 w-full lg:w-[300px] xl:w-[350px]"
               required
             />
           </div>
@@ -308,7 +309,7 @@ export default function CreateSavingsPage() {
         <Button
           ButtonText="Proceed"
           type="submit"
-          className={`py-3 mt-4 w-full lg:w-[350px] xl:w-[528px] cursor-pointer ${
+          className={`py-3 mt-4 w-full lg:w-[300px] xl:w-[350px] cursor-pointer ${
             isChecked
               ? "bg-color-one"
               : "bg-inactive hover:bg-inactive cursor-not-allowed"

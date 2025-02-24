@@ -557,7 +557,7 @@ export default function WithdrawFundsPage() {
 
       {currentModal === "processed" && (
         <Processed
-          message={`Your withdrawal of $${amount} has successfully being processed!`}
+          message={`Your withdrawal is awaiting approval by the Admin.`}
           onClose={() => {
             setCurrentModal(null);
             router.push("/main/investments");

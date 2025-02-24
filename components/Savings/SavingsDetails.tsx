@@ -376,7 +376,7 @@ export default function SavingsTarget() {
   console.log("Savings Target ID :", target.id);
   return (
     <div className="mt-[8.5rem] sm:mt-1">
-      <div className="lg:flex lg:gap-10 xl:gap-36">
+      <div className="lg:flex lg:gap-10 xl:gap-12 2xlg:gap-40">
         <div>
           <Navigator currentStep={1} steps={targetSteps} />
           <div className="flex gap-4 items-center mt-8">
@@ -442,7 +442,7 @@ export default function SavingsTarget() {
         </div>
 
         <div>
-          <section className="flex flex-col mt-4 bg-light-grey rounded-[10px] px-4 shadow-sm lg:mt-12 lg:w-[350px] xl:w-[471px]">
+          <section className="flex flex-col mt-4 bg-light-grey rounded-[10px] px-4 shadow-sm lg:mt-12 lg:w-[350px] xl:w-[400px]">
             <StatRow
               label="Savings Frequency"
               value={

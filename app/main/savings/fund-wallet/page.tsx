@@ -350,7 +350,10 @@ export default function FundWalletPage() {
       {currentModal === "processed" && (
         <Processed
           message={`Your transaction is awaiting approval from the Admin.`}
-          onClose={() => setCurrentModal(null)}
+          onClose={() =>{
+            setCurrentModal(null)
+            router.push("/main/savings")
+          } }
           onConfirm={() => setCurrentModal("transactionDetails")}
         />
       )}
@@ -358,7 +361,10 @@ export default function FundWalletPage() {
         isBankResponse(transactionData) && (
           <FundingDetails
             transactionData={transactionData}
-            onClose={() => setCurrentModal(null)}
+            onClose={() => {
+              setCurrentModal(null)
+              router.push("/main/savings")
+            } }
           />
         )}
     </div>
