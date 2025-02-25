@@ -42,7 +42,7 @@ export default function SavingsTargetDesktop({
         // Calculate percentage for each target
         const percentage = Math.round(
           (target.amountSaved / target.target) * 100
-        );
+        ).toFixed(1);
         const statusTextColor =
           target.status.toLowerCase() === "completed"
             ? "text-color-six"

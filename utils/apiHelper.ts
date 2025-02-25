@@ -45,7 +45,7 @@ async function refreshAccessToken() {
     const data = await res.json();
     localStorage.setItem("accessToken", data.accessToken); // Save new token
     return data.accessToken;
-  } catch (error) {
+  } catch  {
     handleSessionExpired();
     throw new Error("Session refresh failed");
   }

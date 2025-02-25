@@ -1,3 +1,4 @@
+import { getInvestmentStatusColor } from "@/utils/functions";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -59,19 +60,11 @@ export default function InvestmentMobile({
           <div className="flex flex-col space-y-2 w-full">
             {/* INVESTMENT STATUS */}
             <p
-              className={`text-[10px] ${
-                investment.status === "pending"
-                  ? "text-yellow-500"
-                  : investment.status === "ongoing"
-                  ? "text-blue-500"
-                  : investment.status === "matured"
-                  ? "text-green-500"
-                  : investment.status === "canceled"
-                  ? "text-red-700"
-                  : "text-gray-500" // Default color
-              }`}
+              className={`text-[10px] ${getInvestmentStatusColor(
+                investment.status
+              )}`}
             >
-              {investment.status.toUpperCase()}
+              {investment.status?.toUpperCase() || "N/A"}
             </p>
 
             <div className="flex justify-between border-b py-[0.025rem]">
@@ -98,7 +91,9 @@ export default function InvestmentMobile({
             {/* MATURITY DATE */}
             <p className="text-[10px] text-[rgba(151,156,169,1)] tracking-tight">
               MATURITY DATE:{" "}
-              {investment.maturityDate
+              {investment.status?.toLowerCase() === "pending"
+                ? "N/A"
+                : investment.maturityDate
                 ? new Date(investment.maturityDate)
                     .toLocaleDateString("en-GB")
                     .replace(/\//g, "/")

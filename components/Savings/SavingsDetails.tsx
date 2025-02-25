@@ -206,7 +206,7 @@ export default function SavingsTarget() {
   // Assuming you have a function or data for the amount saved and target details
   const amountSaved = target?.amountSaved || 0;
   const targetAmount = target?.target || 0;
-  const progress = Math.round((amountSaved / targetAmount) * 100);
+  const progress = ((amountSaved / targetAmount) * 100).toFixed(1); // Keeps 1 decimal place
   const amountLeft = targetAmount - amountSaved;
   const targetID = target.id;
 

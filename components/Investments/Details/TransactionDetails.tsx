@@ -4,6 +4,7 @@ import Loading from "@/components/ui/Loading";
 import Navigator from "@/components/ui/Navigator";
 import StatRow from "@/components/ui/StatRow";
 import useInvestmentStore from "@/store/investmentStore";
+import { getInvestmentStatusColor } from "@/utils/functions";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
@@ -39,14 +40,21 @@ export default function TransactionDetails() {
     },
   ];
 
-  const durationInSeconds = investment.maturityDate
-    ? Math.max(
-        Math.floor(
-          (new Date(investment.maturityDate).getTime() - Date.now()) / 1000
-        ),
-        0
-      )
-    : 0; // Default to 0 if maturityDate is undefined
+  const durationInSeconds = (() => {
+    if (investment.status?.toLowerCase() !== "ongoing") {
+      return 0; // If not "ongoing", don't start the countdown
+    }
+
+    if (!investment.maturityDate) {
+      return 0; // If no maturity date, don't start countdown
+    }
+
+    const remainingTime = Math.floor(
+      (new Date(investment.maturityDate).getTime() - Date.now()) / 1000
+    );
+
+    return Math.max(remainingTime, 0); // Ensure countdown doesn't go negative
+  })();
 
   return (
     <div className="mt-32 sm:mt-8 lg:mt-24">
@@ -57,19 +65,9 @@ export default function TransactionDetails() {
             {investment.productID?.name || "Unknown Product"}
           </h1>
           <p
-            className={`text-[10px] text-color-one ${
-              investment.status?.toLowerCase() === "pending"
-                ? "text-yellow-500"
-                : investment.status?.toLowerCase() === "ongoing"
-                ? "text-blue-500"
-                : investment.status?.toLowerCase() === "matured" ||
-                  investment.status?.toLowerCase() === "successful"
-                ? "text-green-500"
-                : investment.status?.toLowerCase() === "canceled" ||
-                  investment.status?.toLowerCase() === "failed"
-                ? "text-red-700"
-                : "text-gray-500"
-            }`}
+            className={`text-[10px] ${getInvestmentStatusColor(
+              investment.status
+            )}`}
           >
             {investment.status?.toUpperCase() || "N/A"}
           </p>
@@ -243,12 +241,9 @@ export default function TransactionDetails() {
           <StatRow
             label="Duration"
             value={
-              investment.createdAt && investment.maturityDate
-                ? `${Math.ceil(
-                    (new Date(investment.maturityDate).getTime() -
-                      new Date(investment.createdAt).getTime()) /
-                      (1000 * 60 * 60 * 24)
-                  )} days`
+              investment.status?.toLowerCase() === "ongoing" &&
+              investment.productID?.ROI?.duration
+                ? `${investment.productID.ROI.duration} days`
                 : "N/A"
             }
             valueClass="text-color-six text-sm"
@@ -258,6 +253,7 @@ export default function TransactionDetails() {
           <StatRow
             label="Maturity Date"
             value={
+              investment.status?.toLowerCase() === "ongoing" &&
               investment.maturityDate
                 ? new Date(investment.maturityDate)
                     .toLocaleDateString("en-GB")
@@ -267,6 +263,12 @@ export default function TransactionDetails() {
             valueClass="text-color-six text-sm"
             isLast={true}
           />
+          {investment.status?.toLowerCase() === "pending" && (
+            <p className="text-sm text-color-zero mt-8">
+              Duration and Maturity date will display, once your purchase is
+              approved.
+            </p>
+          )}
         </section>
       </div>
     </div>

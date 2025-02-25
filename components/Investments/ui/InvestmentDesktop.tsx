@@ -156,7 +156,9 @@ export default function InvestmentDesktop({
                 {/* Maturity Date */}
                 <div>
                   <p className="text-xs text-color-zero">
-                    {formatDate(investment.maturityDate)}
+                    {investment.status?.toLowerCase() === "pending"
+                      ? "N/A"
+                      : formatDate(investment.maturityDate)}
                   </p>
                 </div>
 
