@@ -11,3 +11,4 @@ export const getInvestmentStatusColor = (status?: string): string => {
     return status ? statusMap[status.toLowerCase()] || "text-gray-500" : "text-gray-500";
   };
   
+  

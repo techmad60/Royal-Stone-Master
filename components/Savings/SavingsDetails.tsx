@@ -567,7 +567,7 @@ export default function SavingsTarget() {
                 : "transactionDetails"
             )
           }
-          message={`Your ${target?.name} has been funded with $${target.recurringAmount} successfully.`}
+          message={`Your ${target?.name} funding is awaiting approval by the Admin.`}
         />
       )}
 

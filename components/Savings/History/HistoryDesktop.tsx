@@ -83,7 +83,7 @@ export default function HistoryDesktop() {
             <div className="flex items-center gap-3 col-span-2">
               <Icon
                 icon={
-                  savings.type === "savings-direct-funding" || "savings-wallet-funding" ? (
+                  savings.type ===  "savings-wallet-funding" ? (
                     <GoPlus className="text-color-one" />
                   ) : savings.type === "savings-withdrawal" ? (
                     <IoIosSend className="text-color-one" />

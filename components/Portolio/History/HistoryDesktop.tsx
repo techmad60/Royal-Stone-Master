@@ -33,7 +33,6 @@ interface Transactions {
   proofOfPayment?: string;
 }
 
-
 export default function HistoryDesktop({
   transactions,
 }: {
@@ -61,10 +60,11 @@ export default function HistoryDesktop({
         return <GoPlus className="text-color-one" />;
       case "savings-withdrawal":
         return <IoIosSend className="text-color-one" />;
-      case "savings-target-funding":
+      case "target-direct-funding":
+      case "target-wallet-funding": // ✅ Fix: Separate cases
         return <TbTargetArrow className="text-color-one" />;
       default:
-        return <BsFileBarGraphFill className="text-color-one" />; // Default fallback icon
+        return <BsFileBarGraphFill className="text-color-one" />;
     }
   };
 

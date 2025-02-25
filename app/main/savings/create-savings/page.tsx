@@ -324,7 +324,7 @@ export default function CreateSavingsPage() {
             setIsSavingsProcessedOpen(false);
             router.push("/main/savings");
           }}
-          message={`Your ${formData.savingsPlan} Target has been funded successfully.`}
+          message={`Your ${formData.savingsPlan} Target has been created successfully.`}
           showButton={false}
         />
       )}

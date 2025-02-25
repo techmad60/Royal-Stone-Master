@@ -34,13 +34,14 @@ export default function TransactionHistoryModal({
         return <GoPlus className="text-color-one text-2xl" />;
       case "savings-withdrawal":
         return <IoIosSend className="text-color-one text-2xl" />;
-      case "savings-target-funding":
+      case "target-direct-funding":
+      case "target-wallet-funding": // ✅ Fix: Separate cases
         return <TbTargetArrow className="text-color-one text-2xl" />;
       default:
         return <BsFileBarGraphFill className="text-color-one text-2xl" />;
     }
   };
-
+  
   return (
     <div className="fixed inset-0 flex bg-[#D9D9D9A6] items-end lg:items-center justify-end lg:justify-center z-[500]">
       <div

@@ -67,7 +67,7 @@ export default function HistoryMobile({ transactions }: HistoryMobileProps) {
       console.error("Error fetching transaction:", error);
     }
   };
-  
+
   const groupByDate = (transactions: Transactions[]) => {
     const grouped: { [key: string]: Transactions[] } = {};
     transactions.forEach((transaction) => {
@@ -135,7 +135,8 @@ export default function HistoryMobile({ transactions }: HistoryMobileProps) {
         return <GoPlus className="text-color-one" />;
       case "savings-withdrawal":
         return <IoIosSend className="text-color-one" />;
-      case "savings-target-funding":
+      case "target-direct-funding":
+      case "target-wallet-funding": // ✅ Fix: Separate cases
         return <TbTargetArrow className="text-color-one" />;
       default:
         return <BsFileBarGraphFill className="text-color-one" />;

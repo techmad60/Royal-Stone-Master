@@ -218,7 +218,7 @@ export default function ValidIdInformation({
                   <div
                     className={`w-7 h-7 shadow-sm flex items-center justify-center transform rotate-45 rounded-[9px] bg-white`}
                   >
-                    <span className="text-color-one transform -rotate-45">
+                    <span className="text-color-one transform -rotate-45" onClick={handleImageClick}>
                       <FaRegImage className="text-color-one" />
                     </span>
                   </div>

@@ -141,8 +141,8 @@ export default function SavingsTargetMobile({
                 <div className="flex flex-col">
                   <p
                     className={`text-sm ${
-                      item.type === "savings-target-funding" ||
-                      "savings-direct-funding"
+                      item.type === "target-direct-funding" ||
+                      "target-wallet-funding"
                         ? "text-color-six"
                         : "text-red-500"
                     }`}
