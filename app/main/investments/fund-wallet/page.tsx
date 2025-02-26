@@ -275,6 +275,7 @@ function isCryptoResponse(
                   ? "text-green-700"
                   : "text-sm font-medium whitespace-wrap"
               }
+              onClick={() => handleFundingSelection("bank")}
               icon={
                 <CircleToggle
                   isClicked={selectedType === "bank"}
@@ -295,6 +296,7 @@ function isCryptoResponse(
                   ? "text-green-700"
                   : "text-sm font-medium whitespace-wrap"
               }
+              onClick={() => handleFundingSelection("crypto")}
               icon={
                 <CircleToggle
                   isClicked={selectedType === "crypto"}
