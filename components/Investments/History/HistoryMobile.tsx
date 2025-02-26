@@ -1,5 +1,5 @@
 import Icon from "@/components/ui/Icon";
-import Loading from "@/components/ui/Loading";
+import NoHistory from "@/components/ui/NoHistory";
 import { getInvestmentStatusColor } from "@/utils/functions";
 import { useEffect, useState } from "react";
 import { BsFileBarGraphFill } from "react-icons/bs";
@@ -16,7 +16,6 @@ interface Investments {
 }
 
 export default function HistoryMobile() {
-  const [loading, setLoading] = useState(false);
   const [investments, setInvestments] = useState<Investments[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false); // Modal visibility state
@@ -122,7 +121,6 @@ export default function HistoryMobile() {
   const fetchInvestmentDetails = async (id: string, type: string) => {
     const token = localStorage.getItem("accessToken");
     try {
-      setLoading(true);
       setError(null);
 
       // Fetch investments of the given type
@@ -163,18 +161,8 @@ export default function HistoryMobile() {
       } else {
         setError("An unknown error occurred. Please try again later.");
       }
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
-
-  if (loading) {
-    return (
-      <div>
-        <Loading />
-      </div>
-    );
-  }
 
   return (
     <div className="lg:hidden">
@@ -238,9 +226,12 @@ export default function HistoryMobile() {
           ))}
         </section>
       ) : (
-        <p className="text-sm text-center text-gray-500 mt-4">
-          No transactions available.
-        </p>
+        <div className="lg:mr-8">
+        <NoHistory
+          icon={<BsFileBarGraphFill />}
+          text="No Recent Transactions Yet."
+        />
+      </div>
       )}
       {/* Modal for displaying investment details */}
       {showModal && selectedInvestment && (

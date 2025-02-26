@@ -75,6 +75,7 @@ export default function HistoryDesktop() {
       {latestSavings.length > 0 && <TableHeader />}
       {error && <p className="text-red-500">{error}</p>}
       {latestSavings.length > 0 ? (
+        
         latestSavings.map((savings) => (
           <section
             key={savings.id}
@@ -138,7 +139,7 @@ export default function HistoryDesktop() {
         <div className="lg:mr-8">
           <NoHistory
             icon={<TbTargetArrow />}
-            text="No Recent Transactions Yet."
+            text="No transactions Yet."
           />
         </div>
       )}

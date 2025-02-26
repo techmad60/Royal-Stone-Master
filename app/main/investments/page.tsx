@@ -63,8 +63,8 @@ export default function Investment() {
           console.error("Failed to fetch portfolio:", result.message);
         }
       } catch (error) {
-        toast.error("Oops!, something went wrong")
-        console.log(error)
+        toast.error("Oops!, something went wrong");
+        console.log(error);
       }
     };
 
@@ -72,7 +72,7 @@ export default function Investment() {
   }, [fetchInvestments, currentPage, router]);
 
   console.log(investments);
-  console.log(error)
+  console.log(error);
 
   return (
     <div className="mt-[9rem] sm:mt-[1rem] lg:mt-[6rem]">
@@ -118,71 +118,60 @@ export default function Investment() {
             <p className="text-xs whitespace-nowrap ">Withdraw</p>
           </Link>
 
-          <Link href={`/main/investments/make-investment`} className="flex items-center justify-center text-color-one hover:text-green-400 duration-150 gap-1 lg:flex-col ">
+          <Link
+            href={`/main/investments/make-investment`}
+            className="flex items-center justify-center text-color-one hover:text-green-400 duration-150 gap-1 lg:flex-col "
+          >
             <Icon icon={<BsFileBarGraphFill />} />
-            <p
-              className="text-xs whitespace-nowrap "
-            >
-              Make Investment
-            </p>
+            <p className="text-xs whitespace-nowrap ">Make Investment</p>
           </Link>
-          <Link  href={"/main/investments/fund-wallet"} className="flex items-center justify-center text-color-one hover:text-green-400 duration-150 gap-1 lg:flex-col">
+          <Link
+            href={"/main/investments/fund-wallet"}
+            className="flex items-center justify-center text-color-one hover:text-green-400 duration-150 gap-1 lg:flex-col"
+          >
             <Icon icon={<GoPlus />} />
-            <p
-              className="text-xs whitespace-nowrap "
-            >
-              Fund Wallet
-            </p>
+            <p className="text-xs whitespace-nowrap ">Fund Wallet</p>
           </Link>
         </section>
       </div>
       <hr />
       {investments.length === 0 ? (
         <div className="lg:mr-8">
-          <NoHistory icon={<FaClock />} text="No Investment History" />
+          <NoHistory icon={<FaClock />} text="No Investment Purchases" />
         </div>
       ) : (
         <div>
           <h1 className="text-base font-semibold mt-6 lg:text-xl">
             All Investments
           </h1>
-          {investments.length === 0 ? (
-            <div className="lg:mr-8">
-              <NoHistory
-                icon={<BsFileBarGraphFill />}
-                text="No Purchase Made Yet!"
-              />
-            </div>
-          ) : (
-            <>
-              <InvestmentMobile investments={investments} />
-              <InvestmentDesktop investments={investments} />
-              <PaginationComponent
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
-              />
-            </>
-          )}
 
-          <hr className="lg:hidden mt-4" />
-          <hr className="mr-8 hidden lg:flex" />
-
-          <div className="flex justify-between my-4 lg:mr-8">
-            <p className="text-base font-semibold text-color-zero">
-              Recent Transactions
-            </p>
-            <Link
-              href="/main/investments/investment-history"
-              className="text-sm text-color-one"
-            >
-              View All
-            </Link>
-          </div>
-          <HistoryDesktop />
-          <HistoryMobile />
+          <>
+            <InvestmentMobile investments={investments} />
+            <InvestmentDesktop investments={investments} />
+            <PaginationComponent
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </>
         </div>
       )}
+      <hr className="lg:hidden mt-4" />
+      <hr className="mr-8 hidden lg:flex" />
+
+      <div className="flex justify-between my-4 lg:mr-8">
+        <p className="text-base font-semibold text-color-zero">
+          Recent Transactions
+        </p>
+        <Link
+          href="/main/investments/investment-history"
+          className="text-sm text-color-one"
+        >
+          View All
+        </Link>
+      </div>
+      <HistoryDesktop />
+      <HistoryMobile />
     </div>
   );
 }

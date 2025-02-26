@@ -1,5 +1,6 @@
 import Icon from "@/components/ui/Icon";
 import Loading from "@/components/ui/Loading";
+import NoHistory from "@/components/ui/NoHistory";
 import { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { IoIosSend } from "react-icons/io";
@@ -204,9 +205,12 @@ export default function AllHistoryMobile() {
           );
         })
       ) : (
-        <p className="text-sm text-center text-gray-500 mt-4">
-          No transactions available.
-        </p>
+        <div className="lg:mr-8">
+        <NoHistory
+          icon={<TbTargetArrow />}
+          text="No Recent Transactions Yet."
+        />
+      </div>
       )}
       {/* Modal for displaying investment details */}
       {showModal && selectedSavings && (

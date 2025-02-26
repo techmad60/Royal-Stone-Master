@@ -1,5 +1,6 @@
 import Icon from "@/components/ui/Icon";
 import Loading from "@/components/ui/Loading";
+import NoHistory from "@/components/ui/NoHistory";
 import { useEffect, useState } from "react";
 import { BsFileBarGraphFill } from "react-icons/bs";
 import { GoPlus } from "react-icons/go";
@@ -215,9 +216,12 @@ export default function AllHistoryMobile({ investments }: HistoryMobileProps) {
           );
         })
       ) : (
-        <p className="text-sm text-center text-gray-500 mt-4">
-          No transactions available.
-        </p>
+        <div className="lg:mr-8">
+          <NoHistory
+            icon={<BsFileBarGraphFill />}
+            text="No Recent Transactions Yet."
+          />
+        </div>
       )}
       {/* Modal for displaying investment details */}
       {showModal && selectedInvestment && (
