@@ -65,7 +65,7 @@ const useTransactionStore = create<TransactionStore>((set, get) => ({
           totalDocuments: data.data.totalDocuments,
         });
       } else {
-        set({ error: "Failed to fetch transactions." });
+        set({ error: "Failed to fetch data." });
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : "Unknown error occurred.";

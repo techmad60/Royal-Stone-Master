@@ -23,7 +23,7 @@ interface ProductStore {
   totalPages: number;
   isLoading: boolean;
   error: string | null;
-  fetchProducts: (page? : number, forceRefresh?: boolean) => Promise<void>;
+  fetchProducts: (page? : number, forceRefresh? : boolean) => Promise<void>;
   setCurrentPage: (page: number) => void;
 }
 
@@ -36,10 +36,11 @@ const useProductStore = create<ProductStore>((set, get) => ({
   fetchProducts: async (page = 1, forceRefresh = false) => {
     const existingData = get().products[page];
     if (existingData && !forceRefresh) {
-      // If products for this page exist and refresh isn't forced, don't refetch
+      // If transactions for this page exist and refresh isn't forced, don't refetch
       set({ currentPage: page });
       return;
     }
+   
     set({ isLoading: true, error: null }); // Start loading
     try {
       const response = await fetch(
@@ -53,7 +54,7 @@ const useProductStore = create<ProductStore>((set, get) => ({
           totalPages: data.data.totalPages,
         });
       } else {
-        set({ error: "Failed to fetch products." });
+        set({ error: "Failed to fetch data." });
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : "Unknown error occurred.";

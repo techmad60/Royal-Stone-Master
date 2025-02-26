@@ -36,11 +36,11 @@ interface InvestmentStore {
   availableCash: number;
   setInvestmentId: (id: string | null) => void;
   setAvailableCash: (cash: number) => void;
-  fetchInvestments: (type: string, page?: number) => Promise<void>;
+  fetchInvestments: (type: string, page?: number, forceRefresh?: boolean) => Promise<void>;
   setCurrentPage: (page: number) => void;
 }
 
-const useInvestmentStore = create<InvestmentStore>((set) => ({
+const useInvestmentStore = create<InvestmentStore>((set, get) => ({
   investments: [],
   currentPage: 1,
   totalPages: 1,
@@ -51,7 +51,13 @@ const useInvestmentStore = create<InvestmentStore>((set) => ({
   availableCash: 0,
   setAvailableCash: (cash) => set({ availableCash: cash }),
   setInvestmentId: (id) => set({ investmentId: id }),
-  fetchInvestments: async (type = "", page = 1) => {
+  fetchInvestments: async (type = "", page = 1, forceRefresh = false) => {
+    const existingData = get().investments[page];
+    if (existingData && !forceRefresh) {
+      // If transactions for this page exist and refresh isn't forced, don't refetch
+      set({ currentPage: page });
+      return;
+    }
     set({ isLoading: true, error: null }); // Start loading
     try {
       const token = localStorage.getItem("accessToken");
@@ -74,7 +80,7 @@ const useInvestmentStore = create<InvestmentStore>((set) => ({
           totalDocuments: data.data.totalDocuments,
         });
       } else {
-        set({ error: "Failed to fetch investments." });
+        set({ error: "Failed to fetch data." });
       }
     } catch (error: unknown) {
       const errorMessage =

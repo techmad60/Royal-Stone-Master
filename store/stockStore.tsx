@@ -46,10 +46,10 @@ export const useStockStore = create<StockStore>((set) => ({
           totalPages: data.data.totalPages,
         });
       } else {
-        set({ error: "Failed to fetch stocks." });
+        set({ error: "Failed to fetch data." });
       }
     } catch (error) {
-      set({ error: "An error occurred while fetching stocks." });
+      set({ error: "An error occurred while fetching data." });
       console.error(error);
     } finally {
       set({ loading: false });

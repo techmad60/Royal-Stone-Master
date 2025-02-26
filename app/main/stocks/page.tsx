@@ -109,7 +109,7 @@ export default function StocksPage() {
   
   return (
     <div className="flex flex-col lg:w-[420px] xl:w-[535px]">
-      <div className="flex flex-col justify-center items-center space-y-4 my-8 py-6 shadow-sm bg-light-grey rounded-common lg:w-[765px]">
+      <div className="flex flex-col justify-center items-center space-y-4 my-8 py-6 shadow-sm bg-light-grey rounded-common lg:w-[740px] lg:mr-8">
         <div
           className={`w-7 h-7 shadow-sm flex items-center justify-center transform rotate-45 rounded-[9px] bg-white`}
         >

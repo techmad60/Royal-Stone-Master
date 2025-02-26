@@ -7,18 +7,24 @@ interface SavingsTargetStore {
   totalPages: number;
   loading: boolean;
   error: string;
-  fetchSavingsTarget: (page?: number) => Promise<void>;
+  fetchSavingsTarget: (page?: number, forceRefresh?: boolean) => Promise<void>;
   setCurrentPage: (page: number) => void;
 }
 
-export const useSavingsTargetStore = create<SavingsTargetStore>((set) => ({
+export const useSavingsTargetStore = create<SavingsTargetStore>((set, get) => ({
   savingsTarget: [],
   currentPage: 1,
   totalPages: 1,
   loading: false,
   error: "",
 
-  fetchSavingsTarget: async (page = 1) => {
+  fetchSavingsTarget: async (page = 1, forceRefresh = false) => {
+    const existingData = get().savingsTarget[page];
+    if (existingData && !forceRefresh) {
+      // If transactions for this page exist and refresh isn't forced, don't refetch
+      set({ currentPage: page });
+      return;
+    }
     set({ loading: true, error: "" });
 
     try {
@@ -40,10 +46,10 @@ export const useSavingsTargetStore = create<SavingsTargetStore>((set) => ({
         });
         
       } else {
-        set({ error: "Failed to fetch stocks." });
+        set({ error: "Failed to fetch data." });
       }
     } catch (error) {
-      set({ error: "An error occurred while fetching stocks." });
+      set({ error: "An error occurred while fetching data." });
       console.error(error);
     } finally {
       set({ loading: false });

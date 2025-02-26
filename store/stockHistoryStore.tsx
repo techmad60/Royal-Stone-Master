@@ -21,10 +21,10 @@ interface StockHistoryStore {
   totalPages: number;
   isLoading: boolean;
   setCurrentPage: (page: number) => void;
-  fetchStocks: (page?: number) => Promise<void>;
+  fetchStocks: (page?: number, forceRefresh?: boolean) => Promise<void>;
 }
 
-const useStockHistoryStore = create<StockHistoryStore>((set) => ({
+const useStockHistoryStore = create<StockHistoryStore>((set,) => ({
   stocks: [],
   currentPage: 1,
   totalPages: 1,
@@ -56,7 +56,7 @@ const useStockHistoryStore = create<StockHistoryStore>((set) => ({
         console.log(accessToken)
       }
     } catch (error) {
-      console.error('Error fetching stocks:', error);
+      console.error('Error fetching data:', error);
       
     } finally {
         set({ isLoading: false });
