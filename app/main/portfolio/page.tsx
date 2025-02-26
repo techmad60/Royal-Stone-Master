@@ -116,7 +116,7 @@ export default function Portfolio() {
           <CardComponentFive
             icon={<BsFileBarGraphFill className="text-base" />}
             label="Investment Wallet Balance"
-            number={`$${portfolioData.totalInvestmentBalance.toFixed(2)}`}
+            number={`$${portfolioData.totalInvestmentBalance.toString()}`}
             classname="text-base font-semibold lg:font-extrabold lg:text-[32px]"
             width="lg:w-[378px] xl:w-[290px] 2xlg:w-[355px]"
           />
@@ -124,7 +124,7 @@ export default function Portfolio() {
           <CardComponentFive
             icon={<TbTargetArrow className="text-base" />}
             label="Savings Wallet Balance"
-            number={`$${portfolioData.totalSavingsBalance.toFixed(2)}`}
+            number={`$${portfolioData.totalSavingsBalance.toString()}`}
             classname="text-base font-semibold lg:font-extrabold lg:text-[32px]"
             width="lg:w-[378px] xl:w-[290px] 2xlg:w-[355px]"
           />
