@@ -63,7 +63,10 @@ export default function Dashboard() {
         }
 
         const userProfile = profileData.data;
-        const isKycComplete = userProfile.kycApproval === "filled";
+        const isKycComplete =
+          userProfile.kycApproval === "filled" ||
+          userProfile.kycApproval === "approved";
+
         const hasNextOfKin =
           userProfile.nextOfKin &&
           Object.keys(userProfile.nextOfKin).length > 0;
