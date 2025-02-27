@@ -9,6 +9,7 @@ interface Product {
   name: string;
   availableUnits: number;
   totalUnits: number;
+  location: string;
   description: string;
   status: string;
   images: string[];
@@ -56,13 +57,14 @@ export default function ProductDesktop({
       {/* grid-cols-[50px_3fr_1fr_1fr_1fr_1fr_1fr] */}
       {/* <ToastContainer position="top-right" autoClose={3000} /> */}
       {products.length !== 0 && (
-        <div className="hidden lg:grid grid-cols-[35px_3fr_1fr_1fr_1fr_1fr] items-center bg-light-grey rounded-common py-4 px-8 shadow-sm mt-4">
+        <div className="hidden lg:grid grid-cols-[30px_2fr_1fr_1fr_1fr_1fr_1fr] items-center bg-light-grey rounded-common py-4 px-8 shadow-sm mt-4">
           <p className="text-xs text-color-form">S/N</p>
           <p className="text-xs text-color-zero">
             Product Image & Name
           </p>
           <p className="text-xs text-color-zero">Total Units</p>
           <p className="text-xs text-color-zero">Available Units</p>
+          <p className="text-xs text-color-zero">Location</p>
           <p className="text-xs text-color-zero">Status</p>
           <p className="text-xs text-color-zero">Actions</p>
         </div>
@@ -73,7 +75,7 @@ export default function ProductDesktop({
         {products.map((product, index) => (
           <section
             key={product.id}
-            className="hidden lg:grid grid-cols-[35px_3fr_1fr_1fr_1fr_1fr] items-center my-4 mx-8 py-4 border-b"
+            className="hidden lg:grid grid-cols-[30px_2fr_1fr_1fr_1fr_1fr_1fr] items-center my-4 mx-8 py-4 border-b"
           >
             {/* Serial Number (S/N) */}
             <p className="text-xs text-color-form">{index + 1}</p>
@@ -103,6 +105,13 @@ export default function ProductDesktop({
             <div>
               <p className="text-sm text-color-zero">
                 {product.availableUnits}
+              </p>
+            </div>
+
+            {/* Location */}
+            <div>
+              <p className="text-sm text-color-zero">
+                {product.location}
               </p>
             </div>
 
