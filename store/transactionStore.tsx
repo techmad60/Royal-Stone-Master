@@ -26,7 +26,7 @@ interface TransactionStore {
   setCurrentPage: (page: number) => void;
 }
 
-const useTransactionStore = create<TransactionStore>((set, get) => ({
+const useTransactionStore = create<TransactionStore>((set) => ({
   transactions: [],
   currentPage: 1,
   totalPages: 1,
@@ -34,13 +34,7 @@ const useTransactionStore = create<TransactionStore>((set, get) => ({
   isLoading: false,
   error: null,
 
-  fetchTransactions: async (page = 1, forceRefresh = false) => {
-    const existingData = get().transactions[page];
-    if (existingData && !forceRefresh) {
-      // If transactions for this page exist and refresh isn't forced, don't refetch
-      set({ currentPage: page });
-      return;
-    }
+  fetchTransactions: async (page = 1) => {
     set({ isLoading: true, error: null }); // Start loading
     try {
       const token = localStorage.getItem("accessToken");

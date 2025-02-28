@@ -23,7 +23,7 @@ export default function Investment() {
     fetchInvestments,
     investments,
     // isLoading,
-    error,
+    // error,
     currentPage,
     totalPages,
     setCurrentPage,
@@ -71,8 +71,8 @@ export default function Investment() {
     fetchPortfolio();
   }, [fetchInvestments, currentPage, router]);
 
-  console.log(investments);
-  console.log(error);
+  // console.log(investments);
+  // console.log(error);
 
   return (
     <div className="mt-[9rem] sm:mt-[1rem] lg:mt-[6rem]">
@@ -159,17 +159,6 @@ export default function Investment() {
       <hr className="lg:hidden mt-4" />
       <hr className="mr-8 hidden lg:flex" />
 
-      <div className="flex justify-between my-4 lg:mr-8">
-        <p className="text-base font-semibold text-color-zero">
-          Recent Transactions
-        </p>
-        <Link
-          href="/main/investments/investment-history"
-          className="text-sm text-color-one"
-        >
-          View All
-        </Link>
-      </div>
       <HistoryDesktop />
       <HistoryMobile />
     </div>

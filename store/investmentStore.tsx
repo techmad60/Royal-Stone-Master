@@ -33,14 +33,14 @@ interface InvestmentStore {
   isLoading: boolean;
   error: string | { message: string } | null;
   investmentId: string | null;
-  availableCash: number;
+  // availableCash: number;
   setInvestmentId: (id: string | null) => void;
-  setAvailableCash: (cash: number) => void;
-  fetchInvestments: (type: string, page?: number, forceRefresh?: boolean) => Promise<void>;
+  // setAvailableCash: (cash: number) => void;
+  fetchInvestments: (type: string, page?: number) => Promise<void>;
   setCurrentPage: (page: number) => void;
 }
 
-const useInvestmentStore = create<InvestmentStore>((set, get) => ({
+const useInvestmentStore = create<InvestmentStore>((set) => ({
   investments: [],
   currentPage: 1,
   totalPages: 1,
@@ -48,17 +48,13 @@ const useInvestmentStore = create<InvestmentStore>((set, get) => ({
   isLoading: false,
   error: null,
   investmentId: null,
-  availableCash: 0,
-  setAvailableCash: (cash) => set({ availableCash: cash }),
+  // availableCash: 0,
+  // setAvailableCash: (cash) => set({ availableCash: cash }),
   setInvestmentId: (id) => set({ investmentId: id }),
-  fetchInvestments: async (type = "", page = 1, forceRefresh = false) => {
-    const existingData = get().investments[page];
-    if (existingData && !forceRefresh) {
-      // If transactions for this page exist and refresh isn't forced, don't refetch
-      set({ currentPage: page });
-      return;
-    }
-    set({ isLoading: true, error: null }); // Start loading
+  fetchInvestments: async (type = "", page = 1,) => {
+    set({ investments: [], isLoading: true, error: null }); // Clear old data immediately
+    
+    // set({ isLoading: true, error: null }); // Start loading
     try {
       const token = localStorage.getItem("accessToken");
       const response = await fetch(

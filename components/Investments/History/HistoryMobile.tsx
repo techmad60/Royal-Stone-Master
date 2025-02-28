@@ -1,6 +1,7 @@
 import Icon from "@/components/ui/Icon";
 import NoHistory from "@/components/ui/NoHistory";
 import { getInvestmentStatusColor } from "@/utils/functions";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BsFileBarGraphFill } from "react-icons/bs";
 import { GoPlus } from "react-icons/go";
@@ -161,11 +162,25 @@ export default function HistoryMobile() {
       } else {
         setError("An unknown error occurred. Please try again later.");
       }
-    } 
+    }
   };
 
   return (
     <div className="lg:hidden">
+      <div className="flex justify-between my-4 lg:mr-8">
+        <p className="text-base font-semibold text-color-zero">
+          Recent Transactions
+        </p>
+
+        {latestTransactions.length > 0 && (
+          <Link
+            href="/main/investments/investment-history"
+            className="text-sm text-color-one"
+          >
+            View All
+          </Link>
+        )}
+      </div>
       {error && <p className="text-red-500">{error}</p>}
       {latestTransactions.length > 0 ? (
         <section>
@@ -227,11 +242,11 @@ export default function HistoryMobile() {
         </section>
       ) : (
         <div className="lg:mr-8">
-        <NoHistory
-          icon={<BsFileBarGraphFill />}
-          text="No Recent Transactions Yet."
-        />
-      </div>
+          <NoHistory
+            icon={<BsFileBarGraphFill />}
+            text="No Recent Transactions Yet."
+          />
+        </div>
       )}
       {/* Modal for displaying investment details */}
       {showModal && selectedInvestment && (

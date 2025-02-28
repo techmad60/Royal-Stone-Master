@@ -34,15 +34,15 @@ export default function CardComponentFive({
       </div>
       <div className={`flex justify-between lg:justify-start w-full ${gapStyling}`}>
         <div>
-          <p className={`text-xs lg:text-base ${textSize}`}>{label}</p>
-          <p className={`text-[32px] font-extrabold ${classname}`}>{number}</p>
+          <p className={`text-xs lg:text-base break-words ${textSize}`}>{label}</p>
+          <p className={`text-[32px] font-extrabold break-words ${classname}`}>{number}</p>
         </div>
 
         <div>
           {showNumber && (
             <div className="flex flex-col">
-              <p className={`text-xs lg:text-base ${textSize}`}>{secondLabel}</p>
-              <p className={`text-[32px] font-extrabold ${classname}`}>
+              <p className={`text-xs lg:text-base break-words ${textSize}`}>{secondLabel}</p>
+              <p className={`text-[32px] font-extrabold break-words ${classname}`}>
                 {secondNumber}
               </p>
             </div>

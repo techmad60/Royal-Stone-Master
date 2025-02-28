@@ -2,6 +2,7 @@ import Icon from "@/components/ui/Icon";
 import NoHistory from "@/components/ui/NoHistory";
 import TableHeader from "@/components/ui/TableHeader";
 import { Savings } from "@/types/Type";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { IoIosArrowForward, IoIosSend } from "react-icons/io";
@@ -72,10 +73,22 @@ export default function HistoryDesktop() {
 
   return (
     <div className="hidden lg:grid">
+      <div className="flex justify-between my-4 lg:mr-8">
+        <p className="text-base font-semibold text-color-zero">
+          Recent Transactions
+        </p>
+        {latestSavings.length > 0 && (
+          <Link
+            href="/main/savings/savings-history"
+            className="text-sm text-color-one"
+          >
+            View All
+          </Link>
+        )}
+      </div>
       {latestSavings.length > 0 && <TableHeader />}
       {error && <p className="text-red-500">{error}</p>}
       {latestSavings.length > 0 ? (
-        
         latestSavings.map((savings) => (
           <section
             key={savings.id}
@@ -84,7 +97,7 @@ export default function HistoryDesktop() {
             <div className="flex items-center gap-3 col-span-2">
               <Icon
                 icon={
-                  savings.type ===  "savings-wallet-funding" ? (
+                  savings.type === "savings-wallet-funding" ? (
                     <GoPlus className="text-color-one" />
                   ) : savings.type === "savings-withdrawal" ? (
                     <IoIosSend className="text-color-one" />
@@ -137,10 +150,7 @@ export default function HistoryDesktop() {
         ))
       ) : (
         <div className="lg:mr-8">
-          <NoHistory
-            icon={<TbTargetArrow />}
-            text="No transactions Yet."
-          />
+          <NoHistory icon={<TbTargetArrow />} text="No transactions Yet." />
         </div>
       )}
 

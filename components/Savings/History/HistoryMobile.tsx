@@ -1,5 +1,6 @@
 import Icon from "@/components/ui/Icon";
 import NoHistory from "@/components/ui/NoHistory";
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { IoIosSend } from "react-icons/io";
@@ -39,7 +40,7 @@ export default function HistoryMobile() {
 
       const data = await response.json();
       if (!data.status) {
-        toast.error("Failed to fetch transactions")
+        toast.error("Failed to fetch transactions");
       }
       setSavings(data.data.data);
     } catch (err: unknown) {
@@ -61,7 +62,9 @@ export default function HistoryMobile() {
     const groupByDate = (transactions: Savings[]) => {
       const grouped: { [key: string]: Savings[] } = {};
       transactions.forEach((transaction) => {
-        const dateKey = new Date(transaction.createdAt).toISOString().split("T")[0];
+        const dateKey = new Date(transaction.createdAt)
+          .toISOString()
+          .split("T")[0];
         if (!grouped[dateKey]) {
           grouped[dateKey] = [];
         }
@@ -118,6 +121,20 @@ export default function HistoryMobile() {
 
   return (
     <div className="lg:hidden">
+      <div className="flex justify-between my-4 lg:mr-8">
+        <p className="text-base font-semibold text-color-zero">
+          Recent Transactions
+        </p>
+
+        {latestTransactions.length > 0 && (
+          <Link
+            href="/main/savings/savings-history"
+            className="text-sm text-color-one"
+          >
+            View All
+          </Link>
+        )}
+      </div>
       {latestTransactions.length > 0 ? (
         <section>
           <div>
@@ -180,7 +197,10 @@ export default function HistoryMobile() {
         </section>
       ) : (
         <div>
-          <NoHistory icon={<TbTargetArrow />} text="No Recent Transactions Yet." />
+          <NoHistory
+            icon={<TbTargetArrow />}
+            text="No Recent Transactions Yet."
+          />
         </div>
       )}
       {showModal && selectedSavings && (

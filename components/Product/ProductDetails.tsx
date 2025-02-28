@@ -124,7 +124,7 @@ export default function ProductDetails({
   };
 
   return (
-    <div className="mt-[8.3rem] lg:mt-24">
+    <div className="mt-[8.3rem] lg:mt-24 sm:mt-0">
       <Navigator
         currentStep={type === "investment" ? 2 : 1}
         steps={steps[type]}
@@ -165,7 +165,7 @@ export default function ProductDetails({
       </section>
 
       {/* Large Screen */}
-      <section className="hidden overflow-scroll hide-scrollbar my-4 sm:grid grid-cols-4 gap-x-2">
+      <section className="hidden overflow-scroll hide-scrollbar my-4 sm:grid grid-cols-4 gap-x-4 xl:gap-x-36 2xlg:gap-x-24 2xl:gap-x-0">
         {/* Large Image */}
         <div
           className="col-span-2 rounded-[24px] overflow-hidden xl:w-[549px] xl:h-[337px]"
@@ -185,7 +185,7 @@ export default function ProductDetails({
         </div>
 
         {/* Grid for smaller images */}
-        <div className="grid grid-cols-2 col-span-2 gap-y-2 lg:gap-x-16 xl:gap-x-[5rem]">
+        <div className="grid grid-cols-2 col-span-2 gap-y-2 sm:gap-x-6 lg:gap-x-16 xl:gap-x-[16rem] 2xlg:gap-x-36">
           {(() => {
             const images =
               product.images.length > 0

@@ -27,19 +27,14 @@ interface ProductStore {
   setCurrentPage: (page: number) => void;
 }
 
-const useProductStore = create<ProductStore>((set, get) => ({
+const useProductStore = create<ProductStore>((set) => ({
   products: [],
   currentPage: 1,
   totalPages: 1,
   isLoading: false,
   error: null,
-  fetchProducts: async (page = 1, forceRefresh = false) => {
-    const existingData = get().products[page];
-    if (existingData && !forceRefresh) {
-      // If transactions for this page exist and refresh isn't forced, don't refetch
-      set({ currentPage: page });
-      return;
-    }
+  fetchProducts: async (page = 1) => {
+   
    
     set({ isLoading: true, error: null }); // Start loading
     try {

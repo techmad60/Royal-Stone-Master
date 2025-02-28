@@ -153,12 +153,12 @@ export default function Savings() {
         </>
       )}
       <hr />
-      <div className="flex justify-between my-4 lg:mr-8">
+      {/* <div className="flex justify-between my-4 lg:mr-8">
         <p className="text-base font-semibold text-color-zero">Recent Transactions</p>
         <Link href="/main/savings/savings-history" className="text-sm text-color-one">
           View All
         </Link>
-      </div>
+      </div> */}
       <HistoryDesktop />
       <HistoryMobile />
     </div>

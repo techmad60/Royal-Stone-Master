@@ -11,22 +11,14 @@ interface SavingsTargetStore {
   setCurrentPage: (page: number) => void;
 }
 
-export const useSavingsTargetStore = create<SavingsTargetStore>((set, get) => ({
+export const useSavingsTargetStore = create<SavingsTargetStore>((set) => ({
   savingsTarget: [],
   currentPage: 1,
   totalPages: 1,
   loading: false,
   error: "",
 
-  fetchSavingsTarget: async (page = 1, forceRefresh = false) => {
-    const existingData = get().savingsTarget[page];
-    if (existingData && !forceRefresh) {
-      // If transactions for this page exist and refresh isn't forced, don't refetch
-      set({ currentPage: page });
-      return;
-    }
-    set({ loading: true, error: "" });
-
+  fetchSavingsTarget: async (page = 1) => {
     try {
       const token = localStorage.getItem("accessToken");
       const response = await fetch(`https://api-royal-stone.softwebdigital.com/api/savings/targets?page=${page}`, {

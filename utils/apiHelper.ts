@@ -17,7 +17,7 @@ function handleSessionExpired() {
   toast.error("Session expired, please log in again.");
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
-  window.location.href = "/auth/login"; // Redirect to login
+  window.location.href = "/auth/login/with-mail"; // Redirect to login
 }
 
 // Function to refresh access token
@@ -47,7 +47,7 @@ async function refreshAccessToken() {
     return data.accessToken;
   } catch  {
     handleSessionExpired();
-    throw new Error("Session refresh failed");
+    toast.error("Session refresh failed");
   }
 }
 

@@ -53,13 +53,10 @@ export default function ProductDesktop({
 
   return (
     <div>
-      {/* Table Header */}
-      {/* grid-cols-[50px_3fr_1fr_1fr_1fr_1fr_1fr] */}
-      {/* <ToastContainer position="top-right" autoClose={3000} /> */}
       {products.length !== 0 && (
-        <div className="hidden lg:grid grid-cols-[30px_2fr_1fr_1fr_1fr_1fr_1fr] items-center bg-light-grey rounded-common py-4 px-8 shadow-sm mt-4">
+        <div className="hidden lg:grid grid-cols-[35px_2fr_1fr_1fr_1fr_1fr_1fr] items-center bg-light-grey rounded-common py-4 px-8 shadow-sm mt-4">
           <p className="text-xs text-color-form">S/N</p>
-          <p className="text-xs text-color-zero">
+          <p className="text-xs text-color-zero min-w-0 truncate">
             Product Image & Name
           </p>
           <p className="text-xs text-color-zero">Total Units</p>
@@ -75,7 +72,7 @@ export default function ProductDesktop({
         {products.map((product, index) => (
           <section
             key={product.id}
-            className="hidden lg:grid grid-cols-[30px_2fr_1fr_1fr_1fr_1fr_1fr] items-center my-4 mx-8 py-4 border-b"
+            className="hidden lg:grid grid-cols-[35px_2fr_1fr_1fr_1fr_1fr_1fr] items-center my-4 px-8 py-4 border-b"
           >
             {/* Serial Number (S/N) */}
             <p className="text-xs text-color-form">{index + 1}</p>
@@ -84,34 +81,34 @@ export default function ProductDesktop({
             <div className="flex items-center gap-2">
               <div className="w-[40px] h-[40px] rounded-[5px] overflow-hidden">
                 <Image
-                  src={product.images[0] || "/placeholder-image.png"}
-                  alt={product.name}
+                  src={product?.images[0] || "/placeholder-image.png"}
+                  alt={product?.name}
                   width={40}
                   height={40}
                   className="w-full h-full object-cover"
                 />
               </div>
               <p className="text-sm text-color-zero pr-4 tracking-tight">
-                {product.name}
+                {product?.name}
               </p>
             </div>
 
             {/* Total Units */}
             <div>
-              <p className="text-sm text-color-zero">{product.totalUnits}</p>
+              <p className="text-sm text-color-zero">{product?.totalUnits}</p>
             </div>
 
             {/* Available units */}
             <div>
               <p className="text-sm text-color-zero">
-                {product.availableUnits}
+                {product?.availableUnits}
               </p>
             </div>
 
             {/* Location */}
             <div>
               <p className="text-sm text-color-zero">
-                {product.location}
+                {product?.location}
               </p>
             </div>
 
@@ -148,7 +145,7 @@ export default function ProductDesktop({
                     handleNavigation(product.id, product.status, "view"); // Pass status
                   }}
                   className="text-xs font-medium hover:text-green-700 duration-300 flex items-center text-color-form"
-                  aria-label={`View details of ${product.name}`}
+                  aria-label={`View details of ${product?.name}`}
                 >
                   View <MdArrowForwardIos />
                 </button>

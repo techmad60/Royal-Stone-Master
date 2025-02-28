@@ -293,7 +293,7 @@ export default function Referrals() {
           </div>
 
           <section className="bg-light-grey rounded-common shadow-sm p-6 space-y-4 my-6 lg:bg-transparent lg:shadow-none lg:my-0 lg:p-0">
-            <div className="flex justify-between items-center lg:bg-light-grey lg:p-6 lg:shadow-sm lg:rounded-[35px] lg:w-full">
+            <div className="flex justify-between items-center flex-shrink-0 lg:bg-light-grey lg:p-6 lg:shadow-sm lg:rounded-[35px] lg:w-full">
               <div>
                 <p className="text-sm text-[#6B7385] hidden lg:flex">
                   Referral code
@@ -311,9 +311,9 @@ export default function Referrals() {
             <hr className="bg-[#F2F2F2] lg:hidden" />
             <CardComponentFive
               icon={<AiFillDollarCircle />}
-              number={`$${totalEarning.toFixed(2)}`}
+              number={`$${totalEarning.toLocaleString()}`}
               secondLabel="Current Balance"
-              secondNumber={`$${currentBalance.toFixed(2)}`}
+              secondNumber={`$${currentBalance.toLocaleString()}`}
               label="Your Earnings"
               width="w-full lg:hidden"
               showNumber={true}
@@ -325,11 +325,11 @@ export default function Referrals() {
           <CardComponentFive
             icon={<AiFillDollarCircle />}
             label="Your Earnings"
-            number={`$${totalEarning.toFixed(2)}`}
+            number={`$${totalEarning.toLocaleString()}`}
             secondLabel="Current Balance"
-            secondNumber={`$${currentBalance.toFixed(2)}`}
-            gapStyling="lg:gap-x-24 xl:gap-x-60"
-            width="hidden lg:flex lg:w-[350px] xl:w-[500px] 2xlg:w-[600px]"
+            secondNumber={`$${currentBalance.toLocaleString()}`}
+            gapStyling="lg:gap-x-16 xl:gap-x-36"
+            width="hidden lg:flex lg:w-[360px] xl:w-[500px] 2xlg:w-[600px]"
             showNumber={true}
           />
           {!showWithdrawalOptions && (
