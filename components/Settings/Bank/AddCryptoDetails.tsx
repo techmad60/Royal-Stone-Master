@@ -9,6 +9,7 @@ import SettingsParent from "../SettingsParent";
 import AddBankDetails from "./AddBankDetails";
 import BankSetting from "./BankSettings";
 import DeleteBank from "./DeleteBank";
+import { apiFetch } from "@/utils/apiHelper";
 
 type CryptoDetails = {
   network: string;
@@ -59,16 +60,16 @@ export default function AddCryptoDetails() {
   useEffect(() => {
     const fetchNetworks = async () => {
       try {
-        if (!token) {
-          router.push("/auth/login/with-mail");
-        }
+        // if (!token) {
+        //   router.push("/auth/login/with-mail");
+        // }
         setIsLoading(true);
-        const response = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/crypto-network",
+        const response = await apiFetch(
+          "/crypto-network",
           {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${token}`,
+              // Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
           }
@@ -123,12 +124,12 @@ export default function AddCryptoDetails() {
 
     try {
       setIsLoading(true);
-      const response = await fetch(
-        "https://api-royal-stone.softwebdigital.com/api/bank/crypto-wallet",
+      const response = await apiFetch(
+        "/bank/crypto-wallet",
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(payload), // Match the backend payload structure

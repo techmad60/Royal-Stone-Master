@@ -2,11 +2,12 @@ import Icon from "@/components/ui/Icon";
 import Loading from "@/components/ui/Loading";
 // import { BankDetails, CryptoWallet } from "@/types/Type";
 import { FundCryptoWalletDetails } from "@/types/Type";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaBitcoin } from "react-icons/fa";
 import { toast } from "react-toastify";
 import Button from "../../ui/Button";
+import { apiFetch } from "@/utils/apiHelper";
 
 interface MyComponentProps {
   onClose: () => void;
@@ -36,25 +37,25 @@ export default function CryptoPreview({
     };
   }, []);
 
-  const router = useRouter();
+  // const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleProceed = async () => {
     setIsProcessing(true);
 
     try {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        router.push("/auth/login/with-mail"); // Redirect if no token found
-        return;
-      }
+      // const token = localStorage.getItem("accessToken");
+      // if (!token) {
+      //   router.push("/auth/login/with-mail"); // Redirect if no token found
+      //   return;
+      // }
 
       // Prepare the payload with the paymentID and token
-      const response = await fetch("https://api-royal-stone.softwebdigital.com/api/fund/crypto", {
+      const response = await apiFetch("/fund/crypto", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          // Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ paymentID }), // Sending paymentID in the body
       });

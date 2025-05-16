@@ -4,6 +4,7 @@ import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { FaqResponse, FaqType } from "@/types/Type";
 import { useEffect, useState } from "react";
 import SettingsParent from "../SettingsParent";
+import { apiFetch } from "@/utils/apiHelper";
   
 export default function FAQs() {
   const isMobile = useMediaQuery("(max-width: 1024px)");
@@ -14,8 +15,8 @@ export default function FAQs() {
   useEffect(() => {
     const fetchFaqs = async () => {
       try {
-        const response = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/faq"
+        const response = await apiFetch(
+          "/faq"
         );
 
         if (!response.ok) {

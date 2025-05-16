@@ -3,6 +3,8 @@ import Button from "@/components/ui/Button";
 import { XCircleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { apiFetch } from "@/utils/apiHelper";
+
 
 interface AddBankInformationProps {
   onClose: () => void;
@@ -84,23 +86,22 @@ export default function AddBankInformation({
     setIsLoading(true);
 
     // Retrieve the access token (assuming it's in localStorage)
-    const token = localStorage.getItem("accessToken");
+    // const token = localStorage.getItem("accessToken");
 
-    if (!token) {
-      alert("You must be logged in to add bank details.");
-      setIsLoading(false);
-      return;
-    }
+    // if (!token) {
+    //   alert("You must be logged in to add bank details.");
+    //   setIsLoading(false);
+    //   return;
+    // }
 
     // API call to submit the form data
     try {
-      const response = await fetch(
-        "https://api-royal-stone.softwebdigital.com/api/bank",
+      const response = await apiFetch(
+        "/bank",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             bankName: formData.bankName,

@@ -22,6 +22,7 @@ import { BsPeopleFill } from "react-icons/bs";
 import { FaBitcoin } from "react-icons/fa6";
 import { RiBankLine } from "react-icons/ri";
 import { toast, ToastContainer } from "react-toastify";
+import { apiFetch } from "@/utils/apiHelper";
 
 interface ReferralTerms {
   referralterms: {
@@ -92,11 +93,11 @@ export default function Referrals() {
 
       try {
         const fetchWithToken = async (url: string) => {
-          const response = await fetch(url, {
+          const response = await apiFetch(url, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              // Authorization: `Bearer ${token}`,
             },
           });
           const result = await response.json();
@@ -112,17 +113,17 @@ export default function Referrals() {
           cryptoData,
         ] = await Promise.all([
           fetchWithToken(
-            "https://api-royal-stone.softwebdigital.com/api/referral"
+            "/referral"
           ),
           fetchWithToken(
-            "https://api-royal-stone.softwebdigital.com/api/referral/terms"
+            "/referral/terms"
           ),
           fetchWithToken(
-            "https://api-royal-stone.softwebdigital.com/api/referral/dashboard"
+            "/referral/dashboard"
           ),
-          fetchWithToken("https://api-royal-stone.softwebdigital.com/api/bank"),
+          fetchWithToken("/bank"),
           fetchWithToken(
-            "https://api-royal-stone.softwebdigital.com/api/bank/crypto-wallet"
+            "/bank/crypto-wallet"
           ),
         ]);
 

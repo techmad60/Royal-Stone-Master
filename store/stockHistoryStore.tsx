@@ -1,5 +1,6 @@
 import { StockPurchase } from '@/types/Type';
 import { create } from 'zustand';
+import { apiFetch } from '@/utils/apiHelper';
 
 // interface Stock {
 //   stockID: {
@@ -33,16 +34,16 @@ const useStockHistoryStore = create<StockHistoryStore>((set) => ({
   fetchStocks: async (page = 1) => {
     try {
         set({ isLoading: true });
-      const accessToken = localStorage.getItem('accessToken');
-      if (!accessToken) {
-        throw new Error('No access token found');
-      }
+      // const accessToken = localStorage.getItem('accessToken');
+      // if (!accessToken) {
+      //   throw new Error('No access token found');
+      // }
       
-      const response = await fetch(`https://api-royal-stone.softwebdigital.com/api/stock/purchase?page=${page}`, {
+      const response = await apiFetch(`/stock/purchase?page=${page}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
+          // 'Authorization': `Bearer ${accessToken}`
         },
       });
       const result = await response.json();
@@ -52,8 +53,8 @@ const useStockHistoryStore = create<StockHistoryStore>((set) => ({
           currentPage: page, 
           totalPages: result.data.totalPages
         });
-        console.log("Fetched stocks:", result.data.data);
-        console.log(accessToken)
+        // console.log("Fetched stocks:", result.data.data);
+        // console.log(accessToken)
       }
     } catch (error) {
       console.error('Error fetching data:', error);

@@ -9,6 +9,7 @@ import SettingsParent from "../SettingsParent";
 import AddCryptoDetails from "./AddCryptoDetails";
 import BankSetting from "./BankSettings";
 import DeleteBank from "./DeleteBank";
+import { apiFetch } from "@/utils/apiHelper";
 
 type BankDetails = {
   bankName: string;
@@ -103,8 +104,8 @@ export default function AddBankDetails() {
     setBank((prev) => ({ ...prev, [name]: value }));
   };
   const addBankDetails = async () => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) return alert("You must be logged in to add bank details.");
+    // const token = localStorage.getItem("accessToken");
+    // if (!token) return alert("You must be logged in to add bank details.");
     const payload = {
       bankName: bank.bankName,
       accountNumber: bank.accountNumber,
@@ -117,12 +118,12 @@ export default function AddBankDetails() {
 
     try {
       setIsLoading(true);
-      const response = await fetch(
-        "https://api-royal-stone.softwebdigital.com/api/bank",
+      const response = await apiFetch(
+        "/bank",
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(payload), // Match the backend payload structure
@@ -181,12 +182,12 @@ export default function AddBankDetails() {
 
     try {
       setIsLoading(true);
-      const response = await fetch(
-        "https://api-royal-stone.softwebdigital.com/api/bank",
+      const response = await apiFetch(
+        "/bank",
         {
           method: "PUT",
           headers: {
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(payload),

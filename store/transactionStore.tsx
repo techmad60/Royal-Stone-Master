@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import {apiFetch} from "@/utils/apiHelper";
 
 interface Transactions {
   id: string;
@@ -37,13 +38,13 @@ const useTransactionStore = create<TransactionStore>((set) => ({
   fetchTransactions: async (page = 1) => {
     set({ isLoading: true, error: null }); // Start loading
     try {
-      const token = localStorage.getItem("accessToken");
-      const response = await fetch(
-        `https://api-royal-stone.softwebdigital.com/api/transaction?page=${page}`,
+      // const token = localStorage.getItem("accessToken");
+      const response = await apiFetch(
+        `/transaction?page=${page}`,
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }

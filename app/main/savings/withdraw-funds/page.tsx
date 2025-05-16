@@ -17,6 +17,7 @@ import { BiSolidBank } from "react-icons/bi";
 import { FaBitcoin } from "react-icons/fa";
 import { RiBankLine } from "react-icons/ri";
 import { toast } from "react-toastify";
+import { apiFetch } from "@/utils/apiHelper";
 
 const fundSteps = [
   { label: "Savings", href: "/main/savings" },
@@ -78,24 +79,24 @@ export default function WithdrawFundsPage() {
       setError(null);
 
       try {
-        const token = localStorage.getItem("accessToken");
-        if (!token) return router.push("/auth/login/with-mail");
+        // const token = localStorage.getItem("accessToken");
+        // if (!token) return router.push("/auth/login/with-mail");
 
         const fetchWithToken = async (url: string) => {
-          const response = await fetch(url, {
+          const response = await apiFetch(url, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              // Authorization: `Bearer ${token}`,
             },
           });
           return response.json();
         };
 
         const [bankData, cryptoData] = await Promise.all([
-          fetchWithToken("https://api-royal-stone.softwebdigital.com/api/bank"),
+          fetchWithToken("/bank"),
           fetchWithToken(
-            "https://api-royal-stone.softwebdigital.com/api/bank/crypto-wallet"
+            "/bank/crypto-wallet"
           ),
         ]);
 

@@ -28,6 +28,7 @@ import AddCryptoDetails from "./Bank/AddCryptoDetails";
 import BankSetting from "./Bank/BankSettings";
 import ChangeAvatar from "./Profile/ChangeAvatar";
 import DeleteAccount from "./ui/DeleteAccount";
+import { apiFetch } from "@/utils/apiHelper";
 // import { toast, ToastContainer } from "react-toastify";
 
 export default function SettingsParent() {
@@ -56,19 +57,19 @@ export default function SettingsParent() {
 
   useEffect(() => {
     const fetchProfilePicture = async () => {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        router.push("/auth/login/with-mail");
-        return;
-      }
+      // const token = localStorage.getItem("accessToken");
+      // if (!token) {
+      //   router.push("/auth/login/with-mail");
+      //   return;
+      // }
 
       try {
         // Fetch user's profile data
-        const response = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/account/profile",
+        const response = await apiFetch(
+          "/account/profile",
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              // Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
           }

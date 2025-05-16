@@ -6,6 +6,7 @@ import NoHistory from "@/components/ui/NoHistory";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaBell } from "react-icons/fa";
+import { apiFetch } from "@/utils/apiHelper";
 
 interface Notification {
   id: string;
@@ -23,13 +24,13 @@ export default function Notification() {
   // Fetch initial notifications
   useEffect(() => {
     const fetchNotifications = async () => {
-      const token = localStorage.getItem("accessToken");
+      // const token = localStorage.getItem("accessToken");
       try {
-        const response = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/notification",
+        const response = await apiFetch(
+          "/notification",
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              // Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
           }

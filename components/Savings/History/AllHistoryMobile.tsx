@@ -6,6 +6,7 @@ import { GoPlus } from "react-icons/go";
 import { IoIosSend } from "react-icons/io";
 import { TbTargetArrow } from "react-icons/tb";
 import TransactionHistoryModal from "./TransactionHistoryModal";
+import { apiFetch } from "@/utils/apiHelper";
 
 interface Savings {
   id: string;
@@ -63,17 +64,17 @@ export default function AllHistoryMobile() {
 
   // Fetch savings transactions
   const fetchSavings = useCallback(async () => {
-    const token = localStorage.getItem("accessToken");
+    // const token = localStorage.getItem("accessToken");
     try {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(
-        `https://api-royal-stone.softwebdigital.com/api/savings/transactions`,
+      const response = await apiFetch(
+        `/savings/transactions`,
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }

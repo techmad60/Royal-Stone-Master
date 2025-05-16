@@ -11,6 +11,7 @@ import Navigator from "@/components/ui/Navigator";
 import Processed from "@/components/ui/Processed";
 import { DepositFund } from "@/Services/apiService";
 import useBankCryptoStore from "@/store/bankCryptoStore";
+import { apiFetch } from "@/utils/apiHelper";
 import {
   DepositBankResponse,
   DepositCryptoResponse,
@@ -50,17 +51,17 @@ export default function FundWalletPage() {
       setError(null);
 
       try {
-        const token = localStorage.getItem("accessToken");
-        if (!token) {
-          router.push("/auth/login/with-mail");
-          return;
-        }
+        // const token = localStorage.getItem("accessToken");
+        // if (!token) {
+        //   router.push("/auth/login/with-mail");
+        //   return;
+        // }
 
-        const response = await fetch(
-          `https://api-royal-stone.softwebdigital.com/api/fund?type=${type}`,
+        const response = await apiFetch(
+          `/fund?type=${type}`,
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              // Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
           }

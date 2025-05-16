@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { FaRegImage } from "react-icons/fa6";
 import { TiTimes } from "react-icons/ti";
 import Button from "../../ui/Button";
+import { apiFetch } from "@/utils/apiHelper";
 interface ReceiptProps {
   onProceed: () => void;
   onBack: () => void;
@@ -81,19 +82,19 @@ export default function ReceiptModal({
       setFeedbackMessage(null);
 
       // Assuming you get access token and signature to upload image (as before)
-      const accessToken = localStorage.getItem("accessToken");
-      if (!accessToken) {
-        setFeedbackType("error");
-        setFeedbackMessage("You are not authenticated. Please log in again.");
-        return;
-      }
+      // const accessToken = localStorage.getItem("accessToken");
+      // if (!accessToken) {
+      //   setFeedbackType("error");
+      //   setFeedbackMessage("You are not authenticated. Please log in again.");
+      //   return;
+      // }
 
-      const signatureResponse = await fetch(
+      const signatureResponse = await apiFetch(
         "https://api-royal-stone.softwebdigital.com/api/account/image-upload-signature",
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            // Authorization: `Bearer ${accessToken}`,
           },
         }
       );
@@ -135,12 +136,12 @@ export default function ReceiptModal({
         // localStorage.setItem("uploadedImageURL", uploadedImageURL);
         setImagePreview(uploadedImageURL);
 
-        const bankResponse = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/fund/investment/bank-deposit",
+        const bankResponse = await apiFetch(
+          "/fund/investment/bank-deposit",
           {
             method: "PUT",
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+              // Authorization: `Bearer ${accessToken}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify({

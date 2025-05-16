@@ -8,6 +8,7 @@ import { IoIosArrowForward, IoIosSend } from "react-icons/io";
 import { TbTargetArrow } from "react-icons/tb";
 import Icon from "../../ui/Icon";
 import TransactionHistoryModal from "./TransactionHistoryModal";
+import { apiFetch } from "@/utils/apiHelper";
 
 // interface Transactions {
 //   id: string;
@@ -69,14 +70,14 @@ export default function HistoryDesktop({
   };
 
   const handleTransactionClick = async (transactionID: string) => {
-    const token = localStorage.getItem("accessToken");
+    // const token = localStorage.getItem("accessToken");
     try {
-      const res = await fetch(
-        `https://api-royal-stone.softwebdigital.com/api/transaction?transactionID=${transactionID}`,
+      const res = await apiFetch(
+        `/transaction?transactionID=${transactionID}`,
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }

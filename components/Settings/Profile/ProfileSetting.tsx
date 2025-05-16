@@ -8,6 +8,7 @@ import Button from "../../ui/Button";
 import CustomAlert from "../../ui/CustomAlert";
 import NavigatorTwo from "../../ui/NavigatorTwo";
 import SettingsParent from "../SettingsParent";
+import {apiFetch} from "@/utils/apiHelper";
 
 export default function ProfileSettings() {
   const [profile, setProfile] = useState({
@@ -33,18 +34,18 @@ export default function ProfileSettings() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem("accessToken");
-        console.log(token);
-        if (!token) {
-          router.push("/auth/login/with-mail");
-          return;
-        }
+        // const token = localStorage.getItem("accessToken");
+        // console.log(token);
+        // if (!token) {
+        //   router.push("/auth/login/with-mail");
+        //   return;
+        // }
 
-        const response = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/account/profile",
+        const response = await apiFetch(
+          "/account/profile",
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              // Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -102,11 +103,11 @@ export default function ProfileSettings() {
     setIsLoading(true);
 
     try {
-      const token = localStorage.getItem("accessToken"); // Retrieve token from local storage
-      if (!token) {
-        router.push("/auth/login/with-mail");
-        return; // Stop execution if the token is not found
-      }
+      // const token = localStorage.getItem("accessToken"); // Retrieve token from local storage
+      // if (!token) {
+      //   router.push("/auth/login/with-mail");
+      //   return; // Stop execution if the token is not found
+      // }
 
       // Prepare only the modified fields
       const updatedProfile: { [key: string]: string } = {};
@@ -134,13 +135,13 @@ export default function ProfileSettings() {
         return;
       }
 
-      const response = await fetch(
-        "https://api-royal-stone.softwebdigital.com/api/account/profile",
+      const response = await apiFetch(
+        "/account/profile",
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(updatedProfile),
         }

@@ -6,6 +6,7 @@ import { FaWhatsappSquare } from "react-icons/fa";
 import { IoIosMail } from "react-icons/io";
 import Icon from "../../ui/Icon";
 import SettingsParent from "../SettingsParent";
+import { apiFetch } from "@/utils/apiHelper";
 
 export default function Support() {
   const isMobile = useMediaQuery("(max-width: 1024px)");
@@ -19,17 +20,17 @@ export default function Support() {
   useEffect(() => {
     const fetchSupportData = async () => {
       try {
-        const accessToken = localStorage.getItem("accessToken");
-        if (!accessToken) {
-          console.error("No access token found");
-          return;
-        }
+        // const accessToken = localStorage.getItem("accessToken");
+        // if (!accessToken) {
+        //   console.error("No access token found");
+        //   return;
+        // }
 
-        const response = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/support",
+        const response = await apiFetch(
+          "/support",
           {
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+              // Authorization: `Bearer ${accessToken}`,
               "Content-Type": "application/json",
             },
           }

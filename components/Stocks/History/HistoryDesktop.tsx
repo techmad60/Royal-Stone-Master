@@ -7,6 +7,7 @@ import { useCallback, useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { RiStockFill } from "react-icons/ri";
 import TransactionHistoryModal from "./TransactionHistory";
+import { apiFetch } from "@/utils/apiHelper";
 
 
 interface HistoryDesktopProps {
@@ -22,17 +23,17 @@ export default function HistoryDesktop({ stocks }: HistoryDesktopProps) {
 
   // Fetch stock transactions
   const fetchStocks = useCallback(async (id: string) => {
-    const token = localStorage.getItem("accessToken");
+    // const token = localStorage.getItem("accessToken");
     try {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(
-        `https://api-royal-stone.softwebdigital.com/api/stock/purchase`,
+      const response = await apiFetch(
+        `/stock/purchase`,
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }

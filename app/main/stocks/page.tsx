@@ -5,6 +5,7 @@ import { useState } from "react";
 import { RiStockFill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import BuyStockForm from "../../../components/Stocks/ui/BuyStockForm";
+import { apiFetch } from "@/utils/apiHelper";
 
 // Define interface for form data
 interface FormData {
@@ -60,15 +61,15 @@ export default function StocksPage() {
     setIsLoading(true);
 
     // Retrieve the access token (assuming it's in localStorage)
-    const token = localStorage.getItem("accessToken");
+    // const token = localStorage.getItem("accessToken");
 
     // API call to submit the form data
     try {
-      const response = await fetch("https://api-royal-stone.softwebdigital.com/api/stock", {
+      const response = await apiFetch("/stock", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          // Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           fullname: formData.name,

@@ -4,6 +4,7 @@ import { GetSavingsTarget, SavingsTargetTransaction } from "@/types/Type";
 import { useState } from "react";
 import { TbTargetArrow } from "react-icons/tb";
 import TransactionHistoryModal from "../TransactionHistoryModal";
+import { apiFetch } from "@/utils/apiHelper";
 
 interface SavingsMobileProps {
   transactions: SavingsTargetTransaction[];
@@ -21,18 +22,17 @@ export default function SavingsTargetMobile({
     useState<GetSavingsTarget | null>(null); // Selected transaction
 
   const fetchTransactionDetails = async (id: string) => {
-    const token = localStorage.getItem("accessToken");
+    // const token = localStorage.getItem("accessToken");
     try {
       setLoading(true);
       setError(null);
 
       // Fetch details of the given transaction
-      const response = await fetch(
-        `https://api-royal-stone.softwebdigital.com/api/savings/targets/transaction?savingsTargetID=${targetID}`,
+      const response = await apiFetch(
+        `/savings/targets/transaction?savingsTargetID=${targetID}`,
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
@@ -106,10 +106,9 @@ export default function SavingsTargetMobile({
     <div className="lg:hidden">
       {Object.keys(groupedTransactions).length > 0 ? (
         Object.entries(groupedTransactions).map(([date, items], index) => (
-          
-          <section key={index} >
+          <section key={index}>
             <div>
-            {error && <p className="text-red-500">{error}</p>}
+              {error && <p className="text-red-500">{error}</p>}
               <p className="text-sm text-color-form pb-2">{date}</p>
               <hr />
             </div>
@@ -117,7 +116,8 @@ export default function SavingsTargetMobile({
               <section
                 key={item.id}
                 className="flex justify-between bg-light-grey shadow-sm rounded-common p-4 my-4"
-                onClick={() => fetchTransactionDetails(item.id)}>
+                onClick={() => fetchTransactionDetails(item.id)}
+              >
                 <div>
                   <p className="text-sm text-color-zero tracking-tight">
                     {item.type
@@ -171,7 +171,7 @@ export default function SavingsTargetMobile({
           />
         </div>
       )}
-       {showModal && selectedTransaction && (
+      {showModal && selectedTransaction && (
         <TransactionHistoryModal
           savings={selectedTransaction}
           closeModal={() => setShowModal(false)}

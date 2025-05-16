@@ -2,6 +2,7 @@ import { XCircleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Button from "../../ui/Button";
+import { apiFetch } from "@/utils/apiHelper";
 
 interface SendOtpProps {
   onClose: () => void;
@@ -28,18 +29,18 @@ export default function SendOtp({ onClose, onVerify }: SendOtpProps) {
 
     try {
       // Retrieve token from local storage
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        throw new Error("Access token is missing. Please log in again.");
-      }
+      // const token = localStorage.getItem("accessToken");
+      // if (!token) {
+      //   throw new Error("Access token is missing. Please log in again.");
+      // }
 
-      const response = await fetch(
-        "https://api-royal-stone.softwebdigital.com/api/account/request-password-update",
+      const response = await apiFetch(
+        "/account/request-password-update",
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Include the access token
+            // Authorization: `Bearer ${token}`, // Include the access token
           },
         }
       );

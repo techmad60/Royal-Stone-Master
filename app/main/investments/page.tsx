@@ -17,6 +17,7 @@ import { FaClock } from "react-icons/fa6";
 import { GoPlus } from "react-icons/go";
 import { IoIosSend } from "react-icons/io";
 import { toast } from "react-toastify";
+import { apiFetch } from "@/utils/apiHelper";
 
 export default function Investment() {
   const {
@@ -39,18 +40,18 @@ export default function Investment() {
   useEffect(() => {
     fetchInvestments("investment-purchase", currentPage);
     const fetchPortfolio = async () => {
-      const token = localStorage.getItem("accessToken");
+      // const token = localStorage.getItem("accessToken");
 
-      if (!token) {
-        router.push("/auth/login/with-mail");
-      }
+      // if (!token) {
+      //   router.push("/auth/login/with-mail");
+      // }
       try {
-        const response = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/investment/dashboard",
+        const response = await apiFetch(
+          "/investment/dashboard",
           {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${token}`,
+        
               "Content-Type": "application/json",
             },
           }

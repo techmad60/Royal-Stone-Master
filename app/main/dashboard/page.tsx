@@ -15,6 +15,7 @@ import { BsFileBarGraphFill } from "react-icons/bs";
 import { FaClock } from "react-icons/fa6";
 import { MdArrowForwardIos } from "react-icons/md";
 import { TbTargetArrow } from "react-icons/tb";
+import { apiFetch } from "@/utils/apiHelper";
 
 export default function Dashboard() {
   const { products, fetchProducts } = useProductStore();
@@ -37,19 +38,18 @@ export default function Dashboard() {
     const fetchData = async () => {
       // setLoading(true); // Start loading
 
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        router.replace("/auth/login/with-mail");
-        return;
-      }
+      // const token = localStorage.getItem("accessToken");
+      // if (!token) {
+      //   router.replace("/auth/login/with-mail");
+      //   return;
+      // }
 
       try {
         // Fetch Profile
-        const profileRes = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/account/profile",
+        const profileRes = await apiFetch(
+          "/account/profile",
           {
             headers: {
-              Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
           }
@@ -77,11 +77,10 @@ export default function Dashboard() {
         }
 
         // Fetch Dashboard Data
-        const dashboardRes = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/account/dashboard",
+        const dashboardRes = await apiFetch(
+          "/account/dashboard",
           {
             headers: {
-              Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
           }

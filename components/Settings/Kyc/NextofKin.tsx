@@ -8,6 +8,7 @@ import Button from "../../ui/Button";
 import SettingsParent from "../SettingsParent";
 import Kyc from "./KycSettings";
 import ValidID from "./ValidId";
+import { apiFetch } from "@/utils/apiHelper";
 
 export default function NextofKinSettings() {
   const [nextOfKin, setNextOfKin] = useState<{
@@ -29,19 +30,19 @@ export default function NextofKinSettings() {
   const [isModified, setIsModified] = useState(false); // Track if the form has been modified
   const router = useRouter();
 
-  const token = localStorage.getItem("accessToken");
+  // const token = localStorage.getItem("accessToken");
 
   //Reusable function to  fetch Next of Kin details
   const fetchNextOfKin = async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        "https://api-royal-stone.softwebdigital.com/api/account/profile",
+      const response = await apiFetch(
+        "/account/profile",
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Replace with your token logic
+            // Authorization: `Bearer ${token}`, // Replace with your token logic
           },
         }
       );
@@ -95,10 +96,10 @@ export default function NextofKinSettings() {
     setLoading(true);
 
     try {
-      if (!token) {
-        router.push("/auth/login/with-mail");
-        return;
-      }
+      // if (!token) {
+      //   router.push("/auth/login/with-mail");
+      //   return;
+      // }
 
       // Create a copy of the original nextOfKin object and update only the modified fields
       const updatedNextOfKin = { ...nextOfKin };
@@ -123,13 +124,13 @@ export default function NextofKinSettings() {
         return;
       }
 
-      const response = await fetch(
-        "https://api-royal-stone.softwebdigital.com/api/account/profile",
+      const response = await apiFetch(
+        "/account/profile",
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             nextOfKin: updatedNextOfKin, // Update only nextOfKin fields

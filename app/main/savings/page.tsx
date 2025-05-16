@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { IoIosSend } from "react-icons/io";
 import { TbTargetArrow } from "react-icons/tb";
+import { apiFetch } from "@/utils/apiHelper";
 
 export default function Savings() {
   const [ledgerBalance, setLedgerBalance] = useState(0);
@@ -42,12 +43,12 @@ export default function Savings() {
         router.push("/auth/login/with-mail");
       }
       try {
-        const response = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/savings/dashboard",
+        const response = await apiFetch(
+          "/savings/dashboard",
           {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${token}`,
+              // Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
           }

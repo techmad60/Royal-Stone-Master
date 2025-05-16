@@ -7,6 +7,7 @@ import { FaBitcoin } from "react-icons/fa"; // For Crypto Icon
 import Button from "../../ui/Button";
 import Icon from "../../ui/Icon";
 import BankHeader from "../ui/BankHeader";
+import { apiFetch } from "@/utils/apiHelper";
 
 interface DeleteBankProps {
   onClose?: () => void;
@@ -37,16 +38,16 @@ export default function DeleteBank({ onClose }: DeleteBankProps) {
     (wallet) => wallet.id === selectedCryptoId
   );
 
-  const getAuthToken = () => {
-    return localStorage.getItem("accessToken"); // Get access token from local storage
-  };
+  // const getAuthToken = () => {
+  //   return localStorage.getItem("accessToken"); // Get access token from local storage
+  // };
 
   const handleDelete = async () => {
-    const token = getAuthToken(); // Get the token
-    if (!token) {
-      setFeedbackMessage("Authentication token missing.");
-      return;
-    }
+    // const token = getAuthToken(); // Get the token
+    // if (!token) {
+    //   setFeedbackMessage("Authentication token missing.");
+    //   return;
+    // }
 
     let response;
     if (selectedType === "bank" && selectedBank) {
@@ -57,13 +58,13 @@ export default function DeleteBank({ onClose }: DeleteBankProps) {
 
       try {
         // Sending API request to delete bank using fetch
-        response = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/bank",
+        response = await apiFetch(
+          "/bank",
           {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              // Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(payload),
           }
@@ -87,13 +88,13 @@ export default function DeleteBank({ onClose }: DeleteBankProps) {
 
       try {
         // Sending API request to delete crypto wallet using fetch
-        response = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/bank/crypto-wallet",
+        response = await apiFetch(
+          "/bank/crypto-wallet",
           {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              // Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(payload),
           }

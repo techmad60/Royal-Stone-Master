@@ -1,5 +1,6 @@
 import { Stock } from "@/types/Type";
 import { create } from "zustand";
+import { apiFetch } from "@/utils/apiHelper";
 
 interface StockStore {
   stocks: Stock[];
@@ -26,13 +27,13 @@ export const useStockStore = create<StockStore>((set) => ({
     set({ loading: true, error: "" });
   
     try {
-      const token = localStorage.getItem("accessToken");
-      const response = await fetch(
-        `https://api-royal-stone.softwebdigital.com/api/stock?page=${page}&search=${query}`,
+      // const token = localStorage.getItem("accessToken");
+      const response = await apiFetch(
+        `/stock?page=${page}&search=${query}`,
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }

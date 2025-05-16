@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { apiFetch } from "@/utils/apiHelper";
 
 interface Product {
   id: string;
@@ -38,8 +39,8 @@ const useProductStore = create<ProductStore>((set) => ({
    
     set({ isLoading: true, error: null }); // Start loading
     try {
-      const response = await fetch(
-         `https://api-royal-stone.softwebdigital.com/api/products?page=${page}`
+      const response = await apiFetch(
+         `/products?page=${page}`
       ); // Always fetch from page 1 initially
       const data = await response.json();
       if (data.status) {

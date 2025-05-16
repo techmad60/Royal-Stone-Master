@@ -6,6 +6,7 @@ import { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { TbTargetArrow } from "react-icons/tb";
 import TransactionHistoryModal from "../TransactionHistoryModal";
+import { apiFetch } from "@/utils/apiHelper";
 interface SavingsDesktopProps {
   onProceed?: () => void;
   transactions: SavingsTargetTransaction[];
@@ -23,18 +24,18 @@ export default function SavingsTargetDesktop({
     useState<GetSavingsTarget | null>(null); // Selected transaction
 
   const fetchTransactionDetails = async (id: string) => {
-    const token = localStorage.getItem("accessToken");
+    // const token = localStorage.getItem("accessToken");
     try {
       setLoading(true);
       setError(null);
 
       // Fetch details of the given transaction
-      const response = await fetch(
-        `https://api-royal-stone.softwebdigital.com/api/savings/targets/transaction?savingsTargetID=${targetID}`,
+      const response = await apiFetch(
+        `/savings/targets/transaction?savingsTargetID=${targetID}`,
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }

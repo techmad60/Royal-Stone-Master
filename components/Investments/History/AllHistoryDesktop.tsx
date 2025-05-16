@@ -7,6 +7,7 @@ import { BsFileBarGraphFill } from "react-icons/bs";
 import { GoPlus } from "react-icons/go";
 import { IoIosArrowForward, IoIosSend } from "react-icons/io";
 import TransactionHistoryModal from "./TransactionHistoryModal";
+import { apiFetch } from "@/utils/apiHelper";
 
 interface Investments {
   id: string;
@@ -28,17 +29,17 @@ export default function AllHistoryDesktop({
     useState<Investments | null>(null);
 
   const fetchInvestmentDetails = async (id: string, type: string) => {
-    const token = localStorage.getItem("accessToken");
+    // const token = localStorage.getItem("accessToken");
     try {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(
-        `https://api-royal-stone.softwebdigital.com/api/investment?type=${type}`,
+      const response = await apiFetch(
+        `/investment?type=${type}`,
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }

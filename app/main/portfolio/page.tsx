@@ -15,6 +15,7 @@ import { FaClock } from "react-icons/fa6";
 import { GoPlus } from "react-icons/go";
 import { IoIosSend } from "react-icons/io";
 import { TbTargetArrow } from "react-icons/tb";
+import { apiFetch } from "@/utils/apiHelper";
 export default function Portfolio() {
   const [portfolioData, setPortfolioData] = useState({
     totalSavingsBalance: 0,
@@ -46,13 +47,12 @@ export default function Portfolio() {
         }
 
         // Fetch portfolio data
-        const portfolioResponse = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/account/portfolio",
+        const portfolioResponse = await apiFetch(
+          "/account/portfolio",
           {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
             },
           }
         );

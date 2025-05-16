@@ -6,6 +6,7 @@ import Icon from "../../ui/Icon";
 import NavigatorTwo from "../../ui/NavigatorTwo";
 import SettingsParent from "../SettingsParent";
 import SendOtp from "./SendOtp";
+import { apiFetch } from "@/utils/apiHelper";
 
 interface SecuritySettingsProps {
   onVerifyClick: () => void;
@@ -26,16 +27,16 @@ export default function SecuritySettings({
     setError(null);
 
     try {
-      const token = localStorage.getItem("accessToken");
-      if (!token) throw new Error("Access token missing. Please log in again.");
+      // const token = localStorage.getItem("accessToken");
+      // if (!token) throw new Error("Access token missing. Please log in again.");
 
-      const response = await fetch(
-        "https://api-royal-stone.softwebdigital.com/api/account/update-security-settings",
+      const response = await apiFetch(
+        "/account/update-security-settings",
         {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ twoFactorAuthentication: !is2FAEnabled }),
         }

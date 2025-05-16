@@ -29,6 +29,7 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { TbTargetArrow } from "react-icons/tb";
+import { apiFetch } from "@/utils/apiHelper";
 
 export default function SavingsTarget() {
   const searchParams = useSearchParams();
@@ -77,17 +78,17 @@ export default function SavingsTarget() {
       setApiError(null);
 
       try {
-        const token = localStorage.getItem("accessToken");
-        if (!token) {
-          router.push("/auth/login/with-mail");
-          return;
-        }
+        // const token = localStorage.getItem("accessToken");
+        // if (!token) {
+        //   router.push("/auth/login/with-mail");
+        //   return;
+        // }
 
-        const response = await fetch(
-          `https://api-royal-stone.softwebdigital.com/api/fund?type=${type}`,
+        const response = await apiFetch(
+          `/fund?type=${type}`,
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              // Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
           }
@@ -131,20 +132,20 @@ export default function SavingsTarget() {
     const fetchTransactions = async () => {
       if (!id) return;
 
-      const accessToken = localStorage.getItem("accessToken");
-      if (!accessToken) {
-        setIsLoading(false);
-        return;
-      }
+      // const accessToken = localStorage.getItem("accessToken");
+      // if (!accessToken) {
+      //   setIsLoading(false);
+      //   return;
+      // }
 
       try {
-        const response = await fetch(
-          `https://api-royal-stone.softwebdigital.com/api/savings/targets/transaction?savingsTargetID=${id}`,
+        const response = await apiFetch(
+          `/savings/targets/transaction?savingsTargetID=${id}`,
           {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
+              // Authorization: `Bearer ${accessToken}`,
             },
           }
         );
@@ -213,20 +214,20 @@ export default function SavingsTarget() {
   // Making Savings Via Wallet
   const handleProceedPayment = async () => {
     if (selectedPaymentMethod === "wallet") {
-      const accessToken = localStorage.getItem("accessToken");
-      if (!accessToken) {
-        alert("Access token is missing.");
-        return;
-      }
+      // const accessToken = localStorage.getItem("accessToken");
+      // if (!accessToken) {
+      //   alert("Access token is missing.");
+      //   return;
+      // }
 
       try {
-        const response = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/savings/",
+        const response = await apiFetch(
+          "/savings/",
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
+              // Authorization: `Bearer ${accessToken}`,
             },
             body: JSON.stringify({ savingsTargetID: id }),
           }

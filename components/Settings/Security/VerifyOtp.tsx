@@ -5,6 +5,7 @@ import NavigatorTwo from "../../ui/NavigatorTwo";
 import OtpInput from "../../ui/OtpInput";
 import SettingsParent from "../SettingsParent";
 import SecuritySettings from "./SecuritySetting";
+import { apiFetch } from "@/utils/apiHelper";
 
 interface VerifyOtpProps {
   onNavigateToChangePassword?: () => void;
@@ -54,21 +55,21 @@ export default function VerifyOtpSetting({
     }
     setOtp(updatedOtp);
   };
-  const token = localStorage.getItem("accessToken");
+  // const token = localStorage.getItem("accessToken");
   const handleResendEmail = async () => {
     setResendLoading(true);
     setResendStatus(null);
     try {
       // const token = localStorage.getItem("accessToken");
-      if (!token) throw new Error("Access token missing. Please log in again.");
+      // if (!token) throw new Error("Access token missing. Please log in again.");
 
-      const response = await fetch(
-        "https://api-royal-stone.softwebdigital.com/api/account/request-password-update",
+      const response = await apiFetch(
+        "/account/request-password-update",
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -103,13 +104,13 @@ export default function VerifyOtpSetting({
     }
 
     try {
-      const response = await fetch(
-        "https://api-royal-stone.softwebdigital.com/api/account/verify-password-update-otp",
+      const response = await apiFetch(
+        "/account/verify-password-update-otp",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ otp: fullOtp }),
         }

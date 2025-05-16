@@ -6,6 +6,7 @@ import NavigatorTwo from "../../ui/NavigatorTwo";
 import SettingsParent from "../SettingsParent";
 import SecuritySettings from "./SecuritySetting";
 import VerifyOtpSetting from "./VerifyOtp";
+import { apiFetch } from "@/utils/apiHelper";
 
 
 export default function ChangePassword() {
@@ -50,16 +51,16 @@ export default function ChangePassword() {
     setSuccessMessage(null);
 
     try {
-      const token = localStorage.getItem("accessToken");
-      if (!token) throw new Error("Access token missing. Please log in again.");
+      // const token = localStorage.getItem("accessToken");
+      // if (!token) throw new Error("Access token missing. Please log in again.");
 
-      const response = await fetch(
-        "https://api-royal-stone.softwebdigital.com/api/account/update-password",
+      const response = await apiFetch(
+        "/account/update-password",
         {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             password,

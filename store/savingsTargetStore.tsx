@@ -1,5 +1,6 @@
 import { SavingsTarget } from "@/types/Type";
 import { create } from "zustand";
+import { apiFetch } from "@/utils/apiHelper";
 
 interface SavingsTargetStore {
   savingsTarget: SavingsTarget[];
@@ -20,11 +21,11 @@ export const useSavingsTargetStore = create<SavingsTargetStore>((set) => ({
 
   fetchSavingsTarget: async (page = 1) => {
     try {
-      const token = localStorage.getItem("accessToken");
-      const response = await fetch(`https://api-royal-stone.softwebdigital.com/api/savings/targets?page=${page}`, {
+      // const token = localStorage.getItem("accessToken");
+      const response = await apiFetch(`/savings/targets?page=${page}`, {
         method: "GET",
         headers: {
-          "Authorization": `Bearer ${token}`,
+          // "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });

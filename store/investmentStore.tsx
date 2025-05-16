@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { apiFetch } from "@/utils/apiHelper";
 
 interface Investment {
   accountID: string;
@@ -56,13 +57,13 @@ const useInvestmentStore = create<InvestmentStore>((set) => ({
     
     // set({ isLoading: true, error: null }); // Start loading
     try {
-      const token = localStorage.getItem("accessToken");
-      const response = await fetch(
-        `https://api-royal-stone.softwebdigital.com/api/investment?type=${type}&page=${page}`,
+      // const token = localStorage.getItem("accessToken");
+      const response = await apiFetch(
+        `/investment?type=${type}&page=${page}`,
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }

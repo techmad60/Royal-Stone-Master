@@ -12,6 +12,7 @@ import CustomAlert from "../../ui/CustomAlert";
 import SettingsParent from "../SettingsParent";
 import Kyc from "./KycSettings";
 import NextofKinSettings from "./NextofKin";
+import {apiFetch} from "@/utils/apiHelper";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 type IdentityPayload = {
@@ -45,18 +46,18 @@ export default function ValidID() {
       setIsloading(true);
       try {
         // Step 1: Fetch accessToken
-        const accessToken = localStorage.getItem("accessToken");
-        if (!accessToken) {
-          return router.push("/auth/login/with-mail");
-        }
+        // const accessToken = localStorage.getItem("accessToken");
+        // if (!accessToken) {
+        //   return router.push("/auth/login/with-mail");
+        // }
 
         // Step 2: Fetch KYC data from the API
-        const response = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/kyc",
+        const response = await apiFetch(
+          "/kyc",
           {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+              // Authorization: `Bearer ${accessToken}`,
             },
           }
         );
@@ -147,11 +148,11 @@ export default function ValidID() {
       setFeedbackMessage(null);
 
       // Step 1: Fetch accessToken from local storage
-      const accessToken = localStorage.getItem("accessToken");
-      if (!accessToken) {
-        router.push("/auth/login/with-mail");
-        return;
-      }
+      // const accessToken = localStorage.getItem("accessToken");
+      // if (!accessToken) {
+      //   router.push("/auth/login/with-mail");
+      //   return;
+      // }
 
       let imageUrl = image ? null : initialImage; // Use the initial image if no new image is provided // Use the initial image URL if image is not changed
       const idType = selectedId.trim() || initialSelectedId; // Use the new ID type if provided, otherwise fallback to the initial one
@@ -159,12 +160,12 @@ export default function ValidID() {
       // Step 2: Upload image if it has been changed
       if (image) {
         // Fetch signature from your backend
-        const signatureResponse = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/account/image-upload-signature",
+        const signatureResponse = await apiFetch(
+          "/account/image-upload-signature",
           {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+              // Authorization: `Bearer ${accessToken}`,
             },
           }
         );
@@ -215,12 +216,12 @@ export default function ValidID() {
         },
       };
 
-      const kycResponse = await fetch(
-        "https://api-royal-stone.softwebdigital.com/api/kyc",
+      const kycResponse = await apiFetch(
+        "/kyc",
         {
           method: "PUT",
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            // Authorization: `Bearer ${accessToken}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(payload),

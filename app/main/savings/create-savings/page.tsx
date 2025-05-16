@@ -11,6 +11,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { IoIosArrowDown } from "react-icons/io";
 import { toast } from "react-toastify";
+import {apiFetch} from "@/utils/apiHelper";
 const createSavings = [
   { label: "Fixed Savings", href: "/main/savings" },
   { label: "Create Savings Target", href: "/main/savings/create-savings" },
@@ -74,12 +75,11 @@ export default function CreateSavingsPage() {
 
     try {
       setLoading(true);
-      const response = await fetch(
-        "https://api-royal-stone.softwebdigital.com/api/savings/targets",
+      const response = await apiFetch(
+        "/savings/targets",
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${accessToken}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(payload),
@@ -105,15 +105,14 @@ export default function CreateSavingsPage() {
   useEffect(() => {
     const fetchInterestRates = async () => {
       try {
-        const accessToken = localStorage.getItem("accessToken");
-        if (!accessToken) throw new Error("Access token is missing.");
+        // const accessToken = localStorage.getItem("accessToken");
+        // if (!accessToken) throw new Error("Access token is missing.");
 
-        const response = await fetch(
-          "https://api-royal-stone.softwebdigital.com/api/savings-interest",
+        const response = await apiFetch(
+          "/savings-interest",
           {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${accessToken}`,
               "Content-Type": "application/json",
             },
           }

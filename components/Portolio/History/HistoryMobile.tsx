@@ -7,6 +7,7 @@ import { GoPlus } from "react-icons/go";
 import { IoIosSend } from "react-icons/io";
 import { TbTargetArrow } from "react-icons/tb";
 import TransactionHistoryModal from "./TransactionHistoryModal";
+import { apiFetch } from "@/utils/apiHelper";
 // import Loading from "@/components/ui/Loading";
 
 // interface Transactions {
@@ -47,14 +48,14 @@ export default function HistoryMobile({ transactions }: HistoryMobileProps) {
     useState<Transactions | null>(null);
 
   const handleTransactionClick = async (transactionID: string) => {
-    const token = localStorage.getItem("accessToken");
+    // const token = localStorage.getItem("accessToken");
     try {
-      const res = await fetch(
+      const res = await apiFetch(
         `https://api-royal-stone.softwebdigital.com/api/transaction?transactionID=${transactionID}`,
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }

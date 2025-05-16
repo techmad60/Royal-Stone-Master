@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BiSolidBank } from "react-icons/bi";
 import { FaBitcoin } from "react-icons/fa";
+import { apiFetch } from "@/utils/apiHelper";
 
 const fundSteps = [
   { label: "Savings", href: "/main/savings" },
@@ -49,17 +50,17 @@ export default function FundWalletPage() {
       setError(null);
 
       try {
-        const token = localStorage.getItem("accessToken");
-        if (!token) {
-          router.push("/auth/login/with-mail");
-          return;
-        }
+        // const token = localStorage.getItem("accessToken");
+        // if (!token) {
+        //   router.push("/auth/login/with-mail");
+        //   return;
+        // }
 
-        const response = await fetch(
-          `https://api-royal-stone.softwebdigital.com/api/fund?type=${type}`,
+        const response = await apiFetch(
+          `/fund?type=${type}`,
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              // Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
           }
